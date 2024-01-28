@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-danger  waves-effect waves-light" routerLink="/committee">
+                        <i class="bx bx-arrow-back  "></i>
+                        Back</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="">
+                    <div class="text-center mb-3">
+                        <h4>{{commi.commTitle}}</h4>
+                    </div>
+                    <div class="mb-4"
+                        *ngIf="commi.commImage!='null' && commi.commImage!='undefined' && commi.commImage!=undefined">
+                        <div class="row">
+                            <div class="col-lg-8 offset-lg-2">
+                                <ngb-carousel [showNavigationIndicators]="!showNavigationIndicators">
+                                    <ng-template ngbSlide *ngFor="let c of commData">
+                                        <img src="https://api.cesociety.in{{c}}" alt="first slide"
+                                            class="d-block img-fluid">
+                                    </ng-template>
+                                </ngb-carousel>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-4">
+                        <div class="text-muted font-size-14" [innerHtml]='commi.commDetails'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->
+
+
+
+</div> <!-- container-fluid -->

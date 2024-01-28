@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">Photo Contest Images List</h5>
+                    <button type="submit" class="btn btn-danger  waves-effect waves-light" routerLink="/photo-contest">
+                        <i class="bx bx-arrow-back"></i>
+                        Back</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <a href="https://api.cesociety.in{{contestData.image}}" target="_blank">
+                            <img src="https://api.cesociety.in{{contestData.image}}" class="img-fluid" alt="Photo Contest">
+                        </a>
+                        <a
+                            (click)="downloadImage('https://api.cesociety.in' + contestData.image, 'contestImage.jpg')">
+                            <i class="primary fas fa-download font-size-16 mt-3" style="cursor: pointer;"></i>
+                        </a>
+                    </div>
+                    <div class="col-lg-4" *ngFor="let c of contestImages;">
+                        <a href="https://api.cesociety.in{{c.image}}" target="_blank">
+                            <img src="https://api.cesociety.in{{c.image}}" class="img-fluid" alt="Photo Contest">
+                        </a>
+                        <a 
+                            (click)="downloadImage('https://api.cesociety.in' + c.image, 'contestImage' + c.id + '.jpg')">
+                            <i class="primary fas fa-download font-size-16 mt-3" style="cursor: pointer;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->

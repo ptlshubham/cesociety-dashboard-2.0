@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">NAAC Details List</h5>
+                    <button type="submit" class="btn btn-danger  waves-effect waves-light" routerLink="/naac">
+                        <i class="bx bx-arrow-back"></i>
+                        Back</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <h2 class="title text-dark text-center">{{NaacObject.criteria}}</h2>
+                    <div class="row" [innerHTML]="NaacObject.details"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

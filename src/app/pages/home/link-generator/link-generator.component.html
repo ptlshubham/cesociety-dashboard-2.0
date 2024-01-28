@@ -1,0 +1,312 @@
+<div class="row" *ngIf="isOpen">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">URL Details</h5>
+                    <button type="submit" class="btn btn-danger  waves-effect waves-light" (click)="backToList()">
+                        <i class="bx bx-arrow-back font-size-16 align-middle"></i>
+                        Back</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <form [formGroup]="validationForm">
+                        <input type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                <div class="mb-3">
+                                    <label for="choices-single-default" class="form-label">Select Criteria</label>
+                                    <ng-select [items]="criteria" bindLabel="name" bindValue="name"
+                                        placeholder="Select Criteria" (change)="onCriteriaChange($event)"
+                                        [(ngModel)]="selectedCriteria" [ngModelOptions]="{standalone: true}">
+                                        <ng-template ng-optgroup-tmp let-item="item">
+                                            {{item.name}}
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                <div class="mb-3">
+                                    <label for="choices-single-default" class="form-label">Select Sub Menu</label>
+                                    <ng-select [items]="subMenuList" bindLabel="subMenu" bindValue="subMenu"
+                                        placeholder="Select Sub Menu" (change)="onSubMenuChange($event)"
+                                        [addTag]="addSubMenu" [(ngModel)]="subMenu"
+                                        [ngModelOptions]="{standalone: true}">
+                                        <ng-template ng-optgroup-tmp let-item="item">
+                                            {{item.subMenu}}
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                <div class="mb-3">
+                                    <label for="choices-single-default" class="form-label">Select Sub To Sub
+                                        Menu</label>
+                                    <ng-select [items]="subToSubMenu" bindLabel="subToSub" bindValue="subToSub"
+                                        placeholder="Select Sub To Sub Menu" (change)="onSubToSubMenuChange($event)"
+                                        [addTag]="addSubToSub" [(ngModel)]="subToSub"
+                                        [ngModelOptions]="{standalone: true}">
+                                        <ng-template ng-optgroup-tmp let-item="item">
+                                            {{item.subToSub}}
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                <div class="form-group mb-3">
+                                    <label>Parameter Name</label>
+                                    <input type="text" class="form-control" id="paraname"
+                                        placeholder="Enter Parameter Name" [(ngModel)]="LinkDetailsModel.paraname"
+                                        formControlName="paraname"
+                                        [ngClass]="{'is-invalid': f.paraname.touched && f.paraname.errors}">
+                                    <div *ngIf="f.paraname.touched && f.paraname.errors" class="invalid-feedback">
+                                        <span *ngIf="f.paraname.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6"
+                                *ngIf="LinkDetailsModel.paralink!='' && LinkDetailsModel.paralink!=undefined && LinkDetailsModel.paralink!=null">
+                                <div class="form-group mb-3">
+                                    <label>View Uploaded Parameter Link</label>
+                                    <a href="https://api.cesociety.in{{LinkDetailsModel.paralink}}" target="_blank">
+                                        <img src="assets/images/pdf.png" alt="pdf" class="img-thumbnail"
+                                            style="height: 50%;width: 50%;"></a>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                <div class="form-group mb-3">
+                                    <label>PDF Uploader</label>
+                                    <input class="form-control mb-2" type="file" id="formFile"
+                                        (change)="uploadParameterPdfFile($event)">
+                                    <ngb-progressbar [value]="progressValue" [type]="progressType"
+                                        *ngIf="isProgress"></ngb-progressbar>
+                                </div>
+                            </div>
+                            <!-- <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                <div class="form-group mb-3">
+                                    <label>Attachment Name</label>
+                                    <input type="text" class="form-control" id="attachname"
+                                        placeholder="Enter Attachment Name" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="LinkDetailsModel.attachname">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6"
+                                *ngIf="LinkDetailsModel.attachlink!='' && LinkDetailsModel.attachlink!=undefined && LinkDetailsModel.attachlink!=null">
+                                <div class="form-group mb-3">
+                                    <label>View Uploaded Attachment Link</label>
+                                    <a href="https://api.cesociety.in{{LinkDetailsModel.attachlink}}"
+                                        target="_blank">
+                                        <img src="assets/images/pdf.png" alt="pdf" class="img-thumbnail"
+                                            style="height: 50%;width: 50%;"></a>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                <div class="form-group mb-3">
+                                    <label>Attachment PDF Uploader (Optional)</label>
+                                    <input class="form-control mb-2" type="file" id="formFile"
+                                        (change)="uploadAttachmentPdfFile($event)">
+                                    <ngb-progressbar [value]="progressValue1" [type]="progressType1"
+                                        *ngIf="isProgress1"></ngb-progressbar>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="form-group">
+                            <div class="row justify-content-end">
+                                <div class="col-lg-1 col-xl-1 col-md-1 col-sm-2 col-xs-12">
+                                    <button type="submit" class="btn btn-primary" (click)="saveLinkDetails()"
+                                        *ngIf="isUpdate==false">Submit</button>
+                                    <!-- <button type="submit" class="btn btn-primary" (click)="updateNaacDetails()"
+                                        *ngIf="isUpdate==true">Update</button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="row" *ngIf="!isOpen">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">URL List</h5>
+                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"
+                        (click)="openAddNAACDetails()"><i class="bx bx-user-plus label-icon"></i>
+                        Add URL Details</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-left">#</th>
+                                <th class="text-center">Criteria</th>
+                                <th class="text-center">Sub Menu</th>
+                                <th class="text-center">Sub To Sub</th>
+                                <th class="text-center">Parameter Name</th>
+                                <th class="text-center">Link</th>
+                                <th class="text-center">Created Date</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let s of paginateData;let i=index">
+                                <td class="text-left">{{s.index}}</td>
+                                <td class="text-center">{{s.criteria}} </td>
+                                <td class="text-center">{{s.subMenu}}</td>
+                                <td class="text-center">{{s.subToSub}}</td>
+                                <td class="text-center">{{s.linkName}}</td>
+                                <td class="text-center" *ngIf="s.link!='undefined' && s.link!=''"><a
+                                        href="https://api.cesociety.in{{s.link}}"
+                                        target="_blank"><u>https://api.cesociety.in{{s.link}}</u></a>
+                                </td>
+                                <td class="text-center" *ngIf="s.link==''|| undefined || s.link=='undefined'"><span
+                                        class=" badge bg-warning
+                                    ms-1">Not
+                                        Uploaded</span></td>
+                                <td class="text-center" *ngIf="s.attachname=='undefined' || undefined"><span
+                                        class="badge bg-warning ms-1"> - </span></td>
+                                <td class="text-center">{{s.createddate |date}}</td>
+
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-soft-danger waves-effect waves-light"
+                                        (click)="removeLinkDetails(s.id)"><i
+                                            class="bx bx-trash-alt font-size-16"></i></button>
+                              
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-4">
+                    <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
+                        [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
+                        (pageChange)="getPagintaion();" aria-label="Default pagination"
+                        class="d-flex justify-content-end pagination-rounded-flat pagination-success"></ngb-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="row" *ngIf="!isOpen">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">URL List</h5>
+                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"
+                        (click)="openAddNAACDetails()"><i class="bx bx-user-plus label-icon"></i>
+                        Add URL Details</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-md-2">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="dataTables_length" id="tickets-table_length"><label
+                                class="d-inline-flex align-items-center">Show
+                                <select name="tickets-table_length" aria-controls="tickets-table" name="pageSize"
+                                    [(ngModel)]="service.pageSize" class="form-control form-control-sm mx-2">
+                                    <option [ngValue]="10">10</option>
+                                    <option [ngValue]="25">25</option>
+                                    <option [ngValue]="35">35</option>
+                                    <option [ngValue]="50">50</option>
+                                    <option [ngValue]="50">70</option>
+                                    <option [ngValue]="100">100</option>
+                                </select> entries</label></div>
+                    </div>
+                    <!-- Search -->
+                    <div class="col-sm-12 col-md-6">
+                        <div id="tickets-table_filter" class="dataTables_filter text-md-end"><label
+                                class="d-inline-flex align-items-center">Search:
+                                <input type="text" name="searchTerm" class="form-control form-control-sm ms-2"
+                                    aria-controls="tickets-table" [(ngModel)]="service.searchTerm"></label></div>
+                    </div>
+                    <!-- End search -->
+                </div>
+
+                <table id="datatable" class="table table-bordered dt-responsive nowrap w-100 datatables">
+                    <thead>
+                        <tr>
+                            <th class="text-center" sortablepay="srNo" (sort)="onSortNaac($event)">Sr No</th>
+                            <th class="text-center" sortable="criteria" (sort)="onSortNaac($event)">Criteria</th>
+                            <th class="text-center" sortable="subMenu" (sort)="onSortNaac($event)">Sub Menu</th>
+                            <th class="text-center" sortable="subToSub" (sort)="onSortNaac($event)">Sub To Sub</th>
+                            <th class="text-center" sortable="linkName" (sort)="onSortNaac($event)">Link Name</th>
+                            <th class="text-center" sortable="link" (sort)="onSortNaac($event)">Link</th>
+                            <th class="text-center" sortable="createddate" (sort)="onSortNaac($event)">Created date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let table of tables$ | async;let i=index">
+                        <tr>
+                            <td>
+                                <ngb-highlight [result]="table.srNo | number"
+                                    [term]="service.searchTerm"></ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="table.criteria" [term]="service.searchTerm">
+                                </ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="table.subMenu" [term]="service.searchTerm"></ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="table.subToSub" [term]="service.searchTerm">
+                                </ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="table.linkName" [term]="service.searchTerm"></ngb-highlight>
+                            </td>
+                            <td *ngIf="table.link!='undefined' && table.link!=''">
+                                <a [href]="'https://api.cesociety.in' + table.link" target="_blank">
+                                    <ngb-highlight [result]="'https://api.cesociety.in' + table.link"
+                                        [term]="service.searchTerm"></ngb-highlight>
+                                </a>
+                            </td>
+                            <td *ngIf="table.link==''|| undefined || table.link=='undefined'" class="text-center">
+                                <ngb-highlight class=" badge bg-warning ms-1 text-center" [result]="'Not Uploaded'"
+                                    [term]="service.searchTerm"></ngb-highlight>
+                            </td>
+                            <td>
+                                <ngb-highlight [result]="table.createddate | date"
+                                    [term]="service.searchTerm"></ngb-highlight>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-soft-danger waves-effect waves-light"
+                                    (click)="removeLinkDetails(table.id)"><i
+                                        class="bx bx-trash-alt font-size-16"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row justify-content-md-between align-items-md-center mt-2">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                            Showing
+                            {{service.startIndex}} to
+                            {{service.endIndex}} of {{service.totalRecords}}
+                            entries
+                        </div>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="col-sm-12 col-md-5">
+                        <div class="text-md-right float-md-end pagination-rounded">
+                            <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="service.page"
+                                [pageSize]="service.pageSize">
+                            </ngb-pagination>
+                        </div>
+                    </div>
+                    <!-- End Pagination -->
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- end col -->
+</div> <!-- end row -->

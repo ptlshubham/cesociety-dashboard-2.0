@@ -1,0 +1,177 @@
+<div class="row" *ngIf="isOpen">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="d-flex justify-content-between">
+
+                        <div *ngIf="!isUpdate">
+                            <h5 class="card-title">Committee</h5>
+                            <p class="card-title-desc">Enter Committee Details With Image</p>
+                        </div>
+                        <div *ngIf="isUpdate">
+                            <h5 class="card-title">Update Committee</h5>
+                            <p class="card-title-desc">Update Committee Details With Image</p>
+                        </div>
+                        <button type="submit" class="btn btn-danger  waves-effect waves-light" (click)="closeAddComm()">
+                            <i class="bx bx-arrow-back  "></i>
+                            Back</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <form>
+                        <input type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Title</label>
+                                    <input type="text" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="commiModel.commTitle" class="form-control" id="title"
+                                        placeholder="Enter Title">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Upload Committee Image</label>
+                                    <p style="text-align: center;color: red;">
+                                        Please Upload only 500 X 500px image.
+                                    </p>
+                                    <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
+                                                (change)="uploadFile($event)" />
+                                        </div>
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview" [style.backgroundImage]="'url('+ imageUrl +')'">
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <button type="submit" class="btn btn-primary btn-sm btn-block"
+                                                (click)="fileInput.click()">Upload
+                                                Image</button>
+                                            <button type="submit" class="btn btn-danger btn-sm btn-block"
+                                                (click)="removeUploadedImage()">Remove
+                                                Image</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6" *ngFor="let i of addMultiImg; let ind=index">
+                                <div class="form-group mb-3">
+                                    <label>Upload Committee Image</label>
+                                    <p style="text-align: center;color: red;">
+                                        Please Upload only 500 X 500px image.
+                                    </p>
+                                    <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
+                                                #multiFileInput (change)="uploadMultiFile($event,ind)" />
+                                        </div>
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview"
+                                                [style.backgroundImage]="'url('+ i.multiImageUrl +')'">
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <button type="submit" class="btn btn-primary btn-sm btn-block"
+                                                (click)="multiFileInput.click()">Upload
+                                                Image</button>
+                                            <button type="submit" class="btn btn-danger btn-sm btn-block"
+                                                (click)="removeServiceList(ind)">Remove
+                                                Image</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="col-xl-1 col-lg-1 col-md-1 col-md-1 d-flex align-items-center justify-content-center">
+                                <div class="form-group mb-3">
+                                    <i class="bx bx-plus c-icon" (click)="addServiceList()"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group mb-3">
+                                <label>Committee Details</label>
+                                <ckeditor [editor]="Editor" data="" [ngModelOptions]="{standalone: true}"
+                                    [(ngModel)]="commiModel.commDetails"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary" (click)="saveCommiteeDetails()"
+                                    *ngIf="!isUpdate">Submit</button>
+                                <button type="submit" class="btn btn-primary" (click)="updateCommiteeDetails()"
+                                    *ngIf="isUpdate">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="!isOpen">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">Committee List</h5>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light" (click)="openAddInfra()">
+                        <i class="fas fa-users"></i>
+                        Add Committee</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-left">#</th>
+                                <th class="text-center">Title</th>
+                                <!-- <th class="text-center">Details</th> -->
+                                <th class="text-center">Image</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let c of paginateData;let i=index">
+                                <td class="text-left">{{c.index}}</td>
+                                <td class="text-center">{{c.commTitle}}</td>
+                                <!-- <td class="text-center" [innerHtml]='c.infraDetails'> </td> -->
+                                <td class="text-center">
+                                    <img src="https://api.cesociety.in{{c.commImage}}" alt="" class="rounded avatar-lg"
+                                        *ngIf="c.commImage!='null' && c.commImage!='undefined' && c.commImage!=undefined">
+                                    <span class="bg-warning badge me-2"
+                                        *ngIf="c.commImage=='null' || c.commImage=='undefined' || c.commImage==undefined">File
+                                        Not Uploaded</span>
+                                </td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                        (click)="viewCommiteeDetails(c.id)"><i
+                                            class="fa fa-eye font-size-16 align-middle"></i></button>
+                                    <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                        (click)="editCommiteeDetails(c)"><i
+                                            class="bx bx-edit font-size-16 align-middle"></i></button>
+                                    <button type="button" class="btn btn-soft-danger waves-effect waves-light"
+                                        (click)="removeCommiteeById(c.id)"><i
+                                            class="bx bx-trash-alt font-size-16 align-middle"></i></button>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page" [maxSize]="5"
+                    [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="getPagintaion();"
+                    aria-label="Default pagination"
+                    class="d-flex justify-content-end pagination-rounded-flat pagination-success"></ngb-pagination>
+            </div>
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->
+</div>

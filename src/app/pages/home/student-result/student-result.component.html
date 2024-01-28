@@ -1,0 +1,140 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Student Result</h5>
+                <p class="card-title-desc">Enter Result Details</p>
+            </div>
+            <div class="card-body">
+                <div>
+                    <form [formGroup]="validationForm">
+                        <input type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Select Year</label>
+                                    <select required class="form-control form-select" [(ngModel)]="resultModel.year"
+                                        formControlName="year" (change)="onYearChange($event)"
+                                        [ngClass]="{'is-invalid': f.year.touched && f.year.errors}">
+                                        <option value>Select</option>
+                                        <option value="{{c.value}}" *ngFor="let c of years;">{{c.value}}</option>
+                                    </select>
+                                    <div *ngIf="f.year.touched && f.year.errors" class="invalid-feedback">
+                                        <span *ngIf="f.year.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Enter Title</label>
+                                    <textarea id="basicpill-address-input1" class="form-control" rows="2" id="title"
+                                        placeholder="Enter Title" formControlName="title"
+                                        [ngClass]="{'is-invalid': f.title.touched && f.title.errors}"
+                                        [(ngModel)]="resultModel.title"></textarea>
+                                    <div *ngIf="f.title.touched && f.title.errors" class="invalid-feedback">
+                                        <span *ngIf="f.title.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Upload Image</label>
+                                    <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
+                                                (change)="uploadFile($event)" />
+                                        </div>
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview" [style.backgroundImage]="'url('+ imageUrl +')'">
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <button type="submit" class="btn btn-primary btn-sm btn-block"
+                                                (click)="fileInput.click()">Upload
+                                                Image</button>
+                                            <button type="submit" class="btn btn-danger btn-sm btn-block">Remove
+                                                Image</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary" (click)="saveResultDetails()"
+                                    *ngIf="isUpdate==false"
+                                    [disabled]="validationForm.invalid || resultImage ==null">Submit</button>
+                                <button type="submit" class="btn btn-primary" (click)="updateResultDetails()"
+                                    *ngIf="isUpdate==true"
+                                    [disabled]="validationForm.invalid || resultImage ==null">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">Student result List</h5>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Select Year</label>
+                        <select required class="form-control form-select" [(ngModel)]="currentYears"
+                            (change)="onYearChange($event)" [ngClass]="{'is-invalid': f.year.touched && f.year.errors}">
+                            <option value>Select</option>
+                            <option value="{{c.value}}" *ngFor="let c of years">{{c.value}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-left">#</th>
+                                <th class="text-center">Year</th>
+                                <th class="text-center">Title</th>
+                                <th class="text-center">Image</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let c of filterData;let i=index">
+                                <td class="text-left">{{c.index}}</td>
+                                <td class="text-center">{{c.year}}</td>
+                                <td class="text-center">{{c.title}}</td>
+                                <td class="text-center">
+                                    <img src="https://api.cesociety.in{{c.image}}" alt="" class="rounded avatar-lg">
+                                </td>
+                                <td class="text-end">
+                                    <!-- <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                        (click)="openEditResult(c)"><i
+                                            class="bx bx-edit font-size-16 align-middle"></i></button> -->
+                                    <button type="button" class="btn btn-soft-danger waves-effect waves-light"
+                                        (click)="removeResult(c.id)"><i
+                                            class="bx bx-trash-alt font-size-16 align-middle"></i></button>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page" [maxSize]="5"
+                    [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="getPagintaion();"
+                    aria-label="Default pagination"
+                    class="d-flex justify-content-end pagination-rounded-flat pagination-success"></ngb-pagination>
+            </div>
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->
+</div>

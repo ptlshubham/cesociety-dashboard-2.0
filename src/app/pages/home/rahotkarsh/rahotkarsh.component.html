@@ -1,0 +1,173 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">Beneficiary Student Details</h5>
+                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"
+                        (click)="goToBulkUpload()">
+                        <i class="fas fa-file-upload label-icon"></i>Bulk Upload
+                    </button>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <div>
+                    <form>
+                        <input type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Select Year</label>
+                                    <select required class="form-control form-select"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="beneficiaryModel.year">
+                                        <option value>Select Year</option>
+                                        <option value="2010-2011">2010-2011</option>
+                                        <option value="2011-2012">2011-2012</option>
+                                        <option value="2012-2013">2012-2013</option>
+                                        <option value="2013-2014">2013-2014</option>
+                                        <option value="2014-2015">2014-2015</option>
+                                        <option value="2015-2016">2015-2016</option>
+                                        <option value="2016-2017">2016-2017</option>
+                                        <option value="2017-2018">2017-2018</option>
+                                        <option value="2018-2019">2018-2019</option>
+                                        <option value="2019-2020">2019-2020</option>
+                                        <option value="2020-2021">2020-2021</option>
+                                        <option value="2021-2022">2021-2022</option>
+                                        <option value="2022-2023">2022-2023</option>
+                                        <option value="2023-2024">2023-2024</option>
+                                        <option value="2024-2025">2024-2025</option>
+                                        <option value="2025-2026">2025-2026</option>
+                                        <option value="2026-2027">2026-2027</option>
+                                        <option value="2027-2028">2027-2028</option>
+                                        <option value="2028-2029">2028-2029</option>
+                                        <option value="2029-2030">2029-2030</option>
+                                        <option value="2030-2031">2030-2031</option>
+                                        <option value="2031-2032">2031-2032</option>
+                                        <option value="2032-2033">2032-2033</option>
+                                        <option value="2033-2034">2033-2034</option>
+                                        <option value="2034-2035">2034-2035</option>
+                                        <option value="2035-2036">2035-2036</option>
+                                        <option value="2036-2037">2036-2037</option>
+                                        <option value="2037-2038">2037-2038</option>
+                                        <option value="2038-2039">2038-2039</option>
+                                        <option value="2039-2040">2039-2040</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Student Name</label>
+                                    <input type="text" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="beneficiaryModel.studentName" class="form-control" id="studentName"
+                                        placeholder="Enter Student Name">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Select School/College</label>
+                                    <select required class="form-control form-select"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="beneficiaryModel.instituteName">
+                                        <option value>Select School/College</option>
+                                        <option value="{{c.name}}" *ngFor="let c of collegeList">
+                                            {{c.name}} </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Std/Course</label>
+                                    <input type="text" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="beneficiaryModel.course" class="form-control" id="course"
+                                        placeholder="Enter Std/Course">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Refund Amount</label>
+                                    <input type="text" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="beneficiaryModel.refundAmount" class="form-control"
+                                        id="refundAmount" placeholder="Enter Donation Amount">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" *ngIf="!isUpdate"
+                                    (click)="saveBeneficiaryDetails()">Submit</button>
+                                <button type="submit" class="btn btn-primary" *ngIf="isUpdate"
+                                    (click)="updateBenficiary()">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">Beneficiary Student List</h5>
+                    <div ngbDropdown class="d-inline-block">
+                        <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+                            {{selectedYear}}
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button ngbDropdownItem disabled>Select Year</button>
+                            <div *ngFor="let y of yearData">
+                                <button ngbDropdownItem on-click="selectYear(y.year)">{{y.year}}</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-left">#</th>
+                                <th class="text-center">Academic Year</th>
+                                <th class="text-center">Student Name</th>
+                                <th class="text-center">School/College Name</th>
+                                <th class="text-center">Course</th>
+                                <th class="text-center">Refund Amount</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let d of paginateData;let i=index">
+                                <td class="text-left">{{d.index}}</td>
+                                <td class="text-center">{{d.year}}</td>
+                                <td class="text-center">{{d.studentName}}</td>
+                                <td class="text-center">{{d.instituteName}}</td>
+                                <td class="text-center">{{d.course}}</td>
+                                <td class="text-center">{{d.refundAmount}}</td>
+
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-soft-primary waves-effect waves-light"><i
+                                            class="bx bx-edit " (click)="editBeneficiary(d)"></i></button>
+                                    <button type="button" class="btn btn-soft-danger waves-effect waves-light" d
+                                        (click)="removeBeneficiaryDetails(d.id)"><i
+                                            class="bx bx-trash-alt "></i></button>
+
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-4">
+                    <ngb-pagination [collectionSize]="collectionSize" [pageSize]="10" [(page)]="page" [maxSize]="10"
+                        [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="getPagintaion();"
+                        aria-label="Default pagination"
+                        class="d-flex justify-content-end pagination-rounded-flat pagination-success"></ngb-pagination>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

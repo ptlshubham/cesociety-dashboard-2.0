@@ -1,0 +1,152 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Question Papers</h5>
+                <p class="card-title-desc">Enter Question Paper Details</p>
+            </div>
+            <div class="card-body">
+                <div>
+                    <form>
+                        <input type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Select Department</label>
+                                    <select required class="form-control form-select"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="questionPapersModel.department">
+                                        <option value>Select Department</option>
+                                        <option value="{{c.department}}" *ngFor="let c of departmentData">
+                                            {{c.department}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Enter Subject</label>
+                                    <input type="text" class="form-control" id="subject"
+                                        placeholder="Enter Subject Name" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="questionPapersModel.subject">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Select Year</label>
+                                    <select required class="form-control form-select"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="questionPapersModel.year">
+                                        <option value>Select Year</option>
+                                        <option value="{{c}}" *ngFor="let c of yearList">
+                                            {{c}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Semester List</label>
+                                    <select required class="form-control form-select"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="questionPapersModel.semester">
+                                        <option value>Select Semester</option>
+                                        <option value="SEM 1">SEM 1</option>
+                                        <option value="SEM 2">SEM 2</option>
+                                        <option value="SEM 3">SEM 3</option>
+                                        <option value="SEM 4">SEM 4</option>
+                                        <option value="SEM 5">SEM 5</option>
+                                        <option value="SEM 6">SEM 6</option>
+                                        <option value="SEM 7">SEM 7</option>
+                                        <option value="SEM 8">SEM 8</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Enter Title</label>
+                                    <textarea id="basicpill-address-input1" class="form-control" rows="2" id="title"
+                                        placeholder="Enter Title" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="questionPapersModel.title"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>PDF Uploader (Optional)</label>
+                                    <input class="form-control mb-2" type="file" id="formFile" (change)="uploadFile($event)">
+                                    <ngb-progressbar [value]="progressValue" [type]="progressType" *ngIf="isProgress"></ngb-progressbar>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary"
+                                    (click)="savePapersDetails()">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Question Papers</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-left">#</th>
+                                <th class="text-center">Department</th>
+                                <th class="text-center">Subject</th>
+                                <th class="text-center">Year</th>
+                                <th class="text-center">Semester</th>
+                                <th class="text-center">Title</th>
+                                <th class="text-center">File (PDF)</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let n of paginateData;let i=index">
+                                <td class="text-left">{{n.index}}</td>
+                                <td class="text-center">{{n.department}}</td>
+                                <td class="text-center">{{n.subject}}</td>
+                                <td class="text-center">{{n.year}}</td>
+                                <td class="text-center">{{n.semester}}</td>
+                                <td class="text-center">{{n.title}}</td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"
+                                        (click)="viewDownloadPdf(n.files)" *ngIf="n.files!='null'">
+                                        <i class="fas fa-file-download label-icon"></i>Download
+                                    </button>
+                                    <span class="bg-warning badge me-2" *ngIf="n.files=='null'">File Not Uploaded</span>
+                                </td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-soft-danger waves-effect waves-light"
+                                        (click)="removeQuestionPaper(n.id)"><i
+                                            class="bx bx-trash-alt font-size-16 align-middle"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-4">
+                    <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
+                        [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
+                        (pageChange)="getPagintaion();" aria-label="Default pagination"
+                        class="d-flex justify-content-end pagination-rounded-flat pagination-success"></ngb-pagination>
+                </div>
+            </div>
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->
+</div>

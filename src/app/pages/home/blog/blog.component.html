@@ -1,0 +1,149 @@
+<div class="row" *ngIf="isopen">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <div *ngIf="!isUpdate">
+                        <h5 class="card-title">Blog Uploader</h5>
+                        <p class="card-title-desc">Enter Blog Details With Image</p>
+                    </div>
+                    <div *ngIf="isUpdate">
+                        <h5 class="card-title">Update Blog</h5>
+                        <p class="card-title-desc">Update Blog Details With Image</p>
+                    </div>
+                    <button type="submit" class="btn btn-danger  waves-effect waves-light" (click)="closeAddBlog()">
+                        <i class="bx bx-arrow-back  "></i>
+                        Back</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <form>
+                        <input type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Author Name</label>
+                                    <input type="text" class="form-control" id="title" placeholder="Enter Author Name"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="blogModel.authorName">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Blog Title</label>
+                                    <input type="text" class="form-control" id="title" placeholder="Enter Blog Title"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="blogModel.blogTitle">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+
+                                <div class="form-group mb-3">
+                                    <label for="example-date-input" class="form-label">Blog Date</label>
+                                    <input class="form-control" type="date" placeholder="Select Date"
+                                        id="example-date-input" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="blogModel.blogDate">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Upload Image</label>
+                                    <p style="text-align: center;color: red;">
+                                        Please Upload only 600 X 400px image.
+                                    </p>
+                                    <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
+                                                (change)="uploadFile($event)" />
+                                        </div>
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview" [style.backgroundImage]="'url('+ imageUrl +')'">
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <button type="submit" class="btn btn-primary btn-sm btn-block"
+                                                (click)="fileInput.click()">Upload
+                                                Image</button>
+                                            <button type="submit" class="btn btn-danger btn-sm btn-block">Remove
+                                                Image</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group mb-3">
+                                <label>Blog Details</label>
+                                <ckeditor [editor]="Editor" data="" [ngModelOptions]="{standalone: true}"
+                                    [(ngModel)]="blogModel.blogDetails"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" (click)="saveBlogData()"
+                                *ngIf="!isUpdate">Submit</button>
+                            <button type="submit" class="btn btn-primary" (click)="updateBlog()"
+                                *ngIf="isUpdate">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="!isopen">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">Blog List</h5>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light" (click)="openAddBlog()">
+                        <i class="fas fa-blog"></i>
+                        Add New Blog</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-left">#</th>
+                                <th class="text-center">Image</th>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Blog Title</th>
+                                <th class="text-center">Author Name</th>
+                                <!-- <th class="text-center">Blog Details</th> -->
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let c of paginateData;let i=index">
+                                <td class="text-left">{{c.index}}</td>
+                                <td class="text-center">
+                                    <img src="https://api.cesociety.in{{c.blogImage}}" alt="" class="rounded avatar-lg">
+                                </td>
+                                <td class="text-center">{{c.blogDate|date}}</td>
+                                <td class="text-center">{{c.blogTitle}}</td>
+                                <td class="text-center">{{c.authorName}}</td>
+                                <!-- <td class="text-center" [innerHtml]='c.blogDetails'></td> -->
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                        (click)="viewBlogDetails(c.id)"><i
+                                            class="fa fa-eye font-size-16 align-middle"></i></button>
+                                    <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                        (click)="editBlogDetails(c)"><i
+                                            class="bx bx-edit font-size-16 align-middle"></i></button>
+                                    <button type="button" class="btn btn-soft-danger waves-effect waves-light"
+                                        (click)="removeBlogById(c.id)"><i
+                                            class="bx bx-trash-alt font-size-16 align-middle"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page" [maxSize]="5"
+                    [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="getPagintaion();"
+                    aria-label="Default pagination"
+                    class="d-flex justify-content-end pagination-rounded-flat pagination-success"></ngb-pagination>
+            </div>
+        </div>
+    </div>
+</div>

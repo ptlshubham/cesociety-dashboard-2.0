@@ -1,0 +1,182 @@
+<!-- start page title -->
+<app-pagetitle title="Dashboard" [breadcrumbItems]="breadCrumbItems"></app-pagetitle>
+<!-- end page title -->
+
+<div class="row">
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Department</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="departmentData.length" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/department.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/department"><i
+                                class="fa fa-arrow-right" aria-hidden="true"></i> View More</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Images</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="imagesData.length" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/image.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/image-upload"><i
+                                class="fa fa-arrow-right" aria-hidden="true"></i> View More</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">News </span>
+                        <h4 class="mb-3">
+                            <span [countUp]="newsData.length" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/news.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/news"><i class="fa fa-arrow-right"
+                                aria-hidden="true"></i> View More</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Staff Details</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="staffData.length" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/staff-details"><i class="fa fa-arrow-right"
+                                aria-hidden="true"></i> View More</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Contact Us</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="contactData.length" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/contact.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/contact-list"><i class="fa fa-arrow-right"
+                                aria-hidden="true"></i> View More</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Infrastructure</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="infraData.length" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/infra.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/infrastructure"><i class="fa fa-arrow-right"
+                                aria-hidden="true"></i> View More</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Blogs</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="blogsData.length" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/blog.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/blog"><i class="fa fa-arrow-right"
+                                aria-hidden="true"></i> View More</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Student Result</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="resultData.length" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/result.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/result"><i class="fa fa-arrow-right"
+                                aria-hidden="true"></i> View More</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+<div class="row" *ngIf="isOpen">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="d-flex justify-content-between">
+
+                        <div *ngIf="!isUpdate">
+                            <h5 class="card-title">Syllabus</h5>
+                            <p class="card-title-desc">Enter Syllabus Details</p>
+                        </div>
+                        <div *ngIf="isUpdate">
+                            <h5 class="card-title">Update Syllabus</h5>
+                            <p class="card-title-desc">Update Syllabus Details</p>
+                        </div>
+                        <button type="submit" class="btn btn-danger  waves-effect waves-light" (click)="closeAddRes()">
+                            <i class="bx bx-arrow-back  "></i>
+                            Back</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <form>
+                        <input type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Title</label>
+                                    <input type="text" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="syllabusModel.syllabusTitle" class="form-control" id="title"
+                                        placeholder="Enter Title">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group mb-3">
+                                <label>Syllabus Details</label>
+                                <ckeditor [editor]="Editor" data="" [ngModelOptions]="{standalone: true}"
+                                    [(ngModel)]="syllabusModel.syllabusDetails"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary" (click)="saveSyllabusDetails()"
+                                    *ngIf="!isUpdate">Submit</button>
+                                <button type="submit" class="btn btn-primary" (click)="updateSyllabusDetails()"
+                                    *ngIf="isUpdate">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="!isOpen">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">Syllabus List</h5>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light" (click)="openAddRes()">
+                        <i class="bx bx-file"></i>
+                        Add Syllabus</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-left">#</th>
+                                <th class="text-center">Title</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let c of paginateData;let i=index">
+                                <td class="text-left">{{c.index}}</td>
+                                <td class="text-center">{{c.syllabusTitle}}</td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                        (click)="viewSyllabusDetails(c.id)"><i
+                                            class="fa fa-eye font-size-16 align-middle"></i></button>
+                                    <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                        (click)="editSyllabusDetails(c)"><i
+                                            class="bx bx-edit font-size-16 align-middle"></i></button>
+                                    <button type="button" class="btn btn-soft-danger waves-effect waves-light"
+                                        (click)="removeSyllabusById(c.id)"><i
+                                            class="bx bx-trash-alt font-size-16 align-middle"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page" [maxSize]="5"
+                    [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="getPagintaion();"
+                    aria-label="Default pagination"
+                    class="d-flex justify-content-end pagination-rounded-flat pagination-success"></ngb-pagination>
+            </div>
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->
+</div>

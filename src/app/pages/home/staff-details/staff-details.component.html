@@ -1,0 +1,295 @@
+<div class="row" *ngIf="isOpen==true">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">Enter Staff Details</h5>
+                    <button type="submit" class="btn btn-danger  waves-effect waves-light" (click)="backToTable()">
+                        <i class="bx bx-arrow-back font-size-16 align-middle"></i>
+                        Back</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <form [formGroup]="validationForm">
+                        <input type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Select Department</label>
+                                    <select required class="form-control form-select" formControlName="department"
+                                        [ngClass]="{'is-invalid': f.department.touched && f.department.errors}"
+                                        [(ngModel)]="staffModel.department">
+                                        <option value>Select Department</option>
+                                        <option value="{{c.id}}" *ngFor="let c of departmentData">
+                                            {{c.department}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="f.department.touched && f.department.errors" class="invalid-feedback">
+                                        <span *ngIf="f.department.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Select Position</label>
+                                    <select required class="form-control form-select" formControlName="position"
+                                        [ngClass]="{'is-invalid': f.position.touched && f.position.errors}"
+                                        [(ngModel)]="staffModel.position">
+                                        <option value>Select Position</option>
+                                        <option value="{{c}}" *ngFor="let c of positionData">
+                                            {{c}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="f.position.touched && f.position.errors" class="invalid-feedback">
+                                        <span *ngIf="f.position.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Enter Name"
+                                        formControlName="name"
+                                        [ngClass]="{'is-invalid': f.name.touched && f.name.errors}"
+                                        [(ngModel)]="staffModel.name">
+                                    <div *ngIf="f.name.touched && f.name.errors" class="invalid-feedback">
+                                        <span *ngIf="f.name.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Contact Number</label>
+                                    <input type="number" formControlName="contact"
+                                        [ngClass]="{ 'is-invalid': f.contact.touched && f.contact.errors }"
+                                        [(ngModel)]="staffModel.contact" class="form-control" id="contact"
+                                        placeholder="Enter Contact Number">
+                                    <div *ngIf="f.contact.touched || f.contact.invalid || f.contact.pristine"
+                                        class="invalid-feedback">
+                                        <div *ngIf="f.contact.errors?.required">Mobile Number is
+                                            required.</div>
+                                        <div *ngIf="f.contact.errors?.pattern">Please, Enter 10 digit
+                                            Mobile Number.</div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Email Address</label>
+                                    <input type="text" formControlName="email"
+                                        [ngClass]="{ 'is-invalid': f.email.touched && f.email.errors }"
+                                        [(ngModel)]="staffModel.email" class="form-control" id="email"
+                                        placeholder="Enter Email Address">
+                                    <div *ngIf="f.email.touched && f.email.errors" class="invalid-feedback">
+                                        <div *ngIf="f.email.errors.required">Email is required</div>
+                                        <div *ngIf="f.email.errors.email">Email must be a valid email
+                                            address</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Designation</label>
+                                    <input type="text" formControlName="designation"
+                                        [ngClass]="{'is-invalid': f.designation.touched && f.designation.errors}"
+                                        [(ngModel)]="staffModel.designation" class="form-control"
+                                        placeholder="Enter Designation" id="designation">
+                                    <div *ngIf="f.designation.touched && f.designation.errors" class="invalid-feedback">
+                                        <span *ngIf="f.designation.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Qualification</label>
+                                    <input type="text" formControlName="qualification"
+                                        [ngClass]="{'is-invalid': f.qualification.touched && f.qualification.errors}"
+                                        [(ngModel)]="staffModel.qualification" class="form-control" id="qualification"
+                                        placeholder="Enter Qualification">
+                                    <div *ngIf="f.qualification.touched && f.qualification.errors"
+                                        class="invalid-feedback">
+                                        <span *ngIf="f.qualification.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="mb-3">
+                                    <label for="example-date-input" class="form-label">Birthday Date</label>
+                                    <input class="form-control" type="date" placeholder="Select Birthday Date"
+                                        formControlName="birthday_date"
+                                        [ngClass]="{'is-invalid': f.birthday_date.touched && f.birthday_date.errors}"
+                                        [(ngModel)]="staffModel.birthday_date">
+                                    <div *ngIf="f.birthday_date.touched && f.birthday_date.errors"
+                                        class="invalid-feedback">
+                                        <span *ngIf="f.birthday_date.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="mb-3">
+                                    <label for="example-date-input" class="form-label">Joining Date</label>
+                                    <input class="form-control" type="date" placeholder="Select Joining Date"
+                                        formControlName="joining_date"
+                                        [ngClass]="{'is-invalid': f.joining_date.touched && f.joining_date.errors}"
+                                        [(ngModel)]="staffModel.joining_date">
+                                    <div *ngIf="f.joining_date.touched && f.joining_date.errors"
+                                        class="invalid-feedback">
+                                        <span *ngIf="f.joining_date.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Upload Image</label>
+                                    <p style="text-align: center;color: red;">
+                                        Please Upload only 472 X 472px image.
+                                    </p>
+                                    <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
+                                                (change)="uploadFile($event)" />
+                                        </div>
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview" [style.backgroundImage]="'url('+ imageUrl +')'">
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <button type="submit" class="btn btn-primary btn-sm btn-block"
+                                                (click)="fileInput.click()">Upload
+                                                Image</button>
+                                            <button type="submit" class="btn btn-danger btn-sm btn-block"
+                                                (click)="removeUploadedImage()">Remove
+                                                Image</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-5"
+                                *ngIf="staffModel.researchPaper!=null && staffModel.researchPaper!='undefined'">
+                                <div class="form-group mb-3">
+                                    <label>View Uploaded Research Paper</label>
+                                    <div class="pdf-container">
+                                        <a href="https://api.cesociety.in{{staffModel.researchPaper}}"
+                                            target="_blank">
+                                            <img src="assets/images/pdf.png" alt="pdf" class="img-thumbnail"
+                                                >
+                                        </a>
+                                        <span class="close-button"
+                                            (click)="removeResearchPaperDoc(staffModel.staffId)"><a placement="bottom"
+                                                ngbTooltip="Remove Uploaded File."><i
+                                                    class="fas fa-times font-size-16 align-middle"></i></a></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-1 col-md-1" *ngIf="staffModel.researchPaper!=null && staffModel.researchPaper!='undefined'"></div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Research PDF Uploader (Optional)</label>
+                                    <input class="form-control mb-2" type="file" id="formFile"
+                                        (change)="uploadPdfFile($event)">
+                                    <ngb-progressbar [value]="progressValue" [type]="progressType"
+                                        *ngIf="isProgress"></ngb-progressbar>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row justify-content-end">
+                                <div class="col-lg-1 col-xl-1 col-md-1 col-sm-2 col-xs-12">
+                                    <button type="submit" class="btn btn-primary" (click)="saveStaffDetails()"
+                                        *ngIf="isUpdate==false"
+                                        [disabled]="validationForm.invalid || staffProfileImage ==null">Submit</button>
+                                    <button type="submit" class="btn btn-primary" (click)="updateStaffDetails()"
+                                        *ngIf="isUpdate==true" [disabled]="validationForm.invalid">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="isOpen==false">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">Staff Details List</h5>
+                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"
+                        (click)="openAddStaff()"><i class="bx bx-user-plus label-icon"></i>
+                        Add New Staff</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-left">#</th>
+                                <th class="text-center">Department</th>
+                                <th class="text-center">Profile</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Contact</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Desigination</th>
+                                <th class="text-center">Qualification</th>
+                                <th class="text-center">Birthday</th>
+                                <th class="text-center">Joining</th>
+                                <th class="text-center">Created Date</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let s of paginateData;let i=index">
+                                <td class="text-left">{{s.index}}</td>
+                                <td class="text-center">{{s.departmentName}} </td>
+                                <td class="text-center">
+                                    <img src="https://api.cesociety.in{{s.profile_image}}" alt=""
+                                        class="rounded avatar-lg">
+                                </td>
+                                <td class="text-center">{{s.name}} </td>
+                                <td class="text-center">{{s.contact}} </td>
+                                <td class="text-center">{{s.email}} </td>
+                                <td class="text-center">{{s.designation}} </td>
+                                <td class="text-center">{{s.qualification}} </td>
+                                <td class="text-center">{{s.birthday_date |date:'dd/MM/yyyy'}} </td>
+                                <td class="text-center">{{s.joining_date |date:'dd/MM/yyyy'}} </td>
+                                <td class="text-center">{{s.createddate |date:'dd/MM/yyyy'}} </td>
+
+                                <td class="text-end">
+                                    <div class="d-flex justify-content-end gap-1">
+                                        <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                            (click)="openUpdateStaff(s)"><i
+                                                class="bx bx-edit font-size-16 align-middle"></i></button>
+                                        <button type="button" class="btn btn-soft-danger waves-effect waves-light"
+                                            (click)="removeStaffDetails(s.staffId)"><i
+                                                class="bx bx-trash-alt font-size-16 align-middle"></i></button>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-4">
+                    <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
+                        [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
+                        (pageChange)="getPagintaion();" aria-label="Default pagination"
+                        class="d-flex justify-content-end pagination-rounded-flat pagination-success"></ngb-pagination>
+                </div>
+            </div>
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+    </div>
+</div>

@@ -1,0 +1,156 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Image Uploader</h5>
+                <p class="card-title-desc">Slider Image Uploader and Gallery Image & Video Uploader</p>
+            </div>
+            <div class="card-body">
+                <div>
+                    <form [formGroup]="validationForm">
+                        <input type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Select Purpose</label>
+                                    <select required class="form-control form-select" [(ngModel)]="imageModel.purpose"
+                                        formControlName="purpose" (change)="onPurposeChange($event)"
+                                        [ngClass]="{'is-invalid': f.purpose.touched && f.purpose.errors}">
+                                        <option value>Select</option>
+                                        <option value="slider">Slider For Homepage</option>
+                                        <option value="image">Image For Gallery</option>
+                                        <option value="video">Video For Gallery</option>
+                                    </select>
+                                    <div *ngIf="f.purpose.touched && f.purpose.errors" class="invalid-feedback">
+                                        <span *ngIf="f.purpose.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Upload Image</label>
+                                    <p *ngIf="imageModel.purpose=='slider'" style="text-align: center;color: red;">
+                                        Please Upload only 1902 X 502px image.
+                                    </p>
+
+                                    <p *ngIf="imageModel.purpose=='image'" style="text-align: center;color: red;">
+                                        Please Upload only 500 X 500px image.
+                                    </p>
+
+                                    <div class="avatar-upload"
+                                        *ngIf="imageModel.purpose=='image'||imageModel.purpose=='slider'">
+                                        <div class="avatar-edit">
+                                            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
+                                                (change)="uploadFile($event)" />
+                                        </div>
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview" [style.backgroundImage]="'url('+ imageUrl +')'">
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 10px;">
+                                            <button type="submit" class="btn btn-primary btn-sm btn-block"
+                                                (click)="fileInput.click()">Upload
+                                                Image</button>
+                                            <button type="submit" class="btn btn-danger btn-sm btn-block"
+                                                (click)="removeUploadedImage()">Remove
+                                                Image</button>
+                                        </div>
+                                    </div>
+                                    <input class="form-control" type="file" id="formFile"
+                                        *ngIf="imageModel.purpose=='video'" (change)="uploadVideoFile($event)">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row justify-content-end">
+                                <div class="col-lg-1 col-xl-1 col-md-1 col-sm-2 col-xs-12">
+                                    <button type="submit" class="btn btn-primary" (click)="saveGalleryDetails()"
+                                        [disabled]="validationForm.invalid || bannersImage ==null">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title">Image List</h5>
+                    </div>
+                    <div class="col-3 text-end">
+                        <label class="form-label">Select Purpose</label>
+                        <select required class="form-control form-select" (change)="onChange($event)">
+                            <option value="All">Select Filter</option>
+                            <option value="All">ALL</option>
+                            <option value="slider">Slider For Homepage</option>
+                            <option value="image">Image For Gallery</option>
+                            <option value="video">Video For Gallery</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-left">#</th>
+                                <th class="text-center">Purpose</th>
+                                <th class="text-center">Image</th>
+                                <th class="text-center">Active & Deactive</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let c of paginateData;let i=index">
+                                <td class="text-left">{{c.index}}</td>
+                                <td class="text-center">{{c.purpose}} </td>
+                                <td class="text-center">
+                                    <img src="https://api.cesociety.in{{c.image}}" alt="" class="rounded avatar-lg">
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-success waves-effect btn-label waves-light"
+                                        *ngIf="c.isactive" (click)="deactiveBanners(c.index)"><i
+                                            class="bx bx-check-double label-icon"></i> Active</button>
+                                    <button type="button" class="btn btn-danger waves-effect btn-label waves-light"
+                                        *ngIf="!c.isactive" (click)="activeBanners(c.index)"><i
+                                            class="bx bx-block label-icon"></i> Deactive</button>
+                                </td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-soft-danger waves-effect waves-light"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="View & Accept"
+                                        (click)="removeBannersImages(c.id)"><i
+                                            class="bx bx-trash-alt font-size-16 align-middle"></i></button>
+                                    <!-- <div class="d-flex justify-content-end gap-1">
+                                        <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="View & Accept"><i
+                                                class="bx bx-edit font-size-16 align-middle"></i></button>
+                                      
+                                    </div> -->
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-4">
+                    <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
+                        [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
+                        (pageChange)="getPagintaion();" aria-label="Default pagination"
+                        class="d-flex justify-content-end pagination-rounded-flat pagination-success"></ngb-pagination>
+                </div>
+            </div>
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->
+</div>

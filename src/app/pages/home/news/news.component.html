@@ -1,0 +1,146 @@
+<div class="row" *ngIf="isOpen">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+
+                <div class="d-flex justify-content-between">
+
+                    <h5 class="card-title">News Organizer</h5>
+                    <p class="card-title-desc">Enter Latest News</p>
+
+                    <button type="submit" class="btn btn-danger  waves-effect waves-light" (click)="closeAddNews()">
+                        <i class="bx bx-arrow-back  "></i>
+                        Back</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <form>
+                        <input type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+
+                                <div class="form-group mb-3">
+                                    <label for="example-date-input" class="form-label">Date</label>
+                                    <input class="form-control" type="date" placeholder="Select Date"
+                                        id="example-date-input" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="newsModel.date">
+                                </div>
+                            </div>
+                            <div class="col-xl-8 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Enter News</label>
+                                    <ckeditor [editor]="Editor" data="" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="newsModel.message"></ckeditor>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>PDF Uploader (Optional)</label>
+                                    <input class="form-control mb-2" type="file" id="formFile"
+                                        (change)="uploadFile($event)">
+                                    <ngb-progressbar [value]="progressValue" [type]="progressType"
+                                        *ngIf="isProgress"></ngb-progressbar>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="example-datetime-local-input" class="form-label">Event Start Date and
+                                        time</label>
+                                    <input class="form-control" type="datetime-local"
+                                        id="example-datetime-local-input" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="newsModel.startDate">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="example-datetime-local-input" class="form-label">Event End Date and
+                                        time</label>
+                                    <input class="form-control" type="datetime-local"
+                                        id="example-datetime-local-input"[ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="newsModel.endDate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" (click)="saveNewsDetails()">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="!isOpen">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">News List</h5>
+                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"
+                        (click)="openAddNews()"><i class="mdi mdi-newspaper-plus label-icon"></i>
+                        Add New News</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-left">#</th>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">News</th>
+                                <th class="text-center">File (PDF)</th>
+                                <th class="text-center">Active & Deactive</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let n of paginateData;let i=index">
+                                <td class="text-left">{{n.index}}</td>
+                                <td class="text-center">{{n.date|date}}</td>
+                                <td class="text-center" [innerHTML]="n.message">
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"
+                                        (click)="viewDownloadPdf(n.files)" *ngIf="n.files!='null'">
+                                        <i class="fas fa-file-download label-icon"></i>Download
+                                    </button>
+                                    <span class="bg-warning badge me-2" *ngIf="n.files=='null'">File Not Uploaded</span>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-success waves-effect btn-label waves-light"
+                                        *ngIf="n.isactive" (click)="deactiveNews(n.index)"><i
+                                            class="bx bx-check-double label-icon"></i> Active</button>
+                                    <button type="button" class="btn btn-danger waves-effect btn-label waves-light"
+                                        *ngIf="!n.isactive" (click)="activeNews(n.index)"><i
+                                            class="bx bx-block label-icon"></i> Deactive</button>
+                                </td>
+                                <td class="text-end">
+                                    <!-- <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="View & Accept"><i
+                                            class="bx bx-edit font-size-16 align-middle"></i></button> -->
+                                    <button type="button" class="btn btn-soft-danger waves-effect waves-light"
+                                        (click)="removeNewsById(n.id)"><i
+                                            class="bx bx-trash-alt font-size-16 align-middle"></i></button>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-4">
+                    <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
+                        [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
+                        (pageChange)="getPagintaion();" aria-label="Default pagination"
+                        class="d-flex justify-content-end pagination-rounded-flat pagination-success"></ngb-pagination>
+                </div>
+            </div>
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->
+</div>
