@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">Admission List</h5>
+                    <button type="button" class="btn btn-success waves-effect btn-label waves-light"
+                        (click)="exportToExcel()"><i class="bx bx-export label-icon"></i>
+                        Export</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-left">#</th>
+                                <th class="text-center">Subject</th>
+                                <th class="text-center">Student Name</th>
+                                <th class="text-center">City</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Contact</th>
+                                <th class="text-center">Last Bachelor Degree</th>
+                                <th class="text-center">College Name</th>
+                                <th class="text-center">Bachelor Subject</th>
+                                <th class="text-center">CGPA</th>
+                                <th class="text-center">Created Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let s of paginateData;let i=index">
+                                <td class="text-left">{{s.index}}</td>
+                                <td class="text-center">{{s.subject}} </td>
+                                <td class="text-center">{{s.studentname}} </td>
+                                <td class="text-center">{{s.city}} </td>
+                                <td class="text-center">{{s.email}} </td>
+                                <td class="text-center">{{s.contact}} </td>
+                                <td class="text-center">{{s.lastdegree}} </td>
+                                <td class="text-center">{{s.clgname}} </td>
+                                <td class="text-center">{{s.bachelorsubject}} </td>
+                                <td class="text-center">{{s.cgpa}} </td>
+                                <td class="text-center">{{s.createddate |date:'dd/MM/yyyy'}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-4">
+                    <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
+                        [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
+                        (pageChange)="getPagintaion();" aria-label="Default pagination"
+                        class="d-flex justify-content-end pagination-rounded-flat pagination-success"></ngb-pagination>
+                </div>
+            </div>
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+    </div>
+</div>

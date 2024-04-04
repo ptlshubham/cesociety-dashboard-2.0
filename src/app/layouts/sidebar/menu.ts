@@ -159,6 +159,13 @@ export const MENU: MenuItem[] = [
         icon: 'list',
         link: '/syllabus',
         role: 'Institute'
+    },
+    {
+        id: 29,
+        label: 'Admission List',
+        icon: 'list',
+        link: '/admission',
+        role: 'Institute'
     }
 ];
 export const CES: MenuItem[] = [

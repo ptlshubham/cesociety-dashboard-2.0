@@ -374,4 +374,10 @@ export class HomeService {
             map(response => new Blob([response]))
         );
     }
+    getAdmissionList(id: any) {
+        return this.http.get(ApiService.getAdmissionListDataURL + id);
+    }
+    SaveAdmissionDetails(data: any) {
+        return this.http.post(ApiService.saveAdmissionDetailsURL, data);
+    }
 }

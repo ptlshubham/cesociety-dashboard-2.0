@@ -41,6 +41,7 @@ import { PhotoContestImagesComponent } from './photo-contest-images/photo-contes
 import { NaacViewComponent } from './naac-view/naac-view.component';
 import { SyllabusComponent } from './syllabus/syllabus.component';
 import { SyllaDetailsComponent } from './sylla-details/sylla-details.component';
+import { AdmissionComponent } from './admission/admission.component';
 
 const routes: Routes = [
   {
@@ -206,6 +207,10 @@ const routes: Routes = [
   {
     path: 'syllabus-details/:id',
     component: SyllaDetailsComponent
+  },
+  {
+    path: 'admission',
+    component: AdmissionComponent
   },
 ];
 

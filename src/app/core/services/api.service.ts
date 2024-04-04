@@ -167,6 +167,8 @@ export class ApiService {
   public static getPhotoContestImagesByIdURL: string = ApiService.HOST_URL + '/admin/GetPhotoContestImagesById/';
   public static removePhotoContestDetailsById: string = ApiService.HOST_URL + '/admin/RemovePhotoContestDetailsById/';
 
+  public static saveAdmissionDetailsURL: string = ApiService.HOST_URL + '/admin/SaveAdmissionDetails';
+  public static getAdmissionListDataURL: string = ApiService.HOST_URL + '/admin/GetAdmissionListData/';
 
 
 
