@@ -85,11 +85,11 @@ export class DonationBulkUploadComponent implements OnInit {
     for (let i = 0; i <= (this.bulkUploadedData.length / 300); i++) {
       tempArray = [];
       let lnth = (this.bulkUploadedData.length / 300);
-      debugger
+      
       if (i == 0) {
         tempArray = [];
         tempArray = this.bulkUploadedData.slice(0, 300);
-        debugger
+        
         this.donationService.saveBulkDonnersDetails(tempArray).subscribe((res: any) => {
 
         })
@@ -98,7 +98,7 @@ export class DonationBulkUploadComponent implements OnInit {
         let start = i * 300;
         let end = start + 300;
         tempArray = this.bulkUploadedData.slice(start, end);
-        debugger
+        
         this.donationService.saveBulkDonnersDetails(tempArray).subscribe((res: any) => {
 
         })
@@ -108,7 +108,7 @@ export class DonationBulkUploadComponent implements OnInit {
         let start = (i - 1) * 300;
         let end = this.bulkUploadedData.length - start;
         tempArray = this.bulkUploadedData.slice(start, end);
-        debugger
+        
         this.donationService.saveBulkDonnersDetails(tempArray).subscribe((res: any) => {
 
         })

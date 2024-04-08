@@ -4,9 +4,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { HomeService } from 'src/app/core/services/home.services';
 import { SortableNaacDirective } from './datatable-sortableNaac.directive';
-import { DataTableNaacService } from './link.services';
 import { TableNaac } from './datatable.model';
 import { naacData } from './linkData';
+import { DataTableNaacService } from './link.services';
 
 @Component({
   selector: 'app-link-generator',
@@ -223,9 +223,10 @@ export class LinkGeneratorComponent implements OnInit {
   }
 
   getAllLinkDetails() {
+    
     this.homeService.getNaacLinkDetails(localStorage.getItem('InstituteId')).subscribe((res: any) => {
       this.naacData = res;
-      debugger
+      
       for (let i = 0; i < this.naacData.length; i++) {
         this.naacData[i].index = i + 1;
         if (this.naacData[i].subMenu === '[object Object]' && this.naacData[i].subMenu !== null) {
@@ -277,7 +278,7 @@ export class LinkGeneratorComponent implements OnInit {
   }
   getGroupSubToSubDetails() {
     this.homeService.getSubToSubMenuGroup(localStorage.getItem('InstituteId')).subscribe((res: any) => {
-      debugger
+      
       res.forEach((ele: any) => {
         if (ele.subToSub != '[object Object]' && ele.subToSub != null) {
           this.subToSubMenu.push(ele);
@@ -335,7 +336,7 @@ export class LinkGeneratorComponent implements OnInit {
   //   })
   // }
   removeLinkDetails(id: any) {
-    debugger
+    
     this.homeService.removeNaacLink(id).subscribe((res: any) => {
       this.naacData = res;
       this.toastr.success('NAAC Crietria Deleted Successfully', 'Removed', {

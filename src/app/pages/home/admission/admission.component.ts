@@ -27,7 +27,7 @@ export class AdmissionComponent {
   getAdmissionDetails() {
     this.homeService.getAdmissionList(localStorage.getItem('InstituteId')).subscribe((res: any) => {
       this.admissionData = res;
-      debugger
+      
       for (let i = 0; i < this.admissionData.length; i++) {
         this.admissionData[i].index = i + 1;
       }

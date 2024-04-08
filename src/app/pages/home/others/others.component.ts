@@ -94,7 +94,7 @@ export class OthersComponent implements OnInit {
     }
   }
   onChange(val: any) {
-    debugger
+    
     this.role = val.target.value
     if (this.role != 'All') {
       this.othersData = [];
@@ -116,7 +116,7 @@ export class OthersComponent implements OnInit {
   getFormsDetails() {
     this.homeService.getothersDataById(localStorage.getItem('InstituteId')).subscribe((res: any) => {
       this.othersData = res;
-      debugger
+      
       this.filterdata = res;
       for (let i = 0; i < this.othersData.length; i++) {
         this.othersData[i].index = i + 1;

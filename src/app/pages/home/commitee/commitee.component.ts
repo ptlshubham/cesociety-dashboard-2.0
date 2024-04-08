@@ -101,7 +101,7 @@ export class CommiteeComponent implements OnInit {
     this.commiModel.institute_id = localStorage.getItem('InstituteId');
     this.commiModel.commImage = this.commImages;
     this.commiModel.commMultiImage = this.commMultiImage;
-    debugger
+    
     this.homeService.saveCommeeteDetails(this.commiModel).subscribe((res: any) => {
       this.commiData = res;
       this.commiModel.commImage = null;
@@ -124,7 +124,7 @@ export class CommiteeComponent implements OnInit {
     );
   }
   uploadMultiFile(event: any, ind: any) {
-    debugger
+    
     let reader = new FileReader(); // HTML5 FileReader API
     let file = event.target.files[0];
     if (event.target.files && event.target.files[0]) {
@@ -187,7 +187,7 @@ export class CommiteeComponent implements OnInit {
   }
   updateCommiteeDetails() {
     this.addMultiImg
-    debugger
+    
     if (this.commImages != null || undefined) {
       this.commiModel.commImage = this.commImages;
     }
@@ -209,7 +209,7 @@ export class CommiteeComponent implements OnInit {
   getCommeteeDataById() {
     this.homeService.getCommeteeDetails(localStorage.getItem('InstituteId')).subscribe((res: any) => {
       this.commiData = res;
-      debugger
+      
       for (let i = 0; i < this.commiData.length; i++) {
         this.commiData[i].index = i + 1;
       }

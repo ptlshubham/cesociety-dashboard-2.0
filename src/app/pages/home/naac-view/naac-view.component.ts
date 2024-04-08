@@ -24,7 +24,7 @@ export class NaacViewComponent implements OnInit {
     this.homeService.getNewNaacDetails(localStorage.getItem('InstituteId')).subscribe((res: any) => {
       this.NaacData = res;
       this.NaacData.forEach((element: any) => {
-        debugger
+        
         if (element.id == this.naacId) {
           this.NaacObject = {
             id: element.id,

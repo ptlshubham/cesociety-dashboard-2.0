@@ -91,7 +91,7 @@ export class NaacComponent implements OnInit {
     this.progressValue1 = 0;
     this.isProgress = false;
     this.isProgress1 = false;
-    debugger
+    
     this.validationForm.markAsUntouched();
 
   }
@@ -197,7 +197,7 @@ export class NaacComponent implements OnInit {
   getAllNAACDetails() {
     this.homeService.getNAACData().subscribe((res: any) => {
       this.NaacData = res;
-      debugger
+      
       for (let i = 0; i < this.NaacData.length; i++) {
         this.NaacData[i].index = i + 1;
       }

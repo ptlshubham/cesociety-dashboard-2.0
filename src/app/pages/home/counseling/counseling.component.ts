@@ -25,7 +25,7 @@ export class CounselingComponent implements OnInit {
   getCounselingDetails() {
     this.homeService.getCounselingList().subscribe((res: any) => {
       this.counselingData = res;
-      debugger
+      
       for (let i = 0; i < this.counselingData.length; i++) {
         this.counselingData[i].index = i + 1;
       }

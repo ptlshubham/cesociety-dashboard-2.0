@@ -168,7 +168,7 @@ export class CampusLifeComponent implements OnInit {
     this.campusModel = data;
     this.getCampusMultiImage(data.id);
     this.imageUrl = 'https://api.cesociety.in' + data.campusImage
-    debugger
+    
     this.isOpen = true;
     this.isUpdate = true;
   }
@@ -206,7 +206,7 @@ export class CampusLifeComponent implements OnInit {
   getcampusDataById() {
     this.homeService.getCampusDetails(localStorage.getItem('InstituteId')).subscribe((res: any) => {
       this.campusData = res;
-      debugger
+      
       for (let i = 0; i < this.campusData.length; i++) {
         this.campusData[i].index = i + 1;
       }

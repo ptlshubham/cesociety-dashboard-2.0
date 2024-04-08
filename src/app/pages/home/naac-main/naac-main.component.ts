@@ -130,7 +130,7 @@ export class NaacMainComponent implements OnInit {
   getPlacementDataById() {
     // this.homeService.getPlacementDetails(localStorage.getItem('InstituteId')).subscribe((res: any) => {
     //   this.placementData = res;
-    //   debugger
+    //   
     //   for (let i = 0; i < this.placementData.length; i++) {
     //     this.placementData[i].index = i + 1;
     //   }

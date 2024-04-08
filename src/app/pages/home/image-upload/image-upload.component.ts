@@ -123,7 +123,7 @@ export class ImageUploadComponent implements OnInit {
     this.bannersImage = null;
     this.imageUrl = "assets/images/file-upload-image.jpg"
     console.log('Selected purpose:', event.target.value);
-    debugger
+    
     // perform other actions based on the selected value
   }
   uploadFile(event: any) {
@@ -133,7 +133,7 @@ export class ImageUploadComponent implements OnInit {
     img.src = window.URL.createObjectURL(file);
     img.onload = () => {
       if (this.imageModel.purpose == 'slider') {
-        debugger
+        
         if (img.width === 1902 && img.height === 502) {
           if (event.target.files && event.target.files[0]) {
             reader.readAsDataURL(file);
@@ -159,7 +159,7 @@ export class ImageUploadComponent implements OnInit {
       }
       else if (this.imageModel.purpose == 'image') {
         if (img.width === 500 && img.height === 500) {
-          debugger
+          
           if (event.target.files && event.target.files[0]) {
             reader.readAsDataURL(file);
             reader.onload = () => {

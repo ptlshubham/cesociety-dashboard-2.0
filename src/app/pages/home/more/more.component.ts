@@ -82,7 +82,7 @@ export class MoreComponent implements OnInit {
     })
   }
   onChange(val: any) {
-    debugger
+    
     this.role = val.target.value
     if (this.role != 'All') {
       this.moreData = [];
@@ -105,7 +105,7 @@ export class MoreComponent implements OnInit {
     this.homeService.getScholarshipData(localStorage.getItem('InstituteId')).subscribe((res: any) => {
       this.moreData = res;
       this.filterdata = res;
-      debugger
+      
       for (let i = 0; i < this.moreData.length; i++) {
         this.moreData[i].index = i + 1;
       }

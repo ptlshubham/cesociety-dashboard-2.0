@@ -124,7 +124,7 @@ export class InfrastructureComponent implements OnInit {
     );
   }
   uploadMultiFile(event: any, ind: any) {
-    debugger
+    
     let reader = new FileReader(); // HTML5 FileReader API
     let file = event.target.files[0];
     if (event.target.files && event.target.files[0]) {
@@ -187,7 +187,7 @@ export class InfrastructureComponent implements OnInit {
   }
   updateInfraDetails() {
     this.addMultiImg
-    debugger
+    
     if (this.infraImages != null || undefined) {
       this.infraModel.infraImage = this.infraImages;
     }

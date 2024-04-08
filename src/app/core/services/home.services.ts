@@ -30,11 +30,11 @@ export class HomeService {
         return this.http.post<any>(ApiService.uploadGalleryImagesURL, img);
     }
     uploadVideoImage(data: any): Observable<any> {
-        debugger
+        
         return this.http.post<any>(ApiService.uploadGalleryVideoURL, data);
     }
     deleteInfraImage(data: any) {
-        debugger
+        
         return this.http.post(ApiService.deleteInfraImageURL, data);
     }
     getBannersImagesById(id: any) {
@@ -189,7 +189,7 @@ export class HomeService {
         return this.http.get(ApiService.removeMagazineListURL + id);
     }
     removeNaacCrieteriaList(id: any) {
-        debugger
+        
         return this.http.get(ApiService.removeCrietriaListURL + id);
     }
     getCounselingList() {
@@ -235,7 +235,7 @@ export class HomeService {
         return this.http.get(ApiService.getSubToSubMenuGroupByURL + id);
     }
     getNaacLinkDetails(id: any) {
-        debugger
+        
         return this.http.get(ApiService.getNaacLinkDataURL + id);
     }
     removeNaacLink(id: any) {
@@ -264,7 +264,7 @@ export class HomeService {
         return this.http.post<any>(ApiService.uploadCommMultiImageURL, img);
     }
     deleteCommiImage(data: any) {
-        debugger
+        
         return this.http.post(ApiService.deleteCommitteeImageURL, data);
     }
 

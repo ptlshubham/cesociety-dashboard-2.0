@@ -43,7 +43,7 @@ export class QuestionPapersComponent implements OnInit {
       years.push(i);
     }
     this.yearList = years;
-    debugger
+    
     return years;
 
   }

@@ -27,7 +27,7 @@ export class GatePassComponent implements OnInit {
   changeRole(val: any) {
     this.filterData = [];
     this.role = val.target.value;
-    debugger
+    
     this.getGatePassDetails();
   }
   getGatePassDetails() {

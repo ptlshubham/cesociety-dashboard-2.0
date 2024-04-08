@@ -169,7 +169,7 @@ export class PlacementCellComponent implements OnInit {
     this.placementModel = data;
     this.getPlacementMultiImage(data.id);
     this.imageUrl = 'https://api.cesociety.in' + data.placeImage
-    debugger
+    
     this.isOpen = true;
     this.isUpdate = true;
   }
@@ -187,7 +187,7 @@ export class PlacementCellComponent implements OnInit {
   }
   updatePlacementDetails() {
     this.addMultiImg
-    debugger
+    
     if (this.placeImages != null || undefined) {
       this.placementModel.placeImage = this.placeImages;
     }
@@ -209,7 +209,7 @@ export class PlacementCellComponent implements OnInit {
   getPlacementDataById() {
     this.homeService.getPlacementDetails(localStorage.getItem('InstituteId')).subscribe((res: any) => {
       this.placementData = res;
-      debugger
+      
       for (let i = 0; i < this.placementData.length; i++) {
         this.placementData[i].index = i + 1;
       }
