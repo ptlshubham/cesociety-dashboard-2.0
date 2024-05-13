@@ -70,7 +70,7 @@
                                 *ngIf="LinkDetailsModel.paralink!='' && LinkDetailsModel.paralink!=undefined && LinkDetailsModel.paralink!=null">
                                 <div class="form-group mb-3">
                                     <label>View Uploaded Parameter Link</label>
-                                    <a href="https://api.cesociety.in{{LinkDetailsModel.paralink}}" target="_blank">
+                                    <a href="http://localhost:9000{{LinkDetailsModel.paralink}}" target="_blank">
                                         <img src="assets/images/pdf.png" alt="pdf" class="img-thumbnail"
                                             style="height: 50%;width: 50%;"></a>
                                 </div>
@@ -96,7 +96,7 @@
                                 *ngIf="LinkDetailsModel.attachlink!='' && LinkDetailsModel.attachlink!=undefined && LinkDetailsModel.attachlink!=null">
                                 <div class="form-group mb-3">
                                     <label>View Uploaded Attachment Link</label>
-                                    <a href="https://api.cesociety.in{{LinkDetailsModel.attachlink}}"
+                                    <a href="http://localhost:9000{{LinkDetailsModel.attachlink}}"
                                         target="_blank">
                                         <img src="assets/images/pdf.png" alt="pdf" class="img-thumbnail"
                                             style="height: 50%;width: 50%;"></a>
@@ -162,8 +162,8 @@
                                 <td class="text-center">{{s.subToSub}}</td>
                                 <td class="text-center">{{s.linkName}}</td>
                                 <td class="text-center" *ngIf="s.link!='undefined' && s.link!=''"><a
-                                        href="https://api.cesociety.in{{s.link}}"
-                                        target="_blank"><u>https://api.cesociety.in{{s.link}}</u></a>
+                                        href="http://localhost:9000{{s.link}}"
+                                        target="_blank"><u>http://localhost:9000{{s.link}}</u></a>
                                 </td>
                                 <td class="text-center" *ngIf="s.link==''|| undefined || s.link=='undefined'"><span
                                         class=" badge bg-warning
@@ -265,8 +265,8 @@
                                 <ngb-highlight [result]="table.linkName" [term]="service.searchTerm"></ngb-highlight>
                             </td>
                             <td *ngIf="table.link!='undefined' && table.link!=''">
-                                <a [href]="'https://api.cesociety.in' + table.link" target="_blank">
-                                    <ngb-highlight [result]="'https://api.cesociety.in' + table.link"
+                                <a [href]="'http://localhost:9000' + table.link" target="_blank">
+                                    <ngb-highlight [result]="'http://localhost:9000' + table.link"
                                         [term]="service.searchTerm"></ngb-highlight>
                                 </a>
                             </td>

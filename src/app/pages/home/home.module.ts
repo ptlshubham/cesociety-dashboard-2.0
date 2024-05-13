@@ -50,6 +50,8 @@ import { NaacViewComponent } from './naac-view/naac-view.component';
 import { SyllabusComponent } from './syllabus/syllabus.component';
 import { SyllaDetailsComponent } from './sylla-details/sylla-details.component';
 import { AdmissionComponent } from './admission/admission.component';
+import { DepartmentDetailsComponent } from './department-details/department-details.component';
+import { MarketingPromotionsComponent } from './marketing-promotions/marketing-promotions.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -104,6 +106,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     SyllabusComponent,
     SyllaDetailsComponent,
     AdmissionComponent,
+    DepartmentDetailsComponent,
+    MarketingPromotionsComponent
   ],
   imports: [
     CommonModule,

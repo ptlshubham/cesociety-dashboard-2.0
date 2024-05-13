@@ -141,18 +141,20 @@
                                 <td class="text-center">{{c.infraTitle}}</td>
                                 <!-- <td class="text-center" [innerHtml]='c.infraDetails'> </td> -->
                                 <td class="text-center">
-                                    <img src="https://api.cesociety.in{{c.infraImage}}" alt="" class="rounded avatar-lg">
+                                    <img src="http://localhost:9000{{c.infraImage}}" alt="" class="rounded avatar-lg">
                                 </td>
                                 <td class="text-end">
-                                    <button type="button" class="btn btn-soft-primary waves-effect waves-light"
-                                        (click)="viewInfraDetails(c.id)"><i
-                                            class="fa fa-eye font-size-16 align-middle"></i></button>
-                                    <button type="button" class="btn btn-soft-primary waves-effect waves-light"
-                                        (click)="editInfraDetails(c)"><i
-                                            class="bx bx-edit font-size-16 align-middle"></i></button>
-                                    <button type="button" class="btn btn-soft-danger waves-effect waves-light"
-                                        (click)="removeInfraDetails(c.id)"><i
-                                            class="bx bx-trash-alt font-size-16 align-middle"></i></button>
+                                    <div class="d-flex justify-content-end gap-1">
+                                        <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                            (click)="viewInfraDetails(c.id)"><i
+                                                class="fa fa-eye font-size-16 align-middle"></i></button>
+                                        <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                            (click)="editInfraDetails(c)"><i
+                                                class="bx bx-edit font-size-16 align-middle"></i></button>
+                                        <button type="button" class="btn btn-soft-danger waves-effect waves-light"
+                                            (click)="removeInfraDetails(c.id)"><i
+                                                class="bx bx-trash-alt font-size-16 align-middle"></i></button>
+                                    </div>
                                 </td>
 
                             </tr>

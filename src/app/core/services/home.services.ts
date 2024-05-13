@@ -30,11 +30,11 @@ export class HomeService {
         return this.http.post<any>(ApiService.uploadGalleryImagesURL, img);
     }
     uploadVideoImage(data: any): Observable<any> {
-        
+
         return this.http.post<any>(ApiService.uploadGalleryVideoURL, data);
     }
     deleteInfraImage(data: any) {
-        
+
         return this.http.post(ApiService.deleteInfraImageURL, data);
     }
     getBannersImagesById(id: any) {
@@ -55,6 +55,16 @@ export class HomeService {
         };
         return this.http.post(ApiService.removeImagesByIdDetailsURL, data);
     }
+    uploadDepImage(img: any): Observable<any> {
+        return this.http.post<any>(ApiService.uploadDepartmentImageURL, img);
+    }
+    uploadDepMultiImage(img: any): Observable<any> {
+        return this.http.post<any>(ApiService.uploadDepartmentMultiImageURL, img);
+    }
+    deleteDepImage(data: any) {
+
+        return this.http.post(ApiService.deleteDepartmentImageURL, data);
+    }
     saveDepartmentListData(data: any) {
         return this.http.post(ApiService.saveDepartmentListURL, data);
     }
@@ -63,6 +73,9 @@ export class HomeService {
     }
     removeDepartmentDataById(institute_id: any) {
         return this.http.get(ApiService.removeDepartmentByIdDetailsURL + institute_id);
+    }
+    getDepMultiImageById(id: any) {
+        return this.http.get(ApiService.getDepMultiImageByIdURL + id);
     }
     updateDepartmentListData(data: any) {
         return this.http.post(ApiService.updateDepartmentListURL, data);
@@ -189,7 +202,7 @@ export class HomeService {
         return this.http.get(ApiService.removeMagazineListURL + id);
     }
     removeNaacCrieteriaList(id: any) {
-        
+
         return this.http.get(ApiService.removeCrietriaListURL + id);
     }
     getCounselingList() {
@@ -235,7 +248,7 @@ export class HomeService {
         return this.http.get(ApiService.getSubToSubMenuGroupByURL + id);
     }
     getNaacLinkDetails(id: any) {
-        
+
         return this.http.get(ApiService.getNaacLinkDataURL + id);
     }
     removeNaacLink(id: any) {
@@ -264,7 +277,7 @@ export class HomeService {
         return this.http.post<any>(ApiService.uploadCommMultiImageURL, img);
     }
     deleteCommiImage(data: any) {
-        
+
         return this.http.post(ApiService.deleteCommitteeImageURL, data);
     }
 

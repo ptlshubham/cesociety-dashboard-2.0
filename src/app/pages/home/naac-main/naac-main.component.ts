@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { HomeService } from 'src/app/core/services/home.services';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -51,13 +51,17 @@ export class NaacMainComponent implements OnInit {
       { name: 'Criteria 6' },
       { name: 'Criteria 7' },
       { name: 'SSR' },
-      { name: 'AQAR' }
+      { name: 'AQAR' },
+      { name: 'IIQA' }
     ]
     this.selectedCriteria = null;
   }
   get f() { return this.validationForm.controls; }
   ngOnInit(): void {
     this.getAllNAACDetails();
+    this.validationForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
+    });
   }
   backToList() {
     this.isOpen = false;

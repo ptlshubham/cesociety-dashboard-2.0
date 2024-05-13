@@ -56,7 +56,7 @@
                                 *ngIf="NAACDetailsModel.paralink!='' && NAACDetailsModel.paralink!=undefined && NAACDetailsModel.paralink!=null">
                                 <div class="form-group mb-3">
                                     <label>View Uploaded Parameter Link</label>
-                                    <a href="https://api.cesociety.in{{NAACDetailsModel.paralink}}"
+                                    <a href="http://localhost:9000{{NAACDetailsModel.paralink}}"
                                         target="_blank">
                                         <img src="assets/images/pdf.png" alt="pdf" class="img-thumbnail"
                                             style="height: 50%;width: 50%;"></a>
@@ -83,7 +83,7 @@
                                 *ngIf="NAACDetailsModel.attachlink!='' && NAACDetailsModel.attachlink!=undefined && NAACDetailsModel.attachlink!=null">
                                 <div class="form-group mb-3">
                                     <label>View Uploaded Attachment Link</label>
-                                    <a href="https://api.cesociety.in{{NAACDetailsModel.attachlink}}"
+                                    <a href="http://localhost:9000{{NAACDetailsModel.attachlink}}"
                                         target="_blank">
                                         <img src="assets/images/pdf.png" alt="pdf" class="img-thumbnail"
                                             style="height: 50%;width: 50%;"></a>
@@ -149,7 +149,7 @@
                                 <td class="text-center">{{s.keyno}}</td>
                                 <td class="text-center">{{s.paraname}}</td>
                                 <td class="text-center" *ngIf="s.paralink!='undefined' && s.paralink!=''"><a
-                                        href="https://api.cesociety.in{{s.paralink}}" target="_blank"><u>View
+                                        href="http://localhost:9000{{s.paralink}}" target="_blank"><u>View
                                             More</u></a>
                                 </td>
                                 <td class="text-center" *ngIf="s.paralink=='' "><span class="badge bg-warning ms-1">Not
@@ -158,7 +158,7 @@
                                         class="badge bg-warning ms-1"> - </span></td>
                                 <td class="text-center" *ngIf="s.attachname!='undefined'">{{s.attachname}}</td>
                                 <td class="text-center" *ngIf="s.attachlink!='undefined' && s.attachlink!='' "><a
-                                        href="https://api.cesociety.in{{s.attachlink}}" target="_blank"><u>View
+                                        href="http://localhost:9000{{s.attachlink}}" target="_blank"><u>View
                                             More</u></a>
                                 </td>
                                 <td class="text-center" *ngIf="s.attachlink=='undefined' || s.attachlink=='' "><span

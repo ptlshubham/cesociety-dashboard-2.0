@@ -5,8 +5,8 @@ declare var $: any;
   providedIn: 'root'
 })
 export class ApiService {
-  // public static HOST_URL: string = "http://localhost:9000";
-  public static HOST_URL: string = "https://api.cesociety.in";
+  public static HOST_URL: string = "http://localhost:9000";
+  // public static HOST_URL: string = "https://api.cesociety.in";
 
   constructor(
   ) { }
@@ -36,6 +36,10 @@ export class ApiService {
   public static updateActiveDeactiveBannersURL: string = ApiService.HOST_URL + '/admin/UpdateActiveDeactiveBanners';
   public static updateActiveDeactiveNewsURL: string = ApiService.HOST_URL + '/admin/UpdateActiveDeactiveNews'
   public static removeImagesByIdDetailsURL: string = ApiService.HOST_URL + '/admin/RemoveImagesByIdDetails';
+  public static uploadDepartmentImageURL: string = ApiService.HOST_URL + '/admin/UploadDepartmentImage';
+  public static uploadDepartmentMultiImageURL: string = ApiService.HOST_URL + '/admin/UploadDepartmentMultiImage';
+  public static deleteDepartmentImageURL: string = ApiService.HOST_URL + '/admin/DeleteDepartmentImage';
+  public static getDepMultiImageByIdURL: string = ApiService.HOST_URL + '/admin/GetDepMultiImageById/';
   public static saveDepartmentListURL: string = ApiService.HOST_URL + '/admin/SaveDepartmentList';
   public static getDepartmentByIdDetailsURL: string = ApiService.HOST_URL + '/admin/GetDepartmentByIdDetails/';
   public static removeDepartmentByIdDetailsURL: string = ApiService.HOST_URL + '/admin/RemoveDepartmentByIdDetails/';

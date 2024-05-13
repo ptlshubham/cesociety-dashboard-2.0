@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-danger  waves-effect waves-light" routerLink="/campus">
+                    <button type="submit" class="btn btn-danger  waves-effect waves-light" routerLink="/department">
                         <i class="bx bx-arrow-back  "></i>
                         Back</button>
                 </div>
@@ -11,14 +11,13 @@
             <div class="card-body">
                 <div class="">
                     <div class="text-center mb-3">
-                        <h4>{{commi.campusTitle}}</h4>
+                        <h4>{{dep.department}}</h4>
                     </div>
-                    <div class="mb-4"
-                        *ngIf="commi.campusImage!='null' && commi.campusImage!='undefined' && commi.campusImage!=undefined">
+                    <div class="mb-4">
                         <div class="row">
-                            <div class="col-lg-8 offset-lg-2">
+                            <div class="col-lg-8 offset-lg-4">
                                 <ngb-carousel [showNavigationIndicators]="!showNavigationIndicators">
-                                    <ng-template ngbSlide *ngFor="let c of campusData">
+                                    <ng-template ngbSlide *ngFor="let c of depData">
                                         <img src="http://localhost:9000{{c}}" alt="first slide"
                                             class="d-block img-fluid">
                                     </ng-template>
@@ -28,7 +27,7 @@
 
                     </div>
                     <div class="mt-4">
-                        <div class="text-muted font-size-14" [innerHtml]='commi.campusDetails'>
+                        <div class="text-muted font-size-14" [innerHtml]='dep.depdetails'>
                         </div>
                     </div>
                 </div>

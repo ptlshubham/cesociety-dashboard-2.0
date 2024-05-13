@@ -42,6 +42,7 @@ import { NaacViewComponent } from './naac-view/naac-view.component';
 import { SyllabusComponent } from './syllabus/syllabus.component';
 import { SyllaDetailsComponent } from './sylla-details/sylla-details.component';
 import { AdmissionComponent } from './admission/admission.component';
+import { DepartmentDetailsComponent } from './department-details/department-details.component';
 
 const routes: Routes = [
   {
@@ -211,6 +212,10 @@ const routes: Routes = [
   {
     path: 'admission',
     component: AdmissionComponent
+  },
+  {
+    path: 'dep-details/:id',
+    component: DepartmentDetailsComponent
   },
 ];
 

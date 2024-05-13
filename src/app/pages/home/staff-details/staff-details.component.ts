@@ -186,7 +186,7 @@ export class StaffDetailsComponent implements OnInit {
     this.paginateData = this.staffDataTable.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
   openUpdateStaff(data: any) {
-    this.imageUrl = 'https://api.cesociety.in' + data.profile_image
+    this.imageUrl = 'http://localhost:9000' + data.profile_image
     this.staffModel = data;
     this.staffModel.joining_date = new Date(data.joining_date).toISOString().slice(0, 10);
     this.staffModel.birthday_date = new Date(data.birthday_date).toISOString().slice(0, 10);

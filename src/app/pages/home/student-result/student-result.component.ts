@@ -122,7 +122,7 @@ export class StudentResultComponent implements OnInit {
   openEditResult(data: any) {
     this.isUpdate = true;
     this.resultModel = data;
-    this.imageUrl = 'https://api.cesociety.in' + data.image
+    this.imageUrl = 'http://localhost:9000' + data.image
     this.resultModel.image = data.image;
 
   }

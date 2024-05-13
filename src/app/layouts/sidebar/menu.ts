@@ -161,7 +161,7 @@ export const MENU: MenuItem[] = [
         role: 'Institute'
     },
     {
-        id: 29,
+        id: 30,
         label: 'Admission List',
         icon: 'list',
         link: '/admission',

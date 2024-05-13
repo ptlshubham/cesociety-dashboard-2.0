@@ -143,7 +143,7 @@
                                 <td class="text-center">{{c.campusTitle}}</td>
                                 <td class="text-center" [innerHtml]='c.campusDetails'> </td>
                                 <td class="text-center">
-                                    <img src="https://api.cesociety.in{{c.campusImage}}" alt="" class="rounded avatar-lg"
+                                    <img src="http://localhost:9000{{c.campusImage}}" alt="" class="rounded avatar-lg"
                                         *ngIf="c.campusImage!='null' && c.campusImage!='undefined' && c.campusImage!=undefined">
                                     <span class="bg-warning badge me-2"
                                         *ngIf="c.campusImage=='null' || c.campusImage=='undefined' || c.campusImage==undefined">File

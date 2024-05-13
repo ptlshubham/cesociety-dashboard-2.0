@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { HomeService } from 'src/app/core/services/home.services';
@@ -14,7 +16,6 @@ export class DepartmentComponent implements OnInit {
   submitted = false;
 
   departmentModel: any = {};
-  updateDepartmentModel: any = {};
   departmentData: any = [];
 
   page = 1;
@@ -22,11 +23,28 @@ export class DepartmentComponent implements OnInit {
   collectionSize = 0;
   paginateData: any = [];
 
+  multiImage: any = [];
+  imageUrl: any = "assets/images/file-upload-image.jpg";
+  addMultiImg: any = [];
+  val: number = 0;
+  public Editor = ClassicEditor;
+
+  @ViewChild('fileInput') el!: ElementRef;
+  editFile: boolean = true;
+  removeUpload: boolean = false;
+  cardImageBase64: any;
+
+  depImages: any;
+  depMulti: any = [];
+
+  isOpen: boolean = false;
+  isUpdate: boolean = false;
+
   constructor(
     public formBuilder: FormBuilder,
     private homeService: HomeService,
-    private modalService: NgbModal,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -36,12 +54,131 @@ export class DepartmentComponent implements OnInit {
     });
   }
   get f() { return this.validationForm.controls; }
+
+  addServiceList() {
+    this.val++;
+    this.addMultiImg.push(
+      {
+        name: this.val,
+        multiImageUrl: 'assets/images/file-upload-image.jpg'
+      }
+    );
+  }
+
+  openAddDepartment() {
+    this.departmentModel = {};
+    this.addMultiImg = [];
+    this.imageUrl = 'assets/images/file-upload-image.jpg';
+    this.isOpen = true;
+    this.isUpdate = false;
+
+  }
+  closeAddDepartment() {
+    this.isOpen = false;
+    this.isUpdate = false;
+  }
+
+  uploadFile(event: any) {
+    let reader = new FileReader();
+    let file = event.target.files[0];
+    if (event.target.files && event.target.files[0]) {
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const image = new Image();
+        image.src = reader.result as string;
+        image.onload = () => {
+          if (image.width === 500 && image.height === 500) {
+            this.imageUrl = reader.result;
+            const imgBase64Path = reader.result;
+            this.cardImageBase64 = imgBase64Path;
+            const formdata = new FormData();
+            formdata.append('file', file);
+            this.homeService.uploadDepImage(formdata).subscribe((response) => {
+              this.toastr.success('Image Uploaded Successfully', 'Uploaded', { timeOut: 3000, });
+              this.depImages = response;
+              this.editFile = false;
+              this.removeUpload = true;
+            });
+          } else {
+            this.toastr.error('Please upload an image with dimensions of 500x500px', 'Invalid Dimension', { timeOut: 3000, });
+          }
+        };
+      };
+    }
+  }
+
+  removeUploadedImage() {
+    // console.log(this.depImages);
+    let data = {
+      img: this.depImages
+    };
+    this.homeService.deleteDepImage(data).subscribe((res: any) => {
+      if (res == 'sucess') {
+        this.toastr.success('Image removed successfully.', 'Deleted', { timeOut: 2000, });
+      } else {
+        this.toastr.error('Something went wrong try again later', 'Error', { timeOut: 2000, });
+      }
+    })
+    this.depImages = null;
+    this.imageUrl = 'assets/images/file-upload-image.jpg';
+    debugger
+  }
+
+  uploadMultiFile(event: any, ind: any) {
+
+    let reader = new FileReader(); // HTML5 FileReader API
+    let file = event.target.files[0];
+    if (event.target.files && event.target.files[0]) {
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const image = new Image();
+        image.src = reader.result as string;
+        image.onload = () => {
+          if (image.width === 500 && image.height === 500) {
+            this.addMultiImg[ind].multiImageUrl = reader.result;
+            const imgBase64Path = reader.result;
+            this.cardImageBase64 = imgBase64Path;
+            const formdata = new FormData();
+            formdata.append('file', file);
+            this.homeService.uploadDepMultiImage(formdata).subscribe((response) => {
+              this.toastr.success('Image Uploaded Successfully', 'Uploaded', { timeOut: 3000, });
+              this.depMulti.push(response);
+              this.addMultiImg[ind].multiImageUrl = 'http://localhost:9000' + response;
+              this.addMultiImg[ind].url = response;
+              this.editFile = false;
+              this.removeUpload = true;
+            });
+          } else {
+            this.toastr.error('Please upload an image with dimensions of 500x500px', 'Invalid Dimension', { timeOut: 3000, });
+          }
+        };
+      };
+    }
+  }
+
+  removeServiceList(val: any) {
+    let data = {
+      img: this.addMultiImg[val].multiImageUrl
+    };
+    this.homeService.deleteDepImage(data).subscribe((res: any) => {
+      if (res == 'sucess') {
+        this.toastr.success('Image removed successfully.', 'Deleted', { timeOut: 2000, });
+      } else {
+        this.toastr.error('Something went wrong try again later', 'Error', { timeOut: 2000, });
+      }
+    })
+    this.addMultiImg.splice(val, 1);
+  }
+
   saveDepartmentList() {
     this.submitted = true;
     if (this.validationForm.invalid) {
       return;
     } else {
       this.departmentModel.institute_id = localStorage.getItem('InstituteId');
+      this.departmentModel.depImage = this.depImages;
+      this.departmentModel.depMulti = this.depMulti;
+      debugger
       this.homeService.saveDepartmentListData(this.departmentModel).subscribe((res: any) => {
         this.toastr.success('Department added Successfully', 'success', {
           timeOut: 3000,
@@ -49,6 +186,8 @@ export class DepartmentComponent implements OnInit {
         this.departmentModel = {};
         this.validationForm.markAsUntouched();
         this.getDepartmentDetails();
+        this.isUpdate = false;
+        this.isOpen = false;
       })
     }
   }
@@ -68,19 +207,46 @@ export class DepartmentComponent implements OnInit {
       .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
 
   }
-  editDepartmentDetails(smallDataModal: any, data: any) {
-    this.modalService.open(smallDataModal, { size: 'sm', windowClass: 'modal-holder', centered: true });
-    this.updateDepartmentModel = data;
-    this.getDepartmentDetails();
+  editDepartmentDetails(data: any) {
+    this.departmentModel = data;
+    debugger
+    this.getDepMultiImages(data.id);
+    this.imageUrl = 'http://localhost:9000' + data.depimage
+    this.isOpen = true;
+    this.isUpdate = true;
+  }
+  getDepMultiImages(id: any) {
+    this.multiImage = [];
+    this.homeService.getDepMultiImageById(id).subscribe((res: any) => {
+      this.depMulti = res;
+      if (this.depMulti.length > 0) {
+        this.depMulti.forEach((element: any, ind: any) => {
+          this.multiImage.push({ name: ind + 1, multiImageUrl: 'http://localhost:9000' + element.image, url: element.image });
+        });
+      }
+      this.addMultiImg = this.multiImage;
+      this.departmentModel.depMulti = this.addMultiImg;
 
+    })
   }
   updateDepartmentDetails() {
-    this.homeService.updateDepartmentListData(this.updateDepartmentModel).subscribe((res: any) => {
+
+    if (this.depImages != null || undefined) {
+      debugger
+      this.departmentModel.depImage = this.depImages;
+    }
+    else {
+      this.departmentModel.depImage = this.departmentModel.depimage;
+    }
+    debugger
+    this.homeService.updateDepartmentListData(this.departmentModel).subscribe((res: any) => {
       if (res == 'success') {
         this.toastr.success('Department Updated Successfully', 'success', {
           timeOut: 3000,
+
         });
-        location.reload();
+        this.isUpdate = false;
+        this.isOpen = false;
       }
     })
   }
@@ -93,5 +259,7 @@ export class DepartmentComponent implements OnInit {
       this.getDepartmentDetails();
     })
   }
-
+  viewDepartmentDetails(id: any) {
+    this.router.navigate(['/dep-details', id]);
+  }
 }

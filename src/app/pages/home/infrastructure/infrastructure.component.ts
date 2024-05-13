@@ -142,7 +142,7 @@ export class InfrastructureComponent implements OnInit {
             this.homeService.uploadInfraMultiImage(formdata).subscribe((response) => {
               this.toastr.success('Image Uploaded Successfully', 'Uploaded', { timeOut: 3000, });
               this.infraMultiImage.push(response);
-              this.addMultiImg[ind].multiImageUrl ='https://api.cesociety.in' + response;
+              this.addMultiImg[ind].multiImageUrl ='http://localhost:9000' + response;
               this.editFile = false;
               this.removeUpload = true;
             });
@@ -169,7 +169,7 @@ export class InfrastructureComponent implements OnInit {
   editInfraDetails(data: any) {
     this.infraModel = data;
     this.getInfraMultiImages(data.id);
-    this.imageUrl = 'https://api.cesociety.in' + data.infraImage
+    this.imageUrl = 'http://localhost:9000' + data.infraImage
     this.isOpen = true;
     this.isUpdate = true;
   }
@@ -179,7 +179,7 @@ export class InfrastructureComponent implements OnInit {
       this.infraMulti = res;
       if (this.infraMulti.length > 0) {
         this.infraMulti.forEach((element: any,ind:any) => {
-          this.multiImage.push({ name: ind+1, multiImageUrl: 'https://api.cesociety.in' + element.image });
+          this.multiImage.push({ name: ind+1, multiImageUrl: 'http://localhost:9000' + element.image });
         });
       }
       this.addMultiImg = this.multiImage;

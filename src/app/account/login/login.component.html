@@ -20,10 +20,11 @@
                                     <div class="form-group mb-3">
                                         <label class="form-label">Institute Type</label>
                                         <select required class="form-control form-select"
-                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="institute">
-                                            <option value="" disabled>Select Institute Type</option>
-                                            <option value="{{c.id}}" *ngFor="let c of collegeList">
-                                                {{c.name}}</option>
+                                            (change)="onSelectionChange($event)">
+                                            <option value="" hidden>Select Institute Type</option>
+                                            <option *ngFor="let c of collegeList">
+                                                {{c.name}}
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
@@ -74,7 +75,8 @@
                             </div>
                             <div class="mt-4 mt-md-5 text-center">
                                 <p class="mb-0">©
-                                    {{year}} All Rights Reserved. Developed by <a href="https://keryar.com/" target="_blank">
+                                    {{year}} All Rights Reserved. Developed by <a href="https://keryar.com/"
+                                        target="_blank">
                                         Keryar.</a>
                                 </p>
                             </div>

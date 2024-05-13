@@ -122,7 +122,7 @@ export class QuestionPapersComponent implements OnInit {
   }
   viewDownloadPdf(data: any) {
     var path
-    path = 'https://api.cesociety.in' + data
+    path = 'http://localhost:9000' + data
 
     window.open(path, '_blank');
   }

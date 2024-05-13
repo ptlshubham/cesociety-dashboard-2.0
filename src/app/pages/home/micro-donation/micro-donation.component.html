@@ -40,9 +40,9 @@
                                         *ngIf="s.idProof==null && s.idProof!='NULL'">File
                                         Not Uploaded</span>
 
-                                    <a href="https://api.cesociety.in{{s.idProof}}"
+                                    <a href="http://localhost:9000{{s.idProof}}"
                                         *ngIf="s.idProof!=null && s.idProof!='NULL'">
-                                        <img src="https://api.cesociety.in{{s.idProof}} " alt="Id Proof"
+                                        <img src="http://localhost:9000{{s.idProof}} " alt="Id Proof"
                                             class="rounded avatar-lg"></a>
                                 </td>
                                 <td class="text-center">{{s.createddate |date}} </td>

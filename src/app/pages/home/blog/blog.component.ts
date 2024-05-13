@@ -89,7 +89,7 @@ export class BlogComponent implements OnInit {
   editBlogDetails(data: any) {
     this.blogModel = data;
     this.blogModel.blogDate = this.datepipe.transform(data.blogDate, 'yyyy-MM-dd');
-    this.imageUrl = 'https://api.cesociety.in' + data.blogImage
+    this.imageUrl = 'http://localhost:9000' + data.blogImage
     this.isopen = true;
     this.isUpdate = true;
 

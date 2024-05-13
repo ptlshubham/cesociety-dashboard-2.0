@@ -73,6 +73,13 @@ export class LoginComponent implements OnInit {
   /**
    * Form submit
    */
+  onSelectionChange(event: any) {
+    const selectedIndex = event.target.selectedIndex;
+    const selectedId = this.collegeList[selectedIndex - 1].id; // Subtract 1 because the first option is the placeholder
+    debugger
+    this.institute = selectedId;
+  }
+  
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
