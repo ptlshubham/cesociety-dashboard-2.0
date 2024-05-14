@@ -369,13 +369,14 @@ export const comapnyAdmin: MenuItem[] = [
     },
     {
         id: 4,
-        label: 'Generate Tokens',
-        icon: 'mdi mdi-clipboard-list-outline',
-        link: '/company/request-tokens',
-    },{
-        id: 5,
         label: 'Client List',
         icon: 'mdi mdi-account-multiple-outline',
         link: '/company/clients',
+    },
+    {
+        id: 5,
+        label: 'Generate Tokens',
+        icon: 'mdi mdi-clipboard-list-outline',
+        link: '/company/request-tokens',
     },
 ];

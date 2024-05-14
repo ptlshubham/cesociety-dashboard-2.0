@@ -133,7 +133,7 @@
                                 <div class="col-lg-1 col-xl-1 col-md-1 col-sm-2 col-xs-12">
                                     <button type="submit" class="btn btn-primary" (click)="saveStaffDetails()"
                                         *ngIf="isUpdate==false"
-                                        [disabled]="validationForm.invalid || staffProfileImage ==null">Submit</button>
+                                        [disabled]="validationForm.invalid ">Submit</button>
                                     <button type="submit" class="btn btn-primary" (click)="updateStaffDetails()"
                                         *ngIf="isUpdate==true" [disabled]="validationForm.invalid">Update</button>
                                 </div>
