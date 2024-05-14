@@ -6,13 +6,15 @@ import { CountUpModule } from 'ngx-countup';
 import { CompanyDashboardComponent } from './company-dashboard/company-dashboard.component';
 import { NgbDropdownModule, NgbPaginationModule, NgbToastModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { ClientsComponent } from './clients/clients.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
   declarations: [
     EmployeeComponent,
-    CompanyDashboardComponent
+    CompanyDashboardComponent,
+    ClientsComponent
   ],
   imports: [
     CommonModule,
@@ -24,9 +26,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
     NgbPaginationModule,
+    NgSelectModule
 
   ],
-  exports:[
+  exports: [
     CompanyDashboardComponent,
     EmployeeComponent,
 

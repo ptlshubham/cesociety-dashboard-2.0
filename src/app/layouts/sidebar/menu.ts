@@ -367,4 +367,10 @@ export const comapnyAdmin: MenuItem[] = [
         icon: 'mdi mdi-account-multiple-outline',
         link: '/company/employee',
     },
+    {
+        id: 4,
+        label: 'Client List',
+        icon: 'mdi mdi-account-multiple-outline',
+        link: '/company/clients',
+    },
 ];
