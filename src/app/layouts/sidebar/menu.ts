@@ -367,4 +367,10 @@ export const comapnyAdmin: MenuItem[] = [
         icon: 'mdi mdi-account-multiple-outline',
         link: '/company/employee',
     },
+    {
+        id: 4,
+        label: 'Generate Tokens',
+        icon: 'mdi mdi-clipboard-list-outline',
+        link: '/company/request-tokens',
+    },
 ];

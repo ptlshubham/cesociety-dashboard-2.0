@@ -1,0 +1,236 @@
+<!-- start page title -->
+<app-pagetitle title="Generate Tokens" [breadcrumbItems]="breadCrumbItems"></app-pagetitle>
+<!-- end page title -->
+
+<div class="row">
+    <div class="col-12">
+        <!-- Left sidebar -->
+        <div class="email-leftbar card">
+            <button type="button" class="btn btn-danger w-100 waves-effect waves-light" data-bs-toggle="modal"
+                data-bs-target="#composemodal" (click)="open(content)">
+                Generate Token
+            </button>
+            <div class="mail-list mt-4">
+                <a href="javascript:void(0);" class="active"><i class="mdi mdi-email-outline me-2"></i>All Tokens<span
+                        class="ms-1 float-end">(18)</span></a>
+                <a href="javascript:void(0);"><i class="mdi mdi-star-outline me-2"></i>Pending Tokens</a>
+                <a href="javascript:void(0);"><i class="mdi mdi-diamond-stone me-2"></i>Processing Tokens</a>
+                <a href="javascript:void(0);"><i class="mdi mdi-file-outline me-2"></i>Review Tokens</a>
+                <a href="javascript:void(0);"><i class="mdi mdi-email-check-outline me-2"></i>Changes Tokens</a>
+                <a href="javascript:void(0);"><i class="mdi mdi-trash-can-outline me-2"></i>Completed Tokens</a>
+                <a href="javascript:void(0);"><i class="mdi mdi-trash-can-outline me-2"></i>Cancel Tokens</a>
+            </div>
+            <h6 class="mt-4">Labels</h6>
+
+            <div class="mail-list mt-1">
+                <a href="javascript:void(0);"><span
+                        class="mdi mdi-arrow-right-drop-circle text-info float-end"></span>CES</a>
+                <a href="javascript:void(0);"><span
+                        class="mdi mdi-arrow-right-drop-circle text-danger float-end"></span>Urgent</a>
+            </div>
+
+            <h6 class="mt-4">Clients List</h6>
+
+            <div class="mt-2">
+                <a href="javascript: void(0);" class="d-flex align-items-start">
+                    <img class="flex-shrink-0 me-3 rounded-circle" src="assets/images/users/avatar-2.jpg"
+                        alt="Generic placeholder image" height="36">
+                    <div class="flex-grow-1 chat-user-box">
+                        <p class="user-title m-0">Scott Median</p>
+                        <p class="text-muted">Hello</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- End Left sidebar -->
+
+        <!-- Right Sidebar -->
+        <div class="email-rightbar mb-3">
+
+            <div class="card">
+                <div class="btn-toolbar p-3" role="toolbar">
+                    <div class="btn-group me-2 mb-2 mb-sm-0">
+                        <button type="button" class="btn btn-primary waves-light waves-effect"><i
+                                class="fa fa-inbox"></i></button>
+                        <button type="button" class="btn btn-primary waves-light waves-effect"><i
+                                class="fa fa-exclamation-circle"></i></button>
+                        <button type="button" class="btn btn-primary waves-light waves-effect" (click)="confirm()"><i
+                                class="far fa-trash-alt"></i></button>
+                    </div>
+                    <div class="btn-group me-2 mb-2 mb-sm-0" ngbDropdown>
+                        <button type="button" class="btn btn-primary waves-light waves-effect dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                            <i class="fa fa-folder"></i> <i class="mdi mdi-chevron-down ms-1"></i>
+                        </button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <a class="dropdown-item" href="javascript:void(0);">Updates</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Social</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Team Manage</a>
+                        </div>
+                    </div>
+                    <div class="btn-group me-2 mb-2 mb-sm-0" ngbDropdown>
+                        <button type="button" class="btn btn-primary waves-light waves-effect dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                            <i class="fa fa-tag"></i> <i class="mdi mdi-chevron-down ms-1"></i>
+                        </button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <a class="dropdown-item" href="javascript:void(0);">Updates</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Social</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Team Manage</a>
+                        </div>
+                    </div>
+
+                    <div class="btn-group me-2 mb-2 mb-sm-0" ngbDropdown>
+                        <button type="button" class="btn btn-primary waves-light waves-effect dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                            More <i class="mdi mdi-dots-vertical ms-2"></i>
+                        </button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <a class="dropdown-item" href="javascript:void(0);">Mark as Unread</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Mark as Important</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Add to Tasks</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Add Star</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Mute</a>
+                        </div>
+                    </div>
+                </div>
+                <ul class="message-list">
+                    @for (email of emailData | slice:0:20; track $index) {
+                    <li class="unread" [ngClass]=" { 'unread' : email.unread===true }">
+                        <div class="col-mail col-mail-1">
+                            <div class="checkbox-wrapper-mail">
+                                <input type="checkbox" id="chk-{{ $index}}" (change)="selectMail($event,email.id)" />
+                                <label for="chk-{{ $index}}"></label>
+                            </div>
+                            <a [routerLink]="['../read',email.id]" class="title">{{email.title}}</a>
+                            <span class="star-toggle far fa-star"></span>
+                        </div>
+                        <div class="col-mail col-mail-2">
+                            <a href="javascript:void(0);" class="subject"><span
+                                    class="{{email.bg_color}} badge me-2">{{email.btn}}</span>{{email.subject}}
+                            </a>
+                            <div class="date">{{email.date}}</div>
+                        </div>
+                    </li>}
+                </ul>
+
+            </div> <!-- card -->
+
+            <div class="row">
+                <div class="col-7">
+                    Showing {{startIndex}} - {{endIndex}} of {{totalRecords}}
+                </div>
+                <div class="col-5">
+                    <div class="btn-group float-end">
+                        <ngb-pagination class="pagination-rounded" [collectionSize]="totalRecords"
+                            (pageChange)="onPageChange($event)" [(page)]="page" [pageSize]="pageSize">
+                        </ngb-pagination>
+                        <!--Pagination-->
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end Col-9 -->
+
+    </div>
+
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title" id="composemodalTitle">New Message</h5>
+            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="validationForm">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="form-group mb-3">
+                            <label>Title</label>
+                            <input type="text" class="form-control" placeholder="Enter Promotion Title"
+                                formControlName="title" [(ngModel)]="promotionModel.title"
+                                [ngClass]="{'is-invalid': f.title.touched && f.title.errors}">
+                            <div *ngIf="f.title.touched && f.title.errors" class="invalid-feedback">
+                                <span *ngIf="f.title.errors.required">This Field is
+                                    required.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="form-group mb-3">
+                            <label>Description</label>
+                            <textarea type="text" class="form-control" placeholder="Enter Image Description"
+                                formControlName="description" [(ngModel)]="promotionModel.description"
+                                [ngClass]="{'is-invalid': f.description.touched && f.description.errors}">
+                                </textarea>
+                            <div *ngIf="f.description.touched && f.description.errors" class="invalid-feedback">
+                                <span *ngIf="f.description.errors.required">This Field is
+                                    required.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-xl-4 col-md-6">
+                        <div class="form-group mb-3">
+                            <label>Upload Image</label>
+                            <div class="avatar-upload">
+                                <div class="avatar-edit">
+                                    <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
+                                        (change)="uploadFile($event)" [(ngModel)]="promotionModel.image" />
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagePreview" [style.backgroundImage]="'url('+ imageUrl +')'">
+                                    </div>
+                                </div>
+                                <div style="margin-top: 10px;">
+                                    <button type="submit" class="btn btn-primary btn-sm btn-block"
+                                        (click)="fileInput.click()">Upload
+                                        Image</button>
+                                    <button type="submit" class="btn btn-danger btn-sm btn-block"
+                                        (click)="removeUploadedImage()">Remove
+                                        Image</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-6" *ngFor="let i of addMultiImg; let ind=index">
+                        <div class="form-group mb-3">
+                            <label>Upload Image</label>
+                            <div class="avatar-upload">
+                                <div class="avatar-edit">
+                                    <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
+                                        #multiFileInput (change)="uploadMultiFile($event,ind)"
+                                        [(ngModel)]="promotionModel.image" />
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagePreview"
+                                        [style.backgroundImage]="'url('+ i.multiImageUrl +')'">
+                                    </div>
+                                </div>
+                                <div style="margin-top: 10px;">
+                                    <button type="submit" class="btn btn-primary btn-sm btn-block"
+                                        (click)="multiFileInput.click()">Upload
+                                        Image</button>
+                                    <button type="submit" class="btn btn-danger btn-sm btn-block"
+                                        (click)="removeUploadedMultiImage(ind)">Remove
+                                        Image</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="col-xl-1 col-lg-1 col-md-1 col-md-1 d-flex align-items-center justify-content-center">
+                        <div class="form-group mb-3">
+                            <i class="bx bx-plus c-icon" (click)="addMultipleImage()"></i>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+            <button type="button" class="btn btn-primary">Send <i class="fab fa-telegram-plane ms-1"></i></button>
+        </div>
+    </ng-template>
+
+</div><!-- End row -->

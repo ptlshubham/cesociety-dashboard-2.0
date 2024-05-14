@@ -182,6 +182,10 @@ export class ApiService {
   public static getAllEmployeeDetailsURL: string = ApiService.HOST_URL + '/admin/GetAllEmployeeDetails/';
   public static removeEmployeeDetailsByIdURL: string = ApiService.HOST_URL + '/admin/RemoveEmployeeDetailsById/';
 
+  public static uploadRefrenceImageURL: string = ApiService.HOST_URL + '/admin/UploadMultiRefrence';
+  public static uploadMultiRefrenceURL: string = ApiService.HOST_URL + '/admin/UploadRefrenceImage';
+  public static removeRefrenceMultiImageURL: string = ApiService.HOST_URL + '/admin/RemoveRefrenceImage';
+  public static savePromotiondetailsURL: string = ApiService.HOST_URL + '/admin/SavePromotiondetails';
 
 
 

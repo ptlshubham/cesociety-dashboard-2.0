@@ -24,5 +24,4 @@ export class CompanyService {
     removeEmployeeDetailsById(id: any) {
         return this.http.get(ApiService.removeEmployeeDetailsByIdURL + id);
     }
-
 }
