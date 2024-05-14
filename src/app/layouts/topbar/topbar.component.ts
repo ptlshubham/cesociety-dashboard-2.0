@@ -5,9 +5,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { EventService } from '../../core/services/event.service';
 import { LanguageService } from '../../core/services/language.service';
 import { TranslateService } from '@ngx-translate/core';
-import { environment } from '../../../environments/environment';
-import { AuthenticationService } from '../../core/services/auth.service';
-import { AuthfakeauthenticationService } from '../../core/services/authfake.service';
 
 import { LAYOUT_MODE } from "../layouts.model";
 
@@ -31,11 +28,11 @@ export class TopbarComponent implements OnInit {
   collegeName: any;
   adminName: any;
   InstituteURL: any;
+  company: any;
+  role: any = localStorage.getItem('Role');
 
   constructor(
     private router: Router,
-    private authService: AuthenticationService,
-    private authFackservice: AuthfakeauthenticationService,
     public languageService: LanguageService,
     public _cookiesService: CookieService,
     public translate: TranslateService,
@@ -62,7 +59,7 @@ export class TopbarComponent implements OnInit {
     this.collegeName = localStorage.getItem('InstituteName');
     this.adminName = localStorage.getItem('Name');
     this.InstituteURL = localStorage.getItem('InstituteURL');
-    
+    this.company = localStorage.getItem('Company');
     this.layoutMode = LAYOUT_MODE;
 
     this.element = document.documentElement;
@@ -115,12 +112,14 @@ export class TopbarComponent implements OnInit {
    * Logout the user
    */
   logout() {
-    if (environment.defaultauth === 'firebase') {
-      this.authService.logout();
-    } else {
-      this.authFackservice.logout();
+    if (this.company == true) {
+      localStorage.clear();
+      this.router.navigate(['/account/keryar-login']);
     }
-    this.router.navigate(['/account/login']);
+    else {
+      localStorage.clear();
+      this.router.navigate(['/account/login']);
+    }
   }
 
 }

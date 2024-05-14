@@ -28,21 +28,6 @@ export class StaffService {
         return this.http.get(ApiService.removeStaffDetailsByIdURL + id);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     uploadBannersImage(img: any): Observable<any> {
         return this.http.post<any>(ApiService.uploadGalleryImagesURL, img);
     }

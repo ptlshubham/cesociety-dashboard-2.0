@@ -9,6 +9,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { ConfirmmailComponent } from './confirmmail/confirmmail.component';
 import { VerificationComponent } from './verification/verification.component';
 import { TwostepverificationComponent } from './twostepverification/twostepverification.component';
+import { OrganizationLoginComponent } from './organization-login/organization-login.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
   {
     path: 'two-step-verification',
     component: TwostepverificationComponent,
+  },
+  {
+    path: 'keryar-login',
+    component: OrganizationLoginComponent,
   }
 ];
 

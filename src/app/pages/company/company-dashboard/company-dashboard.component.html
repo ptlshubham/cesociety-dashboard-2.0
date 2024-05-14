@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Employee List</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="employeeList.length" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/college-list"><i class="fa fa-arrow-right"
+                                aria-hidden="true"></i> View More</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

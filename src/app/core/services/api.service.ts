@@ -19,7 +19,7 @@ export class ApiService {
 
   public static userLoginURL: string = ApiService.HOST_URL + '/authenticate/UserLogin';
   public static adminLoginURL: string = ApiService.HOST_URL + '/authenticate/AdminLogin';
-
+  public static organizationLoginURL: string = ApiService.HOST_URL + '/authenticate/OrganizationLogin';
 
   // admin
 
@@ -175,8 +175,12 @@ export class ApiService {
   public static getAdmissionListDataURL: string = ApiService.HOST_URL + '/admin/GetAdmissionListData/';
 
 
-
-
+// Company APIS
+  public static saveEmployeeProfileImagesURL: string = ApiService.HOST_URL + '/admin/SaveEmployeeProfileImages';
+  public static saveEmployeeDetailsListURL: string = ApiService.HOST_URL + '/admin/SaveEmployeeDetailsList';
+  public static updateEmployeeDetailsByIdURL: string = ApiService.HOST_URL + '/admin/UpdateEmployeeDetailsById';
+  public static getAllEmployeeDetailsURL: string = ApiService.HOST_URL + '/admin/GetAllEmployeeDetails/';
+  public static removeEmployeeDetailsByIdURL: string = ApiService.HOST_URL + '/admin/RemoveEmployeeDetailsById/';
 
 
 

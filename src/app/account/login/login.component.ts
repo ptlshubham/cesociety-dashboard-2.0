@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from '../../core/services/auth.service';
 import { LAYOUT_MODE } from '../../layouts/layouts.model';
 import { HomeService } from 'src/app/core/services/home.services';
 import { UserProfileService } from 'src/app/core/services/user.service';
@@ -34,7 +33,6 @@ export class LoginComponent implements OnInit {
   constructor(private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService,
     public toastr: ToastrService,
     private userService: UserProfileService,
     private homeService: HomeService
@@ -42,10 +40,6 @@ export class LoginComponent implements OnInit {
     this.getAllInstituteDetails();
     // redirect to home if already logged in
     localStorage.clear();
-    if (
-      this.authenticationService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
   }
 
   ngOnInit(): void {

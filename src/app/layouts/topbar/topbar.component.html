@@ -2,7 +2,7 @@
     <div class="navbar-header">
         <div class="d-flex">
             <!-- LOGO -->
-            <div class="navbar-brand-box">
+            <div class="navbar-brand-box" *ngIf="role=='Institute' || role=='superAdmin'">
                 <a routerLink="/" class="logo logo-dark">
                     <span class="logo-sm">
                         <img src="assets/images/logo-sm.svg" alt="" height="40">
@@ -21,7 +21,17 @@
                     </span>
                 </a>
             </div>
-
+            <div class="navbar-brand-box" *ngIf="company">
+                <a routerLink="/" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="assets/images/keryar.png" alt="Keryar" height="40">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="assets/images/keryar.png" alt="Keryar" height="40"> <span
+                            class="logo-txt">KERYAR</span>
+                    </span>
+                </a>
+            </div>
             <button type="button" class="btn btn-sm px-3 font-size-16 header-item" id="vertical-menu-btn"
                 (click)="toggleMobileMenu($event)">
                 <i class="fa fa-fw fa-bars"></i>
@@ -29,7 +39,7 @@
         </div>
 
         <div class="d-flex">
-            <div class="dropdown d-none d-sm-inline-block">
+            <div class="dropdown d-none d-sm-inline-block" *ngIf="role=='Institute'">
                 <button type="button" class="btn header-item btn-primary waves-effect waves-light"><a
                         href="https://{{InstituteURL}}" target="_blank" style="color: white;"><i
                             class="mdi mdi-eye-settings-outline align-middle"></i> View Site</a></button>
@@ -49,7 +59,9 @@
                     id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     ngbDropdownToggle>
                     <img class="rounded-circle header-profile-user" src="assets/images/users/inst.jpg"
-                        alt="Header Avatar">
+                        alt="Header Avatar" *ngIf="role=='Institute' || role=='superAdmin'">
+                    <img class="rounded-circle header-profile-user" src="assets/images/users/keryar.jpg"
+                        alt="Header Avatar" *ngIf="company">
                     <span class="d-none d-xl-inline-block ms-1 fw-medium">{{adminName}}</span>
                     <span class="d-none d-xl-inline-block ms-1 fw-medium">{{collegeName}}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>

@@ -26,9 +26,11 @@ export class DashboardComponent implements OnInit {
   contactData: any = [];
   infraData: any = [];
   blogsData: any = [];
-  resultData:any=[];
+  resultData: any = [];
+  instituteList: any = [];
   num: number = 0;
-
+  role: any = localStorage.getItem('Role');
+  company: any;
   option = {
     startVal: this.num,
     useEasing: true,
@@ -52,7 +54,8 @@ export class DashboardComponent implements OnInit {
       { label: 'Dashboard' },
       { label: 'Dashboard', active: true }
     ];
-
+    this.company = localStorage.getItem('Company');
+    debugger
     /**
      * Fetches the data
      */
@@ -71,6 +74,7 @@ export class DashboardComponent implements OnInit {
     this.getInfraDataById();
     this.getBlogDetails();
     this.getResultDataById();
+    this.getAllInstituteDetails();
   }
   getDepartmentDetails() {
     this.homeService.getDepartmentDataById(localStorage.getItem('InstituteId')).subscribe((res: any) => {
@@ -111,6 +115,11 @@ export class DashboardComponent implements OnInit {
   getResultDataById() {
     this.homeService.getResultDetailsById(localStorage.getItem('InstituteId')).subscribe((res: any) => {
       this.resultData = res;
+    })
+  }
+  getAllInstituteDetails() {
+    this.homeService.getAllInstituteData().subscribe((res: any) => {
+      this.instituteList = res;
     })
   }
 }

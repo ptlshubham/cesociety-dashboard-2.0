@@ -10,14 +10,14 @@ export const MENU: MenuItem[] = [
     {
         id: 2,
         label: 'MENUITEMS.DASHBOARDS.TEXT',
-        icon: 'home',
+        icon: 'mdi mdi-desktop-mac-dashboard',
         link: '/',
         role: 'Institute',
     },
     {
         id: 3,
         label: 'Department List',
-        icon: 'list',
+        icon: 'mdi mdi mdi-form-select',
         link: '/department',
         role: 'Institute',
 
@@ -25,7 +25,7 @@ export const MENU: MenuItem[] = [
     {
         id: 4,
         label: 'Image Uploader',
-        icon: 'image',
+        icon: 'mdi mdi-image-plus',
         link: '/image-upload',
         role: 'Institute',
 
@@ -34,7 +34,7 @@ export const MENU: MenuItem[] = [
     {
         id: 5,
         label: 'News Organizer',
-        icon: 'send',
+        icon: 'mdi mdi-newspaper-plus',
         link: '/news',
         role: 'Institute'
 
@@ -42,7 +42,7 @@ export const MENU: MenuItem[] = [
     {
         id: 6,
         label: 'Staff List',
-        icon: 'users',
+        icon: 'mdi mdi-account-group',
         link: '/staff-details',
         role: 'Institute'
 
@@ -50,7 +50,7 @@ export const MENU: MenuItem[] = [
     {
         id: 7,
         label: 'Student List',
-        icon: 'users',
+        icon: 'mdi mdi-account-group',
         link: '/student-details',
         role: 'Institute'
 
@@ -58,7 +58,7 @@ export const MENU: MenuItem[] = [
     {
         id: 8,
         label: 'Forms,Syllabus & Report',
-        icon: 'file-text',
+        icon: 'mdi mdi-book-information-variant',
         link: '/others',
         role: 'Institute'
 
@@ -66,7 +66,7 @@ export const MENU: MenuItem[] = [
     {
         id: 10,
         label: 'Student Result',
-        icon: 'file-text',
+        icon: 'mdi mdi-card-bulleted-outline',
         link: '/result',
         role: 'Institute'
 
@@ -74,7 +74,7 @@ export const MENU: MenuItem[] = [
     {
         id: 11,
         label: 'Infrastructure',
-        icon: 'home',
+        icon: 'mdi mdi-office-building',
         link: '/infrastructure',
         role: 'Institute'
 
@@ -82,7 +82,7 @@ export const MENU: MenuItem[] = [
     {
         id: 12,
         label: 'Blogs',
-        icon: 'file-plus',
+        icon: 'mdi mdi-blogger',
         link: '/blog',
         role: 'Institute'
 
@@ -90,7 +90,7 @@ export const MENU: MenuItem[] = [
     {
         id: 17,
         label: 'Contact US List',
-        icon: 'list',
+        icon: 'mdi mdi-contacts-outline',
         link: '/contact-list',
         role: 'Institute'
 
@@ -98,7 +98,7 @@ export const MENU: MenuItem[] = [
     {
         id: 19,
         label: 'Scholarship & Calendar',
-        icon: 'calendar',
+        icon: 'mdi mdi-calendar',
         link: '/more',
         role: 'Institute'
 
@@ -106,7 +106,7 @@ export const MENU: MenuItem[] = [
     {
         id: 20,
         label: 'Old Question Papers',
-        icon: 'file-text',
+        icon: 'mdi mdi-newspaper-variant-outline',
         link: '/papers',
         role: 'Institute'
 
@@ -114,56 +114,56 @@ export const MENU: MenuItem[] = [
     {
         id: 21,
         label: 'NAAC',
-        icon: 'book',
+        icon: 'mdi mdi-account-multiple-outline',
         link: '/naac',
         role: 'Institute'
     },
     {
         id: 23,
         label: 'Link Generater',
-        icon: 'link',
+        icon: 'mdi mdi-file-link-outline',
         link: '/link-generater',
         role: 'Institute'
     },
     {
-        id: 25,
+        id: 24,
         label: 'Committee',
-        icon: 'users',
+        icon: 'mdi mdi-account-group',
         link: '/committee',
         role: 'Institute'
     },
     {
-        id: 26,
+        id: 25,
         label: 'Placement Cell',
-        icon: 'file-text',
+        icon: 'mdi mdi-account-multiple-outline',
         link: '/placement',
         role: 'Institute'
     },
     {
         id: 27,
         label: 'Research',
-        icon: 'book-open',
+        icon: 'mdi mdi-book-cog-outline',
         link: '/research',
         role: 'Institute'
     },
     {
         id: 28,
         label: 'Campus Life',
-        icon: 'dribbble',
+        icon: 'mdi mdi-floor-plan',
         link: '/campus',
         role: 'Institute'
     },
     {
         id: 29,
         label: 'Syllabus List',
-        icon: 'list',
+        icon: 'mdi mdi-form-select',
         link: '/syllabus',
         role: 'Institute'
     },
     {
         id: 30,
         label: 'Admission List',
-        icon: 'list',
+        icon: 'mdi mdi-form-select',
         link: '/admission',
         role: 'Institute'
     }
@@ -178,7 +178,7 @@ export const CES: MenuItem[] = [
     {
         id: 2,
         label: 'MENUITEMS.DASHBOARDS.TEXT',
-        icon: 'home',
+        icon: 'mdi mdi-desktop-mac-dashboard',
         link: '/',
         role: 'Institute',
     },
@@ -192,96 +192,96 @@ export const CES: MenuItem[] = [
     {
         id: 4,
         label: 'Image Uploader',
-        icon: 'image',
+        icon: 'mdi mdi-image-plus',
         link: '/image-upload',
         role: 'Institute',
     },
     {
         id: 5,
         label: 'News Organizer',
-        icon: 'send',
+        icon: 'mdi mdi-newspaper-plus',
         link: '/news',
         role: 'Institute'
     },
     {
-        id: 9,
+        id: 6,
         label: 'Magazine',
-        icon: 'book',
+        icon: 'mdi mdi-book',
         link: '/magazine',
         role: 'Institute'
     },
     {
-        id: 12,
+        id: 7,
         label: 'Blogs',
-        icon: 'file-plus',
+        icon: 'mdi mdi-blogger',
         link: '/blog',
         role: 'Institute'
     },
     {
-        id: 22,
+        id: 8,
         label: 'Rahatokarsh Donation',
-        icon: 'archive',
+        icon: 'fas fa-rupee-sign',
         link: '/micro-donation',
     },
     {
-        id: 13,
+        id: 9,
         label: 'Donner List',
-        icon: 'list',
+        icon: 'fas fa-rupee-sign',
         link: '/donation',
         role: 'Admin'
     },
     {
-        id: 14,
+        id: 10,
         label: 'Rahotkarsh Fee Fund',
-        icon: 'list',
+        icon: 'fas fa-rupee-sign',
         link: '/rahotkarsh',
         role: 'Admin'
     },
     {
-        id: 16,
+        id: 11,
         label: 'Alumni List',
-        icon: 'list',
+        icon: 'mdi mdi-account-details',
         link: '/alumni-list',
         role: 'Institute',
     },
     {
-        id: 17,
+        id: 12,
         label: 'Contact US List',
-        icon: 'list',
+        icon: 'mdi mdi-contacts-outline',
         link: '/contact-list',
     },
     {
-        id: 18,
+        id: 13,
         label: 'Counseling List',
-        icon: 'calendar',
+        icon: 'mdi mdi-calendar',
         link: '/counseling',
     },
     {
-        id: 21,
+        id: 14,
         label: 'Gate Pass',
-        icon: 'home',
+        icon: 'mdi mdi-office-building',
         link: '/gate-pass',
     },
     {
-        id: 22,
+        id: 15,
         label: 'Answer-key',
-        icon: 'key',
+        icon: 'mdi mdi-newspaper-variant-outline',
         link: '/answer-key',
     },
     {
-        id: 24,
+        id: 16,
         label: 'Link Generater',
-        icon: 'link',
+        icon: 'mdi mdi-file-link-outline',
         link: '/link-generater',
         role: 'Institute'
     },
     {
-        id: 28,
+        id: 17,
         label: 'Photo Contest',
-        icon: 'camera',
+        icon: 'mdi mdi-file-image',
         link: '/photo-contest',
         role: 'Institute'
-    }
+    },
 
 ];
 export const superAdmin: MenuItem[] = [
@@ -293,60 +293,78 @@ export const superAdmin: MenuItem[] = [
     {
         id: 2,
         label: 'MENUITEMS.DASHBOARDS.TEXT',
-        icon: 'home',
+        icon: 'mdi mdi-desktop-mac-dashboard',
         link: '/',
     },
     {
-        id: 15,
+        id: 3,
         label: 'Institute List',
-        icon: 'list',
+        icon: 'mdi mdi-office-building-marker',
         link: '/college-list',
 
     },
     {
-        id: 9,
+        id: 4,
         label: 'Magazine',
-        icon: 'book',
+        icon: 'mdi mdi-book',
         link: '/magazine',
 
     },
     {
-        id: 13,
+        id: 5,
         label: 'Donner List',
-        icon: 'list',
+        icon: 'fas fa-rupee-sign',
         link: '/donation',
 
     },
     {
-        id: 14,
+        id: 6,
         label: 'Rahotkarsh Fee Fund',
-        icon: 'list',
+        icon: 'fas fa-rupee-sign',
         link: '/rahotkarsh',
 
     },
     {
-        id: 16,
+        id: 7,
         label: 'Alumni List',
-        icon: 'list',
+        icon: 'mdi mdi-account-details',
         link: '/alumni-list',
     },
     {
-        id: 18,
+        id: 8,
         label: 'Counseling List',
-        icon: 'calendar',
+        icon: 'mdi mdi-calendar',
         link: '/counseling',
     },
     {
-        id: 21,
+        id: 9,
         label: 'Gate Pass',
-        icon: 'key',
+        icon: 'mdi mdi-boom-gate-up-outline',
         link: '/gate-pass',
     },
     {
-        id: 22,
+        id: 10,
         label: 'Answer-key',
-        icon: 'key',
+        icon: 'mdi mdi-file-key-outline',
         link: '/answer-key',
     },
 ];
-
+export const comapnyAdmin: MenuItem[] = [
+    {
+        id: 1,
+        label: 'MENUITEMS.MENU.TEXT',
+        isTitle: true,
+    },
+    {
+        id: 2,
+        label: 'MENUITEMS.DASHBOARDS.TEXT',
+        icon: 'mdi mdi-desktop-mac-dashboard',
+        link: '/',
+    },
+    {
+        id: 3,
+        label: 'Employee List',
+        icon: 'mdi mdi-account-multiple-outline',
+        link: '/company/employee',
+    },
+];

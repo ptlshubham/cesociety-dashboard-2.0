@@ -10,9 +10,6 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { LanguageService } from '../../core/services/language.service';
 import { EventService } from '../../core/services/event.service';
-import { environment } from '../../../environments/environment';
-import { AuthenticationService } from '../../core/services/auth.service';
-import { AuthfakeauthenticationService } from '../../core/services/authfake.service';
 import { LAYOUT_MODE } from "../layouts.model";
 
 @Component({
@@ -56,8 +53,6 @@ export class HorizontaltopbarComponent implements OnInit, AfterViewInit {
     public languageService: LanguageService,
     public _cookiesService: CookieService,
     private eventService: EventService,
-    private authService: AuthenticationService,
-    private authFackservice: AuthfakeauthenticationService,
   ) {
     router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -253,11 +248,6 @@ export class HorizontaltopbarComponent implements OnInit, AfterViewInit {
    * Logout the user
    */
    logout() {
-    if (environment.defaultauth === 'firebase') {
-      this.authService.logout();
-    } else {
-      this.authFackservice.logout();
-    }
     this.router.navigate(['/account/login']);
   }
 

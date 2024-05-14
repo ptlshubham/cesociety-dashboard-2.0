@@ -14,6 +14,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { ConfirmmailComponent } from './confirmmail/confirmmail.component';
 import { VerificationComponent } from './verification/verification.component';
 import { TwostepverificationComponent } from './twostepverification/twostepverification.component';
+import { OrganizationLoginComponent } from './organization-login/organization-login.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { TwostepverificationComponent } from './twostepverification/twostepverif
     LogoutComponent,
     ConfirmmailComponent,
     VerificationComponent,
-    TwostepverificationComponent
+    TwostepverificationComponent,
+    OrganizationLoginComponent
   ],
   imports: [
     CommonModule,
