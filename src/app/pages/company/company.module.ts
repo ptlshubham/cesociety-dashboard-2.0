@@ -10,13 +10,16 @@ import { RequestTokensComponent } from './request-tokens/request-tokens.componen
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SharedModule } from 'src/app/shared/shared.module';
 
+import { ClientsComponent } from './clients/clients.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
   declarations: [
     EmployeeComponent,
     CompanyDashboardComponent,
-    RequestTokensComponent
+    RequestTokensComponent,
+    ClientsComponent,
   ],
   imports: [
     CommonModule,
@@ -30,9 +33,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ReactiveFormsModule,
     NgbPaginationModule,
     CKEditorModule,
+    NgSelectModule
 
   ],
-  exports:[
+  exports: [
     CompanyDashboardComponent,
     EmployeeComponent,
 

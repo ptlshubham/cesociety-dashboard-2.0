@@ -40,6 +40,7 @@ export class EmployeeComponent {
   ) { }
 
   ngOnInit(): void {
+    this.getStaffDetails();
 
     this.validationForm = this.formBuilder.group({
       role: ['', [Validators.required]],
@@ -47,6 +48,7 @@ export class EmployeeComponent {
       contact: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       email: ['', [Validators.required, Validators.email]],
       birthday_date: ['', [Validators.required]],
+      password: ['', [Validators.required]]
     });
 
   }
@@ -59,11 +61,14 @@ export class EmployeeComponent {
     this.validationForm.markAsUntouched();
     this.staffProfileImage = null;
     this.imageUrl = 'assets/images/file-upload-image.jpg';
+
   }
   backToTable() {
     this.isOpen = false;
     this.isUpdate = false;
     this.validationForm.markAsUntouched();
+
+
   }
   uploadFile(event: any) {
     let reader = new FileReader(); // HTML5 FileReader API
@@ -102,7 +107,7 @@ export class EmployeeComponent {
 
   }
   getStaffDetails() {
-    this.companyService.getAllEmployeeDetailsData(localStorage.getItem('InstituteId')).subscribe((res: any) => {
+    this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.staffDataTable = res;
       for (let i = 0; i < this.staffDataTable.length; i++) {
         this.staffDataTable[i].index = i + 1;
@@ -112,11 +117,11 @@ export class EmployeeComponent {
     })
   }
   saveStaffDetails() {
+    debugger
     this.submitted = true;
     if (this.validationForm.invalid) {
       return;
     } else {
-      this.staffModel.institute_id = localStorage.getItem('InstituteId');
       this.staffModel.profile = this.staffProfileImage;
       this.companyService.saveEmployeeDetails(this.staffModel).subscribe((res: any) => {
         this.staffData = res;
@@ -139,6 +144,7 @@ export class EmployeeComponent {
     this.isUpdate = true;
   }
   removeStaffDetails(id: any) {
+    debugger
     this.companyService.removeEmployeeDetailsById(id).subscribe((res: any) => {
       this.staffDataTable = res;
       this.toastr.success('Staff Details Removed Successfully.', 'Removed', { timeOut: 3000, });

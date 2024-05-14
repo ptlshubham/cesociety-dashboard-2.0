@@ -175,12 +175,16 @@ export class ApiService {
   public static getAdmissionListDataURL: string = ApiService.HOST_URL + '/admin/GetAdmissionListData/';
 
 
-// Company APIS
+  // Company APIS
   public static saveEmployeeProfileImagesURL: string = ApiService.HOST_URL + '/admin/SaveEmployeeProfileImages';
   public static saveEmployeeDetailsListURL: string = ApiService.HOST_URL + '/admin/SaveEmployeeDetailsList';
   public static updateEmployeeDetailsByIdURL: string = ApiService.HOST_URL + '/admin/UpdateEmployeeDetailsById';
-  public static getAllEmployeeDetailsURL: string = ApiService.HOST_URL + '/admin/GetAllEmployeeDetails/';
+  public static getAllEmployeeDetailsURL: string = ApiService.HOST_URL + '/admin/GetAllEmployeeDetails';
   public static removeEmployeeDetailsByIdURL: string = ApiService.HOST_URL + '/admin/RemoveEmployeeDetailsById/';
+  public static SaveClientImageURL: string = ApiService.HOST_URL + '/admin/SaveClientImage';
+  public static SaveClientDetailsURL: string = ApiService.HOST_URL + '/admin/SaveClientDetails';
+
+
 
   public static uploadRefrenceImageURL: string = ApiService.HOST_URL + '/admin/UploadMultiRefrence';
   public static uploadMultiRefrenceURL: string = ApiService.HOST_URL + '/admin/UploadRefrenceImage';

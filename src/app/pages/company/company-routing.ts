@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { EmployeeComponent } from './employee/employee.component';
 import { RequestTokensComponent } from './request-tokens/request-tokens.component';
+import { ClientsComponent } from './clients/clients.component';
 
 const routes: Routes = [
   {
@@ -11,7 +12,11 @@ const routes: Routes = [
   {
     path: 'request-tokens',
     component: RequestTokensComponent
-  }
+  }, {
+    path: 'clients',
+    component: ClientsComponent
+  },
+
 ];
 
 @NgModule({

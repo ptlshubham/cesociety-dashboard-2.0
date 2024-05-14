@@ -1,0 +1,301 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">Enter Client Details</h5>
+                    <button type="submit" class="btn btn-danger  waves-effect waves-light">
+                        <i class="bx bx-arrow-back font-size-16 align-middle"></i>
+                        Back</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <form [formGroup]="validationForm">
+                        <input type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Enter Name"
+                                        formControlName="name" [(ngModel)]="clientModel.name"
+                                        [ngClass]="{'is-invalid': f.name.touched && f.name.errors}">
+                                    <div *ngIf="f.name.touched && f.name.errors" class="invalid-feedback">
+                                        <span *ngIf="f.name.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Bussiness Type</label>
+                                    <input type="text" class="form-control" id="bussinesstype"
+                                        placeholder="Enter Bussiness Type" formControlName="bussinesstype"
+                                        [ngClass]="{'is-invalid': f.bussinesstype.touched && f.bussinesstype.errors}"
+                                        [(ngModel)]="clientModel.businesstype">
+                                    <div *ngIf="f.bussinesstype.touched && f.bussinesstype.errors"
+                                        class="invalid-feedback">
+                                        <span *ngIf="f.bussinesstype.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="mb-3">
+                                    <label for="choices-multiple-default" class="form-label font-size-13 ">Select
+                                        Media</label>
+                                    <div class="multi_default">
+                                        <ng-select [items]="medialist" [multiple]="true" bindLabel="name"
+                                            [(ngModel)]="clientModel.media" formControlName="media"
+                                            placeholder="Select Media Services"
+                                            (change)="formatSelectedMedia(clientModel.media)">
+                                            <ng-template ng-optgroup-tmp let-item="item">
+                                                {{item.name || 'Unnamed group'}}
+                                            </ng-template>
+                                        </ng-select>
+                                        <div *ngIf="f.media.touched && f.media.errors" class="invalid-feedback">
+                                            <span *ngIf="f.media.errors.required">This Field is
+                                                required.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="mb-3">
+                                    <label for="choices-multiple-default" class="form-label font-size-13 ">Select
+                                        designers</label>
+                                    <div class="multi_default">
+                                        <ng-select [items]="designerlist" [multiple]="true" bindLabel="name"
+                                            [(ngModel)]="clientModel.designers" placeholder="Select designers"
+                                            formControlName="designersrole">
+                                            <ng-template ng-optgroup-tmp let-item="item">
+                                                {{item.name || 'Unnamed group'}}
+                                            </ng-template>
+                                        </ng-select>
+                                        <div *ngIf="f.designersrole.touched && f.designersrole.errors"
+                                            class="invalid-feedback">
+                                            <span *ngIf="f.designersrole.errors.required">This Field is
+                                                required.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="mb-3">
+                                    <label for="choices-multiple-default" class="form-label font-size-13 ">Select
+                                        Manager</label>
+                                    <div class="multi_default">
+                                        <ng-select [items]="managerlist" [multiple]="true" bindLabel="name"
+                                            [(ngModel)]="clientModel.managers" placeholder="Select manager"
+                                            formControlName="manager">
+                                            <ng-template ng-optgroup-tmp let-item="item">
+                                                {{item.name || 'Unnamed group'}}
+                                            </ng-template>
+                                        </ng-select>
+                                        <div *ngIf="f.manager.touched && f.manager.errors" class="invalid-feedback">
+                                            <span *ngIf="f.manager.errors.required">This Field is
+                                                required.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+                                <div class="form-group mb-3">
+                                    <label>Post</label>
+                                    <input type="number" class="form-control" id="post"
+                                        placeholder="Enter Numbers's of posts" formControlName="post"
+                                        [(ngModel)]="clientModel.post"
+                                        [ngClass]="{'is-invalid': f.post.touched && f.post.errors}">
+                                    <div *ngIf="f.post.touched && f.post.errors" class="invalid-feedback">
+                                        <span *ngIf="f.post.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+                                <div class="form-group mb-3">
+                                    <label>Story</label>
+                                    <input type="number" class="form-control" id="story" [(ngModel)]="clientModel.story"
+                                        placeholder="Enter Numbers's of Stories" formControlName="story"
+                                        [ngClass]="{'is-invalid': f.story.touched && f.story.errors}">
+                                    <div *ngIf="f.story.touched && f.story.errors" class="invalid-feedback">
+                                        <span *ngIf="f.story.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+                                <div class="form-group mb-3">
+                                    <label>Reels</label>
+                                    <input type="number" class="form-control" id="reels" [(ngModel)]="clientModel.reels"
+                                        placeholder="Enter Numbers's of Reels" formControlName="reels"
+                                        [ngClass]="{'is-invalid': f.reels.touched && f.reels.errors}">
+                                    <div *ngIf="f.reels.touched && f.reels.errors" class="invalid-feedback">
+                                        <span *ngIf="f.reels.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+                                <div class="form-group mb-3">
+                                    <label>Extra</label>
+                                    <input type="number" class="form-control" id="extra"
+                                        placeholder="Enter Numbers's of extra" formControlName="extra"
+                                        [(ngModel)]="clientModel.extra"
+                                        [ngClass]="{'is-invalid': f.extra.touched && f.extra.errors}">
+                                    <div *ngIf="f.extra.touched && f.extra.errors" class="invalid-feedback">
+                                        <span *ngIf="f.extra.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+
+                                <div class="form-group mb-3">
+                                    <label>Facebook Link</label>
+                                    <input type="text" class="form-control" id="facebooklink"
+                                        placeholder="Enter Facebook Link" formControlName="facebooklink"
+                                        [ngClass]="{'is-invalid': f.facebooklink.touched && f.facebooklink.errors}"
+                                        [(ngModel)]="clientModel.facebooklink">
+                                    <div *ngIf="f.facebooklink.touched && f.facebooklink.errors"
+                                        class="invalid-feedback">
+                                        <span *ngIf="f.facebooklink.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+
+                                <div class="form-group mb-3">
+                                    <label>Twitter Link</label>
+                                    <input type="text" class="form-control" id="twitterlink"
+                                        placeholder="Enter Twitter Link" formControlName="twitterlink"
+                                        [(ngModel)]="clientModel.twitterlink"
+                                        [ngClass]="{'is-invalid': f.twitterlink.touched && f.twitterlink.errors}">
+                                    <div *ngIf="f.twitterlink.touched && f.twitterlink.errors" class="invalid-feedback">
+                                        <span *ngIf="f.twitterlink.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+
+                                <div class="form-group mb-3">
+                                    <label>Linkedin Link</label>
+                                    <input type="text" class="form-control" id="linkedinlink"
+                                        [(ngModel)]="clientModel.linkedinlink" placeholder="Enter Linkedin Link"
+                                        formControlName="linkedinlink"
+                                        [ngClass]="{'is-invalid': f.linkedinlink.touched && f.linkedinlink.errors}">
+                                    <div *ngIf="f.linkedinlink.touched && f.linkedinlink.errors"
+                                        class="invalid-feedback">
+                                        <span *ngIf="f.linkedinlink.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+
+                                <div class="form-group mb-3">
+                                    <label>Youtube Link</label>
+                                    <input type="text" class="form-control" id="youtubelink"
+                                        [(ngModel)]="clientModel.youtubelink" placeholder="Enter Youtube Link"
+                                        formControlName="youtubelink"
+                                        [ngClass]="{'is-invalid': f.youtubelink.touched && f.youtubelink.errors}">
+                                    <div *ngIf="f.youtubelink.touched && f.youtubelink.errors" class="invalid-feedback">
+                                        <span *ngIf="f.youtubelink.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mt-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="card-title mb-2">instagram credentials</h5>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <label for="basicpill-gid-input1" class="form-label">Instagram
+                                            Id</label>
+                                        <div class="mb-3 input-group">
+                                            <input type="text" formControlName="instaid" class="form-control"
+                                                [ngClass]="{ 'is-invalid': f.instaid.touched && f.instaid.errors }"
+                                                id="instaid" placeholder="Enter your id"
+                                                [(ngModel)]="clientModel.username">
+                                            <div *ngIf="f.instaid.touched || f.instaid.invalid "
+                                                class="invalid-feedback">
+                                                <div *ngIf="f.instaid.errors?.required">id is
+                                                    required.</div>
+                                            </div>
+                                        </div>
+                                        <label for="basicpill-gpass-input1" class="form-label">Password
+                                        </label>
+                                        <div class="mb-3 input-group">
+                                            <input type="text" formControlName="instapass" class="form-control"
+                                                [ngClass]="{ 'is-invalid': f.instapass.touched && f.instapass.errors }"
+                                                id="instapass" placeholder="Enter Password"
+                                                [(ngModel)]="clientModel.password">
+                                            <div *ngIf="f.instapass.touched || f.instapass.invalid "
+                                                class="invalid-feedback">
+                                                <div *ngIf="f.instapass.errors?.required">Password is required.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 col-md-6 mt-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="card-title mb-2">Upload Logo</h5>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <p style="text-align: center;color: red;">
+                                            Please Upload only 472 X 472px image.
+                                        </p>
+                                        <div class="avatar-upload">
+                                            <div class="avatar-edit">
+                                                <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
+                                                    #fileInput (change)="uploadFile($event)"
+                                                    [(ngModel)]="clientModel.logo" />
+                                            </div>
+                                            <div class="avatar-preview">
+                                                <div id="imagePreview" [style.backgroundImage]="'url('+ imageUrl +')'">
+                                                </div>
+                                            </div>
+                                            <div style="margin-top: 10px;">
+                                                <button type="submit" class="btn btn-primary btn-sm btn-block"
+                                                    (click)="fileInput.click()">Upload
+                                                    Image</button>
+                                                <button type="submit" class="btn btn-danger btn-sm btn-block"
+                                                    (click)="removeUploadedImage()">Remove
+                                                    Image</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="form-group">
+                        <div class="row justify-content-end">
+                            <div class="col-lg-1 col-xl-1 col-md-1 col-sm-2 col-xs-12">
+                                <button type="submit" class="btn btn-primary" [disabled]="validationForm.invalid"
+                                    (click)="SaveClientDetails()">Submit</button>
+                                <!-- <button type="submit" class="btn btn-primary" *ngIf="hasclientdata==true"
+                                    [disabled]="validationForm.invalid">Update</button> -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -73,6 +73,21 @@
                                 </div>
                             </div>
                             <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Password</label>
+                                    <input type="password" formControlName="password"
+                                        [ngClass]="{ 'is-invalid': f.password.touched && f.password.errors }"
+                                        [(ngModel)]="staffModel.password" class="form-control" id="password"
+                                        placeholder="Enter password ">
+                                    <div *ngIf="f.password.touched && f.password.errors" class="invalid-feedback">
+                                        <div *ngIf="f.password.errors.required">password is required</div>
+                                        <div *ngIf="f.password.errors.password">password must be a valid password
+                                            address</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-md-6">
                                 <div class="mb-3">
                                     <label for="example-date-input" class="form-label">Birthday Date</label>
                                     <input class="form-control" type="date" placeholder="Select Birthday Date"
@@ -175,7 +190,7 @@
                                             (click)="openUpdateStaff(s)"><i
                                                 class="bx bx-edit font-size-16 align-middle"></i></button>
                                         <button type="button" class="btn btn-soft-danger waves-effect waves-light"
-                                            (click)="removeStaffDetails(s.staffId)"><i
+                                            (click)="removeStaffDetails(s.id)"><i
                                                 class="bx bx-trash-alt font-size-16 align-middle"></i></button>
 
                                     </div>
