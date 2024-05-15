@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyService } from 'src/app/core/services/company.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-clients',
   templateUrl: './clients.component.html',
@@ -18,11 +19,13 @@ export class ClientsComponent {
     { name: 'Youtube' },
 
   ];
+  selectedmedialist: any
   submitted = false;
   clientData: any = []
   staffModel: any = {};
   clientModel: any = {};
-
+  isOpen: boolean = false;
+  isUpdate: boolean = false;
   editFile: boolean = true;
   removeUpload: boolean = false;
   designerlist: any = [];
@@ -74,6 +77,10 @@ export class ClientsComponent {
     this.clientModel.selectedmedia = formattedMedia;
     debugger
     return formattedMedia;
+
+  }
+  selectedmedia(e: any): void {
+    this.selectedmedialist = e.target.value;
   }
 
   getStaffDetails() {
@@ -88,7 +95,7 @@ export class ClientsComponent {
     const img = new Image();
     img.src = window.URL.createObjectURL(file);
     img.onload = () => {
-      if (img.width === 472 && img.height === 472) {
+      if (img.width === 200 && img.height === 200) {
         if (event.target.files && event.target.files[0]) {
           reader.readAsDataURL(file);
           reader.onload = () => {
@@ -119,22 +126,24 @@ export class ClientsComponent {
   }
   SaveClientDetails() {
     debugger
+
     this.submitted = true;
     if (this.validationForm.invalid) {
       return;
     } else {
       this.clientModel.profile = this.clientlogo;
-
+      this.clientModel.media = this.selectedmedialist;
       this.companyService.SaveClientDetails(this.clientModel).subscribe((res: any) => {
         this.clientData = res;
         this.toastr.success('Client Details Successfully Saved.', 'Success', { timeOut: 3000, });
         this.clientModel = {};
         this.validationForm.markAsUntouched();
-
+        this.BackToTable()
       })
     }
   }
   getClientsDetails() {
+    this.clientModel.media = this.selectedmedialist;
     this.companyService.getAllClientDetailsData().subscribe((res: any) => {
       this.clientsData = res;
       for (let i = 0; i < this.clientsData.length; i++) {
@@ -148,10 +157,46 @@ export class ClientsComponent {
     this.paginateData = this.clientsData.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
   removeClientsDetails(id: any) {
-    this.companyService.removeEmployeeDetailsById(id).subscribe((res: any) => {
-      this.clientData = res;
-      this.toastr.success('Staff Details Removed Successfully.', 'Removed', { timeOut: 3000, });
-      this.getClientsDetails();
-    })
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#34c38f',
+      cancelButtonColor: '#f46a6a',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(result => {
+      if (result.value) {
+        this.companyService.removeClientDetailsById(id).subscribe((req) => {
+        })
+        this.getClientsDetails();
+        Swal.fire('Deleted!', 'Employee details has been deleted.', 'success');
+      }
+    });
+
+  }
+  openAddClients() {
+    this.isOpen = true;
+    this.isUpdate = false;
+    this.clientModel = {};
+    this.validationForm.markAsUntouched();
+    this.clientlogo = null;
+    this.imageUrl = 'assets/images/file-upload-image.jpg';
+
+  }
+  openUpdateClients(data: any) {
+    this.clientModel.media = this.selectedmedialist;
+    this.clientModel = data;
+    this.selectedmedialist = data.media;
+    this.imageUrl = 'http://localhost:9000' + data.profile_image
+    this.clientModel.profile = data.profile_image;
+    this.isOpen = true;
+    this.isUpdate = true;
+  }
+  BackToTable() {
+    this.isOpen = false;
+    this.isUpdate = false;
+    this.validationForm.markAsUntouched();
+    this.getClientsDetails();
   }
 }
