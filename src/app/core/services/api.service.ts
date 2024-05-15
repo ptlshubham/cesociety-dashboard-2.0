@@ -181,10 +181,12 @@ export class ApiService {
   public static updateEmployeeDetailsByIdURL: string = ApiService.HOST_URL + '/admin/UpdateEmployeeDetailsById';
   public static getAllEmployeeDetailsURL: string = ApiService.HOST_URL + '/admin/GetAllEmployeeDetails';
   public static removeEmployeeDetailsByIdURL: string = ApiService.HOST_URL + '/admin/RemoveEmployeeDetailsById/';
+
   public static SaveClientImageURL: string = ApiService.HOST_URL + '/admin/SaveClientImage';
   public static SaveClientDetailsURL: string = ApiService.HOST_URL + '/admin/SaveClientDetails';
-
-
+  public static getAllClientDetailsURL: string = ApiService.HOST_URL + '/admin/GetAllClientDetails';
+  public static removeClientDetailsByIdURL: string = ApiService.HOST_URL + '/admin/RemoveClientDetailsById/';
+  public static getAssignedEmployeeDetailsURL: string = ApiService.HOST_URL + '/admin/GetAssignedEmployeeDetails/';
 
   public static uploadRefrenceImageURL: string = ApiService.HOST_URL + '/admin/UploadMultiRefrence';
   public static uploadMultiRefrenceURL: string = ApiService.HOST_URL + '/admin/UploadRefrenceImage';

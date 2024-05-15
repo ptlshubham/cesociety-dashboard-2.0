@@ -27,7 +27,7 @@ export class ClientsComponent {
   removeUpload: boolean = false;
   designerlist: any = [];
   managerlist: any = []
-  staffDataTable: any = [];
+  clientsData: any = [];
   hasclientdata: boolean = false;
   imageUrl: any = "assets/images/file-upload-image.jpg";
 
@@ -35,7 +35,10 @@ export class ClientsComponent {
   clientlogo: any = null;
 
   validationForm!: FormGroup;
-
+  page = 1;
+  pageSize = 10;
+  collectionSize = 0;
+  paginateData: any = [];
 
   constructor(
     public formBuilder: UntypedFormBuilder,
@@ -45,6 +48,7 @@ export class ClientsComponent {
   ) { }
   ngOnInit(): void {
     this.getStaffDetails();
+    this.getClientsDetails();
 
     this.validationForm = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -74,8 +78,8 @@ export class ClientsComponent {
 
   getStaffDetails() {
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
-      this.designerlist = res.filter((employee: any) => employee.role.toLowerCase() === 'designer');
-      this.managerlist = res.filter((employee: any) => employee.role.toLowerCase() === 'manager');
+      this.designerlist = res.filter((employee: any) => employee.role === 'Designer');
+      this.managerlist = res.filter((employee: any) => employee.role === 'Manager');
     })
   }
   uploadFile(event: any) {
@@ -129,5 +133,25 @@ export class ClientsComponent {
 
       })
     }
+  }
+  getClientsDetails() {
+    this.companyService.getAllClientDetailsData().subscribe((res: any) => {
+      this.clientsData = res;
+      for (let i = 0; i < this.clientsData.length; i++) {
+        this.clientsData[i].index = i + 1;
+      }
+      this.collectionSize = this.clientsData.length;
+      this.getPagintaion();
+    })
+  }
+  getPagintaion() {
+    this.paginateData = this.clientsData.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+  }
+  removeClientsDetails(id: any) {
+    this.companyService.removeEmployeeDetailsById(id).subscribe((res: any) => {
+      this.clientData = res;
+      this.toastr.success('Staff Details Removed Successfully.', 'Removed', { timeOut: 3000, });
+      this.getClientsDetails();
+    })
   }
 }

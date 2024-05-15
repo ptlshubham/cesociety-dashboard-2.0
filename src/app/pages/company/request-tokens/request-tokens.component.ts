@@ -7,6 +7,7 @@ import { RequestTokens } from './request-tokens.model';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TokensService } from 'src/app/core/services/tokens.service';
+import { CompanyService } from 'src/app/core/services/company.service';
 
 @Component({
   selector: 'app-request-tokens',
@@ -16,7 +17,7 @@ import { TokensService } from 'src/app/core/services/tokens.service';
 export class RequestTokensComponent {
   // bread crumb items
   validationForm!: FormGroup;
-  promotionModel: any = {};
+  tokenModel: any = {};
   imageUrl: any = "assets/images/file-upload-image.jpg";
   editFile: boolean = true;
   removeUpload: boolean = false;
@@ -35,13 +36,22 @@ export class RequestTokensComponent {
   endIndex = 15;
   page = 1;
   pageSize = 15;
+  managerList: any = [];
+  designerList: any = [];
+  clientList: any = [];
+  labelList: any = [{ name: 'CES' }, { name: 'Urgent' }];
+  employeeList: any = [];
+  assignedEmpData: any = [];
 
   constructor(private modalService: NgbModal,
     public formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
-    public tokensService: TokensService
-
-  ) { }
+    public tokensService: TokensService,
+    private companyService: CompanyService
+  ) {
+    this.getClientsDetails();
+    this.getAllEmployeeDetails();
+  }
 
   ngOnInit(): void {
     this.val++;
@@ -52,13 +62,37 @@ export class RequestTokensComponent {
       { label: 'Generate Tokens', active: true }
     ];
     this.validationForm = this.formBuilder.group({
+      client: ['', [Validators.required]],
+      manager: ['', [Validators.required]],
+      designer: ['', [Validators.required]],
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
+      label: [''],
+      deliverydate: ['', [Validators.required]],
     });
   }
   get f() { return this.validationForm.controls; }
 
+  getClientsDetails() {
+    this.companyService.getAllClientDetailsData().subscribe((res: any) => {
+      this.clientList = res;
+    })
+  }
+  getAllEmployeeDetails() {
+    this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
+      this.employeeList = res;
 
+    })
+  }
+  onClientChange(data: any) {
+    this.getAssignedEmpData(data.id);
+  }
+
+  getAssignedEmpData(id: any) {
+    this.companyService.getAssignedEmpDetailsById(id).subscribe((res: any) => {
+      this.assignedEmpData = res;
+    })
+  }
   open(content: any) {
     this.modalService.open(content, { size: 'xl', centered: true });
   }
@@ -181,23 +215,23 @@ export class RequestTokensComponent {
     };
   }
   removeUploadedImage() {
-    let data ={
-      img :this.refrenceImage
+    let data = {
+      img: this.refrenceImage
     };
-    this.tokensService.deleteInfraImage(data).subscribe((res:any)=>{
-      if(res =='sucess'){
+    this.tokensService.deleteInfraImage(data).subscribe((res: any) => {
+      if (res == 'sucess') {
         this.toastr.success('Image removed successfully.', 'Deleted', { timeOut: 2000, });
-      }else{
+      } else {
         this.toastr.error('Something went wrong try again later', 'Error', { timeOut: 2000, });
       }
     })
     this.refrenceImage = null;
     this.imageUrl = 'assets/images/file-upload-image.jpg';
   }
-  removeUploadedMultiImage(val:any) {
+  removeUploadedMultiImage(val: any) {
     debugger
     let data = {
-      img :this.addMultiImg[val].multiImageUrl
+      img: this.addMultiImg[val].multiImageUrl
 
     };
     this.tokensService.RemoveRefrenceMultiImage(data).subscribe((res: any) => {
@@ -210,4 +244,5 @@ export class RequestTokensComponent {
     this.addMultiImg.splice(val, 1);
 
   }
+
 }

@@ -24,11 +24,22 @@ export class CompanyService {
     removeEmployeeDetailsById(id: any) {
         return this.http.get(ApiService.removeEmployeeDetailsByIdURL + id);
     }
+
+
+
     SaveClientImage(data: any) {
         return this.http.post(ApiService.SaveClientImageURL, data);
     }
     SaveClientDetails(data: any): Observable<any> {
         return this.http.post(ApiService.SaveClientDetailsURL, data);
     }
-
+    getAllClientDetailsData() {
+        return this.http.get(ApiService.getAllClientDetailsURL);
+    }
+    removeClientDetailsById(id: any) {
+        return this.http.get(ApiService.removeClientDetailsByIdURL + id);
+    }
+    getAssignedEmpDetailsById(id: any) {
+        return this.http.get(ApiService.getAssignedEmployeeDetailsURL + id);
+    }
 }

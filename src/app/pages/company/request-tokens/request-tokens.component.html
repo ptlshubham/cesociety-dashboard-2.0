@@ -142,11 +142,91 @@
         <div class="modal-body">
             <form [formGroup]="validationForm">
                 <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="mb-3">
+                            <label for="choices-single-default" class="form-label font-size-13">Select
+                                Client</label>
+                            <ng-select [items]="clientList" bindLabel="name" formControlName="client"
+                                [(ngModel)]="tokenModel.client" placeholder="Select Client" (ngModelChange)="onClientChange($event)">
+                                <ng-template ng-optgroup-tmp let-item="item">
+                                    {{item.country || 'Unnamed group'}}
+                                </ng-template>
+                            </ng-select>
+                            <div *ngIf="f.client.touched && f.client.errors" class="invalid-feedback">
+                                <span *ngIf="f.client.errors.required">This Field is
+                                    required.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="mb-3">
+                            <label for="choices-multiple-default" class="form-label font-size-13 ">Select
+                                Manager</label>
+                            <div class="multi_default">
+                                <ng-select [items]="managerList" [multiple]="true" bindLabel="name"
+                                    [(ngModel)]="tokenModel.managers" formControlName="manager"
+                                    placeholder="Select Manager">
+                                    <ng-template ng-optgroup-tmp let-item="item">
+                                        {{item.name || 'Unnamed group'}}
+                                    </ng-template>
+                                </ng-select>
+                                <div *ngIf="f.manager.touched && f.manager.errors" class="invalid-feedback">
+                                    <span *ngIf="f.manager.errors.required">This Field is
+                                        required.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="mb-3">
+                            <label for="choices-multiple-default" class="form-label font-size-13 ">Select
+                                Designer</label>
+                            <div class="multi_default">
+                                <ng-select [items]="designerList" [multiple]="true" bindLabel="name"
+                                    [(ngModel)]="tokenModel.designers" formControlName="designer"
+                                    placeholder="Select Designer">
+                                    <ng-template ng-optgroup-tmp let-item="item">
+                                        {{item.name || 'Unnamed group'}}
+                                    </ng-template>
+                                </ng-select>
+                                <div *ngIf="f.designer.touched && f.designer.errors" class="invalid-feedback">
+                                    <span *ngIf="f.designer.errors.required">This Field is
+                                        required.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="mb-3">
+                            <label for="choices-single-default" class="form-label font-size-13">Select
+                                Label</label>
+                            <ng-select [items]="labelList" bindLabel="name" formControlName="label"
+                                [(ngModel)]="tokenModel.label" placeholder="Select Label">
+                                <ng-template ng-optgroup-tmp let-item="item">
+                                    {{item.country || 'Unnamed group'}}
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-6">
+                        <div class="mb-3">
+                            <label for="example-date-input" class="form-label">Delivery Date</label>
+                            <input class="form-control" type="date" placeholder="Select Delivery Date"
+                                formControlName="deliverydate"
+                                [ngClass]="{'is-invalid': f.deliverydate.touched && f.deliverydate.errors}"
+                                [(ngModel)]="tokenModel.deliverydate">
+                            <div *ngIf="f.deliverydate.touched && f.deliverydate.errors"
+                                class="invalid-feedback">
+                                <span *ngIf="f.deliverydate.errors.required">This Field is
+                                    required.</span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-12">
                         <div class="form-group mb-3">
                             <label>Title</label>
-                            <input type="text" class="form-control" placeholder="Enter Promotion Title"
-                                formControlName="title" [(ngModel)]="promotionModel.title"
+                            <input type="text" class="form-control" placeholder="Enter Title"
+                                formControlName="title" [(ngModel)]="tokenModel.title"
                                 [ngClass]="{'is-invalid': f.title.touched && f.title.errors}">
                             <div *ngIf="f.title.touched && f.title.errors" class="invalid-feedback">
                                 <span *ngIf="f.title.errors.required">This Field is
@@ -157,8 +237,8 @@
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-12">
                         <div class="form-group mb-3">
                             <label>Description</label>
-                            <textarea type="text" class="form-control" placeholder="Enter Image Description"
-                                formControlName="description" [(ngModel)]="promotionModel.description"
+                            <textarea type="text" class="form-control" placeholder="Enter Description"
+                                formControlName="description" [(ngModel)]="tokenModel.description"
                                 [ngClass]="{'is-invalid': f.description.touched && f.description.errors}">
                                 </textarea>
                             <div *ngIf="f.description.touched && f.description.errors" class="invalid-feedback">
@@ -170,13 +250,13 @@
 
                 </div>
                 <div class="row">
-                    <div class="col-xl-4 col-md-6">
+                    <div class="col-xl-3 col-lg-3 col-md-4">
                         <div class="form-group mb-3">
                             <label>Upload Image</label>
                             <div class="avatar-upload">
                                 <div class="avatar-edit">
                                     <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
-                                        (change)="uploadFile($event)" [(ngModel)]="promotionModel.image" />
+                                        (change)="uploadFile($event)" [(ngModel)]="tokenModel.image" />
                                 </div>
                                 <div class="avatar-preview">
                                     <div id="imagePreview" [style.backgroundImage]="'url('+ imageUrl +')'">
@@ -193,18 +273,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-md-6" *ngFor="let i of addMultiImg; let ind=index">
+                    <div class="col-xl-3 col-lg-3 col-md-4" *ngFor="let i of addMultiImg; let ind=index">
                         <div class="form-group mb-3">
                             <label>Upload Image</label>
                             <div class="avatar-upload">
                                 <div class="avatar-edit">
-                                    <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
-                                        #multiFileInput (change)="uploadMultiFile($event,ind)"
-                                        [(ngModel)]="promotionModel.image" />
+                                    <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #multiFileInput
+                                        (change)="uploadMultiFile($event,ind)" [(ngModel)]="tokenModel.image" />
                                 </div>
                                 <div class="avatar-preview">
-                                    <div id="imagePreview"
-                                        [style.backgroundImage]="'url('+ i.multiImageUrl +')'">
+                                    <div id="imagePreview" [style.backgroundImage]="'url('+ i.multiImageUrl +')'">
                                     </div>
                                 </div>
                                 <div style="margin-top: 10px;">
@@ -218,8 +296,7 @@
                             </div>
                         </div>
                     </div>
-                    <div
-                        class="col-xl-1 col-lg-1 col-md-1 col-md-1 d-flex align-items-center justify-content-center">
+                    <div class="col-xl-1 col-lg-1 col-md-1 col-md-1 d-flex align-items-center justify-content-center">
                         <div class="form-group mb-3">
                             <i class="bx bx-plus c-icon" (click)="addMultipleImage()"></i>
                         </div>
