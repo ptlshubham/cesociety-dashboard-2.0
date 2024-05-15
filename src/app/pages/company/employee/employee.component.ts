@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyService } from 'src/app/core/services/company.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-employee',
@@ -131,6 +132,7 @@ export class EmployeeComponent {
         this.isOpen = false;
       })
     }
+    this.getStaffDetails();
   }
   getPagintaion() {
     this.paginateData = this.staffDataTable.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
@@ -144,12 +146,23 @@ export class EmployeeComponent {
     this.isUpdate = true;
   }
   removeStaffDetails(id: any) {
-    debugger
-    this.companyService.removeEmployeeDetailsById(id).subscribe((res: any) => {
-      this.staffDataTable = res;
-      this.toastr.success('Staff Details Removed Successfully.', 'Removed', { timeOut: 3000, });
-      this.getStaffDetails();
-    })
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#34c38f',
+      cancelButtonColor: '#f46a6a',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(result => {
+      if (result.value) {
+        this.companyService.removeEmployeeDetailsById(id).subscribe((req) => {
+        })
+        Swal.fire('Deleted!', 'Staff details has been deleted.', 'success');
+        this.getStaffDetails();
+      }
+    });
+
   }
   updateStaffDetails() {
     if (this.staffProfileImage != null || undefined) {

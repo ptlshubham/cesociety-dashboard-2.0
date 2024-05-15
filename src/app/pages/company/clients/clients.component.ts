@@ -116,7 +116,7 @@ export class ClientsComponent {
       } else {
         this.imageUrl = 'assets/images/file-upload-image.jpg';
         this.clientlogo = null;
-        this.toastr.error('Please upload an image with dimensions of 472x472px', 'Invalid Dimension', { timeOut: 3000, });
+        this.toastr.error('Please upload an image with dimensions of 200x200px', 'Invalid Dimension', { timeOut: 3000, });
       }
     };
   }
@@ -169,8 +169,8 @@ export class ClientsComponent {
       if (result.value) {
         this.companyService.removeClientDetailsById(id).subscribe((req) => {
         })
+        Swal.fire('Deleted!', 'Client details has been deleted.', 'success');
         this.getClientsDetails();
-        Swal.fire('Deleted!', 'Employee details has been deleted.', 'success');
       }
     });
 

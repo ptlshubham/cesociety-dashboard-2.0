@@ -8,10 +8,13 @@ import { NgbDropdownModule, NgbPaginationModule, NgbToastModule, NgbTooltipModul
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RequestTokensComponent } from './request-tokens/request-tokens.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { NgApexchartsModule } from 'ng-apexcharts';
 import { SharedModule } from 'src/app/shared/shared.module';
 
+import { FullCalendarModule } from '@fullcalendar/angular';
 import { ClientsComponent } from './clients/clients.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { TodoListComponent } from './todo-list/todo-list.component';
 
 
 @NgModule({
@@ -20,6 +23,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     CompanyDashboardComponent,
     RequestTokensComponent,
     ClientsComponent,
+    TodoListComponent,
   ],
   imports: [
     CommonModule,
@@ -33,12 +37,18 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     NgbPaginationModule,
     CKEditorModule,
-    NgSelectModule
+    NgSelectModule,
+    NgApexchartsModule,
+
+    FullCalendarModule,
+
+
 
   ],
   exports: [
     CompanyDashboardComponent,
     EmployeeComponent,
+
 
   ]
 })

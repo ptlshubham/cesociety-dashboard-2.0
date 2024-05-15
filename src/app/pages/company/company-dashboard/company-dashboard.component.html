@@ -1,12 +1,60 @@
 <div class="row">
     <div class="col-xl-3 col-md-6">
+        <a routerLink="/company/employee">
+            <div class="card card-h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-6">
+                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Employee List</span>
+                            <h4 class="mb-3">
+                                <span [countUp]="employeeList.length" class="counter-value" [options]="option"></span>
+                            </h4>
+                        </div>
+
+                        <div class="col-6 text-center">
+                            <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                        </div>
+                    </div>
+                    <div class="text-nowrap">
+                        <span class="badge text-muted font-size-13"><i class="fa fa-arrow-right" aria-hidden="true"></i>
+                            View More</span>
+                    </div>
+
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-xl-3 col-md-6">
         <div class="card card-h-100">
             <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col-6">
-                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Employee List</span>
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Complated Token</span>
                         <h4 class="mb-3">
-                            <span [countUp]="employeeList.length" class="counter-value" [options]="option"></span>
+                            <span [countUp]="0" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="company/employee"><i
+                                class="fa fa-arrow-right" aria-hidden="true"></i> View More</a></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Incompate Token</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="0" class="counter-value" [options]="option"></span>
                         </h4>
                     </div>
 
@@ -17,6 +65,183 @@
                 <div class="text-nowrap">
                     <span class="badge text-muted font-size-13"><a routerLink="/college-list"><i
                                 class="fa fa-arrow-right" aria-hidden="true"></i> View More</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <a routerLink="/company/clients">
+            <div class="card card-h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-6">
+                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Total Client</span>
+                            <h4 class="mb-3">
+                                <span [countUp]="clientlist.length" class="counter-value" [options]="option"></span>
+                            </h4>
+                        </div>
+
+                        <div class="col-6 text-center">
+                            <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                        </div>
+                    </div>
+                    <div class="text-nowrap">
+                        <span class="badge text-muted font-size-13"><i class="fa fa-arrow-right" aria-hidden="true"></i>
+                            View More</span>
+                    </div>
+
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">CES Token Complate</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="0" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/college-list"><i
+                                class="fa fa-arrow-right" aria-hidden="true"></i> View More</a></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">CES Incomplate Token</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="0" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/college-list"><i
+                                class="fa fa-arrow-right" aria-hidden="true"></i> View More</a></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Processing Token</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="0" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/college-list"><i
+                                class="fa fa-arrow-right" aria-hidden="true"></i> View More</a></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Daily Work</span>
+                        <h4 class="mb-3">
+                            <span [countUp]="0" class="counter-value" [options]="option"></span>
+                        </h4>
+                    </div>
+
+                    <div class="col-6 text-center">
+                        <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                    </div>
+                </div>
+                <div class="text-nowrap">
+                    <span class="badge text-muted font-size-13"><a routerLink="/college-list"><i
+                                class="fa fa-arrow-right" aria-hidden="true"></i> View More</a></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="col-xl-4 col-md-4">
+    <div class="card card-h-100">
+        <!-- card body -->
+        <div class="card-body">
+            <div class="d-flex flex-wrap align-items-center mb-4">
+                <h5 class="card-title me-2">Wallet Balance</h5>
+                <div class="ms-auto">
+                    <div>
+                        <button type="button" class="btn btn-soft-secondary btn-sm">
+                            ALL
+                        </button>
+                        <button type="button" class="btn btn-soft-primary btn-sm ms-1">
+                            1M
+                        </button>
+                        <button type="button" class="btn btn-soft-secondary btn-sm ms-1">
+                            6M
+                        </button>
+                        <button type="button" class="btn btn-soft-secondary btn-sm ms-1">
+                            1Y
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-sm">
+                    <apx-chart dir="ltr" class="apex-charts" [series]="walletOverview.series"
+                        [chart]="walletOverview.chart" [legend]="walletOverview.legend" [colors]="walletOverview.colors"
+                        [labels]="walletOverview.labels" [stroke]="walletOverview.stroke"
+                        [plotOptions]="walletOverview.plotOptions">
+                    </apx-chart>
+                </div>
+                <div class="col-sm align-self-center">
+                    <div class="mt-4 mt-sm-0">
+                        <div>
+                            <p class="mb-2"><i class="mdi mdi-circle align-middle font-size-10 me-2 text-success"></i>
+                                Complated
+                            </p>
+                            <!-- <h6>0.4412 BTC = <span class="text-muted font-size-14 fw-normal">$ 4025.32</span></h6> -->
+                        </div>
+
+                        <div class="mt-4 pt-2">
+                            <p class="mb-2"><i class="mdi mdi-circle align-middle font-size-10 me-2 text-primary"></i>
+                                Processing
+                            </p>
+                            <!-- <h6>4.5701 ETH = <span class="text-muted font-size-14 fw-normal">$ 1123.64</span></h6> -->
+                        </div>
+
+                        <div class="mt-4 pt-2">
+                            <p class="mb-2"><i class="mdi mdi-circle align-middle font-size-10 me-2 text-info"></i>
+                                Pending</p>
+                            <!-- <h6>35.3811 LTC = <span class="text-muted font-size-14 fw-normal">$ 2263.09</span></h6> -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

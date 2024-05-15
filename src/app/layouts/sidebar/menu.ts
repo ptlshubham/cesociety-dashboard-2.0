@@ -379,4 +379,10 @@ export const comapnyAdmin: MenuItem[] = [
         icon: 'mdi mdi-clipboard-list-outline',
         link: '/company/request-tokens',
     },
+    {
+        id: 6,
+        label: 'Todo-List',
+        icon: 'mdi mdi-clipboard-list-outline',
+        link: '/company/todo-list',
+    }
 ];

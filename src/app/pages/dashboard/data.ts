@@ -121,7 +121,7 @@ const marketOverview: ChartType = {
 /**
  * Wallet Line Chart
  */
- const walletlineChart: ChartType = {
+const walletlineChart: ChartType = {
   series: [
     { data: [2, 10, 18, 22, 36, 15, 47, 75, 65, 19, 14, 2, 47, 42, 15] },
   ],
@@ -138,7 +138,7 @@ const marketOverview: ChartType = {
 /**
  * Trades Line Chart
  */
- const tradeslineChart: ChartType = {
+const tradeslineChart: ChartType = {
   series: [
     { data: [15, 42, 47, 2, 14, 19, 65, 75, 47, 15, 42, 47, 2, 14, 12] },
   ],
@@ -155,7 +155,7 @@ const marketOverview: ChartType = {
 /**
  * Invested Line Chart
  */
- const investedlineChart: ChartType = {
+const investedlineChart: ChartType = {
   series: [
     { data: [47, 15, 2, 67, 22, 20, 36, 60, 60, 30, 50, 11, 12, 3, 8] },
   ],
@@ -172,7 +172,7 @@ const marketOverview: ChartType = {
 /**
  * Profit Line Chart
  */
- const profitlineChart: ChartType = {
+const profitlineChart: ChartType = {
   series: [
     { data: [12, 14, 2, 47, 42, 15, 47, 75, 65, 19, 14, 2, 47, 42, 15] },
   ],
