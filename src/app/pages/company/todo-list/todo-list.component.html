@@ -1,5 +1,41 @@
 <div class="row">
-    <div class="col-12">
+    <div class="col-3">
+        <div class="card mb-lg-0">
+          <div class="card-body align-items-center">
+            <div class="card-body">
+              <div class="d-grid">
+                <button type="button" class="font-16 btn-primary btn btn-primary">
+                  <i class="mdi mdi-plus-circle-outline me-1"></i>Create New Event
+                </button>
+              </div>
+              <div id="external-events" class="mt-2">
+                <p class="text-muted">Drag and drop your event or click in the calendar</p>
+                <div class="bg-success-subtle text-success fc-event external-event" draggable="true" data-event="New Event Planning">
+                  <i class="mdi mdi-checkbox-blank-circle font-size-11 me-2"></i>New Event Planning
+                </div>
+                <div class="bg-info-subtle text-info fc-event external-event" draggable="true" data-event="Meeting">
+                  <i class="mdi mdi-checkbox-blank-circle font-size-11 me-2"></i>Meeting
+                </div>
+                <div class="bg-warning-subtle text-warning fc-event external-event" draggable="true" data-event="Generating Reports">
+                  <i class="mdi mdi-checkbox-blank-circle font-size-11 me-2"></i>Generating Reports
+                </div>
+                <div class="bg-danger-subtle text-danger fc-event external-event" draggable="true" data-event="Create New theme">
+                  <i class="mdi mdi-checkbox-blank-circle font-size-11 me-2"></i>Create New theme
+                </div>
+                <div class="bg-dark-subtle text-dark fc-event external-event" draggable="true" data-event="Team Meeting">
+                  <i class="mdi mdi-checkbox-blank-circle font-size-11 me-2"></i>Team Meeting
+                </div>
+              </div>
+              <div class="row justify-content-center mt-5">
+                <div class="col-lg-12 col-sm-6">
+                  <img src="/static/media/undraw-calendar.d4676eeb2d8ad3f5aa736c7327cceb01.svg" alt="" class="img-fluid d-block">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="col-9">
         <div class="card mb-lg-0">
             <div class="card-body app-calendar">
                 <full-calendar [options]="calendarOptions"></full-calendar>

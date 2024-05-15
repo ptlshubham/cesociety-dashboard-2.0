@@ -29,7 +29,10 @@ export class TodoListComponent implements OnInit {
   @ViewChild('editmodalShow') editmodalShow!: TemplateRef<any>;
   @ViewChild('modalShow') modalShow !: TemplateRef<any>;
 
-  constructor(private modalService: NgbModal, private formBuilder: UntypedFormBuilder) { }
+  constructor(private modalService: NgbModal, private formBuilder: UntypedFormBuilder) {
+
+    this.setupDraggableEvents();
+  }
 
   ngOnInit(): void {
     this._fetchData();
@@ -71,7 +74,10 @@ export class TodoListComponent implements OnInit {
     dayMaxEvents: true,
     select: this.openModal.bind(this),
     eventClick: this.handleEventClick.bind(this),
-    eventsSet: this.handleEvents.bind(this)
+    eventsSet: this.handleEvents.bind(this),
+
+    droppable: true, // Allows things to be dropped onto the calendar
+    drop: this.handleEventReceive.bind(this)
   };
   currentEvents: EventApi[] = [];
 
@@ -236,5 +242,29 @@ export class TodoListComponent implements OnInit {
   deleteEventData() {
     this.editEvent.remove();
     this.modalService.dismissAll();
+  }
+  setupDraggableEvents() {
+    debugger
+    const containerEl = document.getElementById('external-events');
+    if (containerEl) {
+      const draggableEl = containerEl.querySelectorAll('.external-event');
+
+      draggableEl.forEach(el => {
+        el.addEventListener('dragstart', function (e) {
+          const dragEvent = e as DragEvent;
+          dragEvent.dataTransfer?.setData('text/plain', (dragEvent.target as HTMLElement).getAttribute('data-event') || '');
+        });
+      });
+
+      containerEl.addEventListener('dragend', function (e) {
+        e.preventDefault();
+      });
+    }
+  }
+
+  handleEventReceive(event: any) {
+    debugger
+    const eventData = event.draggedEl.getAttribute('data-event');
+    event.event.setProp('title', eventData);
   }
 }
