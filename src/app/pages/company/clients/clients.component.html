@@ -351,18 +351,20 @@
                                 </td>
                                 <td class="text-end">
                                     <div class="d-flex justify-content-end gap-1">
-                                        <button type="button" class="btn btn-soft-primary waves-effect waves-light"
-                                            (click)="openUpdateClients(s)"><i
-                                                class="bx bx-edit font-size-16 align-middle"></i></button>
-                                        <button type="button" class="btn btn-soft-danger waves-effect waves-light"
-                                            (click)="removeClientsDetails(s.id)"><i
-                                                class="bx bx-trash-alt font-size-16 align-middle"></i></button>
-                                    </div>
+                                <td class="form-check form-switch form-switch-md mb-3 align-items-center" dir="ltr">
+                                    <input type="checkbox" class="form-check-input"
+                                        (click)="removeClientsDetails(s.id)">
                                 </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                    (click)="openUpdateClients(s)"><i
+                                        class="bx bx-edit font-size-16 align-middle"></i></button>
+
                 </div>
+                </td>
+                </tr>
+                </tbody>
+                </table>
+
                 <div class="row mt-4">
                     <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
                         [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"

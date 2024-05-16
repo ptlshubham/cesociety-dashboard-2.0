@@ -33,6 +33,7 @@ export class ClientsComponent {
   clientsData: any = [];
   hasclientdata: boolean = false;
   imageUrl: any = "assets/images/file-upload-image.jpg";
+  employeeList: any = [];
 
   cardImageBase64: any;
   clientlogo: any = null;
@@ -123,6 +124,12 @@ export class ClientsComponent {
     this.clientlogo = null;
     this.imageUrl = 'assets/images/file-upload-image.jpg';
   }
+  getAllEmployeeDetails() {
+    this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
+      this.employeeList = res;
+
+    })
+  }
   SaveClientDetails() {
     debugger
 
@@ -176,7 +183,7 @@ export class ClientsComponent {
         this.companyService.removeClientDetailsById(id).subscribe((req) => {
         })
         Swal.fire('Deleted!', 'Client details has been deleted.', 'success');
-        this.getClientsDetails();
+
       }
     });
 

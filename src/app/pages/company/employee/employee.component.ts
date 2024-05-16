@@ -19,7 +19,6 @@ export class EmployeeComponent {
   removeUpload: boolean = false;
   cardImageBase64: any;
   staffProfileImage: any = null;
-
   staffData: any = [];
   staffDataTable: any = [];
   isOpen: boolean = false;
@@ -117,6 +116,7 @@ export class EmployeeComponent {
       this.getPagintaion();
     })
   }
+
   saveStaffDetails() {
     debugger
     this.submitted = true;
@@ -159,7 +159,7 @@ export class EmployeeComponent {
         this.companyService.removeEmployeeDetailsById(id).subscribe((req) => {
         })
         Swal.fire('Deleted!', 'Staff details has been deleted.', 'success');
-        this.getStaffDetails();
+
       }
     });
 
