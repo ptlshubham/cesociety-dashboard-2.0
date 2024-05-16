@@ -8,8 +8,11 @@ export class TokensService {
     constructor(
         private httpClient: HttpClient
     ) { }
-    uploadRefrenceImage(img: any): Observable<any> {
-        return this.httpClient.post<any>(ApiService.uploadRefrenceImageURL, img);
+    uploadTokenImage(img: any): Observable<any> {
+        return this.httpClient.post<any>(ApiService.uploadTokenImageURL, img);
+    }
+    UploadMultiToken(img: any): Observable<any> {
+        return this.httpClient.post<any>(ApiService.uploadTokenMultiImageURL, img);
     }
     RemoveRefrenceMultiImage(id: any) {
         let bnr = {
@@ -17,14 +20,23 @@ export class TokensService {
         }
         return this.httpClient.post<any>(ApiService.removeRefrenceMultiImageURL, bnr);
     }
-    SavePromotiondetails(admin: any): Observable<any> {
-        return this.httpClient.post<any>(ApiService.savePromotiondetailsURL, admin);
+    SaveTokendetails(admin: any): Observable<any> {
+        return this.httpClient.post<any>(ApiService.saveTokenDetailsListURL, admin);
     }
-    UploadMultiRefrence(img: any): Observable<any> {
-        return this.httpClient.post<any>(ApiService.uploadMultiRefrenceURL, img);
-    }
+
     deleteInfraImage(data: any) {
 
         return this.httpClient.post(ApiService.deleteInfraImageURL, data);
     }
+
+    getAllTokenData() {
+        return this.httpClient.get(ApiService.getALLTokenDetailsURL);
+    }
+    updateMarkAsRead(id: any) {
+        return this.httpClient.get(ApiService.updateTokenUnreadStatusURL + id);
+    }
+    getMultiTokenImageData(id: any) {
+        return this.httpClient.get(ApiService.getALLTokenImageURL + id);
+    }
+
 }

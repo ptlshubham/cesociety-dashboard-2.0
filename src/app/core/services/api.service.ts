@@ -188,10 +188,16 @@ export class ApiService {
   public static removeClientDetailsByIdURL: string = ApiService.HOST_URL + '/admin/RemoveClientDetailsById/';
   public static getAssignedEmployeeDetailsURL: string = ApiService.HOST_URL + '/admin/GetAssignedEmployeeDetails/';
 
-  public static uploadRefrenceImageURL: string = ApiService.HOST_URL + '/admin/UploadMultiRefrence';
-  public static uploadMultiRefrenceURL: string = ApiService.HOST_URL + '/admin/UploadRefrenceImage';
+  public static uploadTokenImageURL: string = ApiService.HOST_URL + '/admin/UploadTokenImage';
+  public static uploadTokenMultiImageURL: string = ApiService.HOST_URL + '/admin/UploadTokenMultiImage';
   public static removeRefrenceMultiImageURL: string = ApiService.HOST_URL + '/admin/RemoveRefrenceImage';
-  public static savePromotiondetailsURL: string = ApiService.HOST_URL + '/admin/SavePromotiondetails';
+  public static saveTokenDetailsListURL: string = ApiService.HOST_URL + '/admin/SaveTokenDetailsList';
+  public static getALLTokenDetailsURL: string = ApiService.HOST_URL + '/admin/GetALLTokenDetails';
+  public static updateTokenUnreadStatusURL: string = ApiService.HOST_URL + '/admin/UpdateTokenUnreadStatus/';
+  public static getALLTokenImageURL: string = ApiService.HOST_URL + '/admin/GetALLTokenImage/';
+
+  
+  
 
 
 
