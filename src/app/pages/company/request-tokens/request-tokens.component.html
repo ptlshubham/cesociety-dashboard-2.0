@@ -11,22 +11,38 @@
                 Generate Token
             </button>
             <div class="mail-list mt-4">
-                <a href="javascript:void(0);" class="active"><i class="mdi mdi-email-outline me-2"></i>All Tokens<span
+                <a href="javascript:void(0);" [class.active]="activeTab === 'allTokens'"
+                    (click)="setActiveTab('allTokens')"><i class="mdi mdi-email-outline me-2"></i>All Tokens<span
                         class="ms-1 float-end">{{tokenData.length}}</span></a>
-                <a href="javascript:void(0);"><i class="mdi mdi-star-outline me-2"></i>Pending Tokens</a>
-                <a href="javascript:void(0);"><i class="mdi mdi-diamond-stone me-2"></i>Processing Tokens</a>
-                <a href="javascript:void(0);"><i class="mdi mdi-file-outline me-2"></i>Review Tokens</a>
-                <a href="javascript:void(0);"><i class="mdi mdi-email-check-outline me-2"></i>Changes Tokens</a>
-                <a href="javascript:void(0);"><i class="mdi mdi-trash-can-outline me-2"></i>Completed Tokens</a>
-                <a href="javascript:void(0);"><i class="mdi mdi-trash-can-outline me-2"></i>Cancel Tokens</a>
+                <a href="javascript:void(0);" [class.active]="activeTab === 'pendingTokens'"
+                    (click)="setActiveTab('pendingTokens')"><i class="mdi mdi-star-outline me-2"></i>Pending Tokens<span
+                        class="ms-1 float-end">{{pendingData.length}}</span></a>
+                <a href="javascript:void(0);" [class.active]="activeTab === 'processingTokens'"
+                    (click)="setActiveTab('processingTokens')"><i class="mdi mdi-diamond-stone me-2"></i>Processing
+                    Tokens<span class="ms-1 float-end">{{processingData.length}}</span></a>
+                <a href="javascript:void(0);" [class.active]="activeTab === 'reviewTokens'"
+                    (click)="setActiveTab('reviewTokens')"><i class="mdi mdi-file-outline me-2"></i>Review Tokens<span
+                        class="ms-1 float-end">{{reviewData.length}}</span></a>
+                <a href="javascript:void(0);" [class.active]="activeTab === 'changesTokens'"
+                    (click)="setActiveTab('changesTokens')"><i class="mdi mdi-email-check-outline me-2"></i>Changes
+                    Tokens<span class="ms-1 float-end">{{changesData.length}}</span></a>
+                <a href="javascript:void(0);" [class.active]="activeTab === 'completedTokens'"
+                    (click)="setActiveTab('completedTokens')"><i class="mdi mdi-trash-can-outline me-2"></i>Completed
+                    Tokens<span class="ms-1 float-end">{{completedData.length}}</span></a>
+                <a href="javascript:void(0);" [class.active]="activeTab === 'cancelTokens'"
+                    (click)="setActiveTab('cancelTokens')"><i class="mdi mdi-trash-can-outline me-2"></i>Cancel
+                    Tokens<span class="ms-1 float-end">{{cancelData.length}}</span></a>
             </div>
             <h6 class="mt-4">Labels</h6>
 
             <div class="mail-list mt-1">
-                <a href="javascript:void(0);"><span
-                        class="mdi mdi-arrow-right-drop-circle text-info float-end"></span>CES</a>
-                <a href="javascript:void(0);"><span
-                        class="mdi mdi-arrow-right-drop-circle text-danger float-end"></span>Urgent</a>
+                <a href="javascript:void(0);" [class.active]="activeTab === 'CES'" (click)="setActiveTab('CES')"><span
+                        class="mdi mdi-arrow-right-drop-circle text-info float-end"></span><i
+                        class="mdi mdi-trash-can-outline me-2"></i>CES</a>
+                <a href="javascript:void(0);" [class.active]="activeTab === 'Urgent'"
+                    (click)="setActiveTab('Urgent')"><span
+                        class="mdi mdi-arrow-right-drop-circle text-danger float-end"></span><i
+                        class="mdi mdi-alert-circle-check me-2"></i>Urgent</a>
             </div>
 
             <h6 class="mt-4">Clients List</h6>
@@ -47,7 +63,7 @@
         <!-- Right Sidebar -->
         <div class="email-rightbar mb-3" *ngIf="!isMailOpen">
             <div class="card">
-                <!-- <div class="btn-toolbar p-3" role="toolbar">
+                <div class="btn-toolbar p-3" role="toolbar">
                     <div class="btn-group me-2 mb-2 mb-sm-0">
                         <button type="button" class="btn btn-primary waves-light waves-effect"><i
                                 class="fa fa-inbox"></i></button>
@@ -92,7 +108,7 @@
                             <a class="dropdown-item" href="javascript:void(0);">Mute</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
                 <ul class="message-list">
                     @for (e of emailData | slice:0:20; track $index) {
                     <li class="unread" [ngClass]=" { 'unread' : e.unread==true }">
@@ -103,11 +119,11 @@
                                     *ngIf="e.status=='Pending'"></span>
                                 <span class="star-toggle mdi mdi-spin mdi-loading text-primary"
                                     *ngIf="e.status=='Processing'"></span>
-                                <span class="star-toggle mdi-chat-processing-outline text-dark"
+                                <span class="star-toggle mdi mdi-chat-processing-outline text-dark"
                                     *ngIf="e.status=='Review'"></span>
-                                <span class="star-toggle mdi-desktop-classic text-warning"
+                                <span class="star-toggle mdi mdi-desktop-classic text-warning"
                                     *ngIf="e.status=='Changes'"></span>
-                                <span class="star-toggle mdi-file-image text-success"
+                                <span class="star-toggle mdi mdi-book-check-outline text-success"
                                     *ngIf="e.status=='Completed'"></span>
 
                             </div>

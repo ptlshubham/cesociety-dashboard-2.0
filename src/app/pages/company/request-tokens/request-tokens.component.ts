@@ -48,6 +48,17 @@ export class RequestTokensComponent {
   tokenData: any = [];
   isMailOpen: boolean = false;
   openTokenData: any = {};
+  activeTab: string = 'allTokens';
+  role: any;
+  pendingData: any = [];
+  processingData: any = [];
+  reviewData: any = [];
+  changesData: any = [];
+  completedData: any = [];
+  cancelData: any = [];
+  cesLabelData: any = [];
+  urgentLabelData: any = [];
+
   constructor(private modalService: NgbModal,
     public formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
@@ -55,17 +66,21 @@ export class RequestTokensComponent {
     private companyService: CompanyService
   ) {
 
-    this.getAllToken();
   }
 
   ngOnInit(): void {
     this.val++;
     this.createdby = localStorage.getItem('Name');
+    this.role = localStorage.getItem('Role');
     this.isMailOpen = false;
+    this.setActiveTab('allTokens');
     this.breadCrumbItems = [
       { label: 'Home' },
       { label: 'Generate Tokens', active: true }
     ];
+    if (this.role != 'Designer') {
+      this.getAllToken();
+    }
     this.validationForm = this.formBuilder.group({
       client: ['', [Validators.required]],
       manager: ['', [Validators.required]],
@@ -78,6 +93,7 @@ export class RequestTokensComponent {
     });
   }
   get f() { return this.validationForm.controls; }
+
 
   getClientsDetails() {
     this.companyService.getAllClientDetailsData().subscribe((res: any) => {
@@ -230,6 +246,75 @@ export class RequestTokensComponent {
       })
     }
   }
+
+  setActiveTab(tab: string): void {
+    debugger
+    this.emailData = [];
+    this.activeTab = tab;
+
+    if (this.role != 'Designer') {
+      if (this.activeTab == 'allTokens') {
+        this.getAllToken();
+      }
+      else if (this.activeTab == 'pendingTokens') {
+        this.emailData = this.pendingData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'processingTokens') {
+        this.emailData = this.processingData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'reviewTokens') {
+        this.emailData = this.reviewData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'changesTokens') {
+        this.emailData = this.changesData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'completedTokens') {
+        this.emailData = this.completedData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'cancelTokens') {
+        this.emailData = this.cancelData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'CES') {
+        this.emailData = this.cesLabelData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'Urgent') {
+        this.emailData = this.urgentLabelData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+    }
+
+  }
   getAllToken() {
     this.tokensService.getAllTokenData().subscribe((res: any) => {
       res.forEach((element: any, index: number) => {
@@ -237,10 +322,19 @@ export class RequestTokensComponent {
           this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
             res[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
             res[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
-            debugger
           })
         }
       });
+      this.pendingData = res.filter((token: any) => token.status === 'Pending');
+      this.processingData = res.filter((token: any) => token.status === 'Processing');
+      this.reviewData = res.filter((token: any) => token.status === 'Review');
+      this.changesData = res.filter((token: any) => token.status === 'Changes');
+      this.completedData = res.filter((token: any) => token.status === 'Completed');
+      this.cancelData = res.filter((token: any) => token.status === 'Cancel');
+      this.cesLabelData = res.filter((token: any) => token.label === 'CES');
+      this.urgentLabelData = res.filter((token: any) => token.label === 'Urgent');
+
+
       this.tokenData = res;
       this.emailData = this.tokenData;
       this.totalRecords = this.tokenData.length;

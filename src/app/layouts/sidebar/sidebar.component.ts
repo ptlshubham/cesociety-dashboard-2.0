@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import MetisMenu from 'metismenujs';
 import { Router, NavigationEnd } from '@angular/router';
-import { CES, MENU, comapnyAdmin, superAdmin } from './menu';
+import { CES, Employee, MENU, comapnyAdmin, superAdmin } from './menu';
 import { MenuItem } from './menu.model';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -43,6 +43,9 @@ export class SidebarComponent implements OnInit {
     }
     else if (localStorage.getItem('Role') == 'companyAdmin') {
       this.menuItems = comapnyAdmin;
+    }
+    else if (localStorage.getItem('Role') == 'Designer' || localStorage.getItem('Role') == 'Manager') {
+      this.menuItems = Employee;
     }
   }
 

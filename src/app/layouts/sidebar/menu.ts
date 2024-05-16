@@ -386,3 +386,34 @@ export const comapnyAdmin: MenuItem[] = [
         link: '/company/todo-list',
     }
 ];
+export const Employee: MenuItem[] = [
+    {
+        id: 1,
+        label: 'MENUITEMS.MENU.TEXT',
+        isTitle: true,
+    },
+    {
+        id: 2,
+        label: 'MENUITEMS.DASHBOARDS.TEXT',
+        icon: 'mdi mdi-desktop-mac-dashboard',
+        link: '/',
+    },
+    {
+        id: 3,
+        label: 'Client List',
+        icon: 'mdi mdi-account-multiple-outline',
+        link: '/company/clients',
+    },
+    {
+        id: 4,
+        label: 'Generate Tokens',
+        icon: 'mdi mdi-clipboard-list-outline',
+        link: '/company/request-tokens',
+    },
+    {
+        id: 6,
+        label: 'Todo-List',
+        icon: 'mdi mdi-clipboard-list-outline',
+        link: '/company/todo-list',
+    }
+];
