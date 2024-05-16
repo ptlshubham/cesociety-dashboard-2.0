@@ -11,15 +11,15 @@ import Swal from 'sweetalert2';
 export class ClientsComponent {
   multiDefaultOption = 'Adam';
   medialist: any = [
-    { name: 'instagram' },
-    { name: 'FaceBook' },
-    { name: 'twitter' },
-    { name: 'Linkedin' },
+    { name: 'IG' },
+    { name: 'FB' },
+    { name: 'TW' },
+    { name: 'LI' },
     { name: 'GMB' },
-    { name: 'Youtube' },
+    { name: 'YT' },
 
   ];
-  selectedmedialist: any
+  selectedmedialist: any;
   submitted = false;
   clientData: any = []
   staffModel: any = {};
@@ -77,9 +77,8 @@ export class ClientsComponent {
     this.clientModel.selectedmedia = formattedMedia;
     debugger
     return formattedMedia;
-
   }
-  selectedmedia(e: any): void {
+  selectedMediaList(e: any): void {
     this.selectedmedialist = e.target.value;
   }
 
@@ -132,7 +131,6 @@ export class ClientsComponent {
       return;
     } else {
       this.clientModel.profile = this.clientlogo;
-      this.clientModel.media = this.selectedmedialist;
       this.companyService.SaveClientDetails(this.clientModel).subscribe((res: any) => {
         this.clientData = res;
         this.toastr.success('Client Details Successfully Saved.', 'Success', { timeOut: 3000, });
@@ -143,13 +141,21 @@ export class ClientsComponent {
     }
   }
   getClientsDetails() {
-    this.clientModel.media = this.selectedmedialist;
     this.companyService.getAllClientDetailsData().subscribe((res: any) => {
+      res.forEach((element: any, index: number) => {
+        if (res.length > 0) {
+          const mediaArray = element.media.split(',').map((item: any) => item.trim());
+          res[index].mediaArray = mediaArray;
+        }
+        debugger
+      });
       this.clientsData = res;
+
       for (let i = 0; i < this.clientsData.length; i++) {
         this.clientsData[i].index = i + 1;
       }
       this.collectionSize = this.clientsData.length;
+      debugger
       this.getPagintaion();
     })
   }
@@ -185,9 +191,8 @@ export class ClientsComponent {
 
   }
   openUpdateClients(data: any) {
-    this.clientModel.media = this.selectedmedialist;
     this.clientModel = data;
-    this.selectedmedialist = data.media;
+    // this.selectedmedialist = data.media;
     this.imageUrl = 'http://localhost:9000' + data.profile_image
     this.clientModel.profile = data.profile_image;
     this.isOpen = true;

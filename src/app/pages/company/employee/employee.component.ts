@@ -77,7 +77,7 @@ export class EmployeeComponent {
     const img = new Image();
     img.src = window.URL.createObjectURL(file);
     img.onload = () => {
-      if (img.width === 472 && img.height === 472) {
+      if (img.width === 200 && img.height === 200) {
         if (event.target.files && event.target.files[0]) {
           reader.readAsDataURL(file);
           reader.onload = () => {

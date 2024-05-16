@@ -267,4 +267,13 @@ export class TodoListComponent implements OnInit {
     const eventData = event.draggedEl.getAttribute('data-event');
     event.event.setProp('title', eventData);
   }
+
+  dragStart(event: DragEvent) {
+    const target = event.target as HTMLDivElement;
+    const eventData = target.getAttribute('data-event');
+    if (eventData) {
+      event.dataTransfer?.setData('text/plain', eventData);
+    }
+  }
+
 }

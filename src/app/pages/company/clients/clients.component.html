@@ -49,18 +49,14 @@
                                             [(ngModel)]="clientModel.media" formControlName="media"
                                             placeholder="Select Media Services"
                                             (change)="formatSelectedMedia(clientModel.media)"
-                                            (change)="selectedmedia($event)">
+                                            (change)="selectedMediaList($event)">
                                             <ng-option value="" hidden>Select Media</ng-option>
                                             <ng-option *ngFor="let c of medialist"
                                                 [value]="c.name">{{c.name}}</ng-option>
-                                            <ng-template ng-optgroup-tmp let-item="item">
-                                                {{item.name || 'Unnamed group'}}
-                                            </ng-template>
-                                        </ng-select>
 
+                                        </ng-select>
                                         <div *ngIf="f.media.touched && f.media.errors" class="invalid-feedback">
-                                            <span *ngIf="f.media.errors.required">This Field is
-                                                required.</span>
+                                            <span *ngIf="f.media.errors.required">This Field is required.</span>
                                         </div>
                                     </div>
                                 </div>
@@ -299,6 +295,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -322,6 +319,7 @@
                             <tr>
                                 <th class="text-left">#</th>
                                 <th class="text-center">Name</th>
+                                <th class="text-center">Profile</th>
                                 <th class="text-center">Business Type</th>
                                 <th class="text-center">Manager</th>
                                 <th class="text-center">designers</th>
@@ -336,6 +334,10 @@
                         <tbody>
                             <tr *ngFor="let s of paginateData;let i=index">
                                 <td class="text-left">{{s.index}}</td>
+                                <td class="text-center">
+                                    <img src="http://localhost:9000{{s.profile_image}}" alt=""
+                                        class="rounded-circle avatar-sm">
+                                </td>
                                 <td class="text-center">{{s.name}} </td>
                                 <td class="text-center">{{s.businesstype}} </td>
                                 <td class="text-center">{{s.managers}} </td>
@@ -344,7 +346,9 @@
                                 <td class="text-center">{{s.reels}} </td>
                                 <td class="text-center">{{s.story}} </td>
                                 <td class="text-center">{{s.extra}} </td>
-                                <td> <span class="badge bg-success">{{s.media}}</span></td>
+                                <td>
+                                    <span class="badge bg-success me-1" *ngFor="let m of s.mediaArray">{{ m }}</span>
+                                </td>
                                 <td class="text-end">
                                     <div class="d-flex justify-content-end gap-1">
                                         <button type="button" class="btn btn-soft-primary waves-effect waves-light"
@@ -355,7 +359,6 @@
                                                 class="bx bx-trash-alt font-size-16 align-middle"></i></button>
                                     </div>
                                 </td>
-
                             </tr>
                         </tbody>
                     </table>
