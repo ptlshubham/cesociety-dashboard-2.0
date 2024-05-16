@@ -195,12 +195,23 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-4">
                         <div class="flex-shrink-0 me-3">
-                            <img class="rounded-circle avatar-sm" src="assets/images/users/avatar-2.jpg"
-                                alt="Generic placeholder image">
+                            <td class="text-center">
+                                <img src="http://localhost:9000{{openTokenData.clientlogo}}" alt=""
+                                    class="rounded-circle avatar-sm">
+                            </td>
                         </div>
                         <div class="flex-grow-1">
-                            <h5 class="font-size-14 mb-0">Humberto D. Champion</h5>
-                            <small class="text-muted">support&#64;domain.com</small>
+                            <h5 class="font-size-14 mb-1">{{openTokenData.clientname}}</h5>
+                            <td class="text-center">
+                                <span class="me-1">Manager: </span>
+                                <span class="badge bg-primary me-1" *ngFor="let m of openTokenData.assignedManagers">{{
+                                    m.name
+                                    }}</span>
+                            </td>
+                            <span class="me-1">Designers:</span>
+                            <span class="badge bg-primary me-1" *ngFor="let m of openTokenData.assignedDesigners">{{
+                                m.name
+                                }}</span>
                         </div>
                     </div>
 

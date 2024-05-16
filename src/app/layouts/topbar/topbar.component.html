@@ -65,13 +65,14 @@
 
 
             </div>
-            <div class="dropdown  text-sm-end" ngbDropdown *ngIf="company">
+            <div class="dropdown d-inline-block" ngbDropdown *ngIf="company">
                 <button type="button" class="btn header-item noti-icon position-relative"
                     id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false" ngbDropdownToggle>
                     <i-feather name="bell" class="icon-lg"></i-feather>
-                    <span class="badge bg-danger rounded-pill">5</span>
+                    <span class="badge bg-danger rounded-pill">{{tokenData.length}}</span>
                 </button>
+
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
                     aria-labelledby="page-header-notifications-dropdown" ngbDropdownMenu>
                     <div class="p-3">
@@ -85,7 +86,9 @@
                             </div>
                         </div>
                     </div>
-
+                    <ngx-simplebar style="max-height: 230px;">
+                        <!-- Your notification items here -->
+                    </ngx-simplebar>
                     <div class="p-2 border-top d-grid">
                         <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
                             <i class="mdi mdi-arrow-right-circle me-1"></i> <span>{{
@@ -94,6 +97,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="dropdown" ngbDropdown>
                 <button type="button" class="btn header-item bg-soft-light border-start border-end "
                     id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"

@@ -87,7 +87,6 @@ export class RequestTokensComponent {
   getAllEmployeeDetails() {
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.employeeList = res;
-
     })
   }
   onClientChange(data: any) {
@@ -233,6 +232,15 @@ export class RequestTokensComponent {
   }
   getAllToken() {
     this.tokensService.getAllTokenData().subscribe((res: any) => {
+      res.forEach((element: any, index: number) => {
+        if (res.length > 0) {
+          this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
+            res[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
+            res[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
+            debugger
+          })
+        }
+      });
       this.tokenData = res;
       this.emailData = this.tokenData;
       this.totalRecords = this.tokenData.length;
@@ -241,15 +249,19 @@ export class RequestTokensComponent {
       }
     })
   }
+
   openTokenEmailDetails(data: any) {
+    debugger
     this.multiTokenImgData = [];
     if (data.unread == true) {
       this.tokensService.updateMarkAsRead(data.id).subscribe((res: any) => {
+
         this.getAllToken();
       })
     }
     this.tokensService.getMultiTokenImageData(data.id).subscribe((res: any) => {
       this.multiTokenImgData = res;
+
     })
 
     this.isMailOpen = true;

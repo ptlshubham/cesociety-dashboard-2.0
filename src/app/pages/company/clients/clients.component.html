@@ -341,11 +341,11 @@
                                 <td class="text-center">{{s.name}} </td>
                                 <td class="text-center">{{s.businesstype}} </td>
                                 <td class="text-center">
-                                    <span class="badge bg-success me-1" *ngFor="let m of s.assignedManagers">{{ m.name
+                                    <span class="badge bg-primary me-1" *ngFor="let m of s.assignedManagers">{{ m.name
                                         }}</span>
                                 </td>
                                 <td class="text-center">
-                                    <span class="badge bg-success me-1" *ngFor="let d of s.assignedDesigners">{{ d.name
+                                    <span class="badge bg-primary me-1" *ngFor="let d of s.assignedDesigners">{{ d.name
                                         }}</span>
                                 </td>
                                 <td class="text-center">{{s.post}} </td>
@@ -353,7 +353,7 @@
                                 <td class="text-center">{{s.story}} </td>
                                 <td class="text-center">{{s.extra}} </td>
                                 <td>
-                                    <span class="badge bg-success me-1" *ngFor="let m of s.mediaArray">{{ m }}</span>
+                                    <span class="badge bg-primary me-1" *ngFor="let m of s.mediaArray">{{ m }}</span>
                                 </td>
                                 <td class="text-end">
                                     <div class="d-flex justify-content-end gap-1">
@@ -375,7 +375,7 @@
                     <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
                         [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
                         (pageChange)="getPagintaion();" aria-label="Default pagination"
-                        class="d-flex justify-content-end pagination-rounded-flat pagination-success"></ngb-pagination>
+                        class="d-flex justify-content-end pagination-rounded-flat pagination-primbg-primary "></ngb-pagination>
                 </div>
             </div>
             <!-- end card body -->

@@ -130,12 +130,9 @@ export class ClientsComponent {
   getAllEmployeeDetails() {
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.employeeList = res;
-
     })
   }
   SaveClientDetails() {
-    debugger
-
     this.submitted = true;
     if (this.validationForm.invalid) {
       return;
@@ -163,7 +160,6 @@ export class ClientsComponent {
         }
       });
       this.clientsData = res;
-
       for (let i = 0; i < this.clientsData.length; i++) {
         this.clientsData[i].index = i + 1;
       }
