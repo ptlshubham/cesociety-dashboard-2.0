@@ -255,13 +255,20 @@ export class RequestTokensComponent {
     this.multiTokenImgData = [];
     if (data.unread == true) {
       this.tokensService.updateMarkAsRead(data.id).subscribe((res: any) => {
-
         this.getAllToken();
       })
     }
     this.tokensService.getMultiTokenImageData(data.id).subscribe((res: any) => {
       this.multiTokenImgData = res;
 
+    })
+    this.companyService.getAllClientDetailsData().subscribe((res: any) => {
+      res.forEach((element: any) => {
+        if (data.clientid == element.id) {
+          data.clientlogo = element.logo
+          debugger
+        }
+      });
     })
 
     this.isMailOpen = true;
