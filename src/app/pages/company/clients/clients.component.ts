@@ -43,6 +43,9 @@ export class ClientsComponent {
   pageSize = 10;
   collectionSize = 0;
   paginateData: any = [];
+  assignedEmpData: any = [];
+  assignedDesignerList: any = [];
+  assignedManagerList: any = [];
 
   constructor(
     public formBuilder: UntypedFormBuilder,
@@ -153,8 +156,11 @@ export class ClientsComponent {
         if (res.length > 0) {
           const mediaArray = element.media.split(',').map((item: any) => item.trim());
           res[index].mediaArray = mediaArray;
+          this.companyService.getAssignedEmpDetailsById(element.id).subscribe((data: any) => {
+            res[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
+            res[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
+          })
         }
-        debugger
       });
       this.clientsData = res;
 

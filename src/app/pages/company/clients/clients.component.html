@@ -340,8 +340,14 @@
                                 </td>
                                 <td class="text-center">{{s.name}} </td>
                                 <td class="text-center">{{s.businesstype}} </td>
-                                <td class="text-center">{{s.managers}} </td>
-                                <td class="text-center">{{s.designers}} </td>
+                                <td class="text-center">
+                                    <span class="badge bg-success me-1" *ngFor="let m of s.assignedManagers">{{ m.name
+                                        }}</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-success me-1" *ngFor="let d of s.assignedDesigners">{{ d.name
+                                        }}</span>
+                                </td>
                                 <td class="text-center">{{s.post}} </td>
                                 <td class="text-center">{{s.reels}} </td>
                                 <td class="text-center">{{s.story}} </td>
