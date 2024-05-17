@@ -144,7 +144,7 @@ export class ClientsComponent {
         this.clientModel = {};
         this.validationForm.markAsUntouched();
         this.BackToTable()
-      })
+      });
     }
   }
   getClientsDetails() {
@@ -200,10 +200,10 @@ export class ClientsComponent {
 
   }
   openUpdateClients(data: any) {
-    this.clientModel = data;
     // this.selectedmedialist = data.media;
     this.imageUrl = 'http://localhost:9000' + data.profile_image
     this.clientModel.profile = data.profile_image;
+    this.clientModel = data;
     this.isOpen = true;
     this.isUpdate = true;
   }
