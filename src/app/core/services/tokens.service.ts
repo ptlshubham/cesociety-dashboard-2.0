@@ -32,6 +32,9 @@ export class TokensService {
     getAllTokenData() {
         return this.httpClient.get(ApiService.getALLTokenDetailsURL);
     }
+    getTokenByEmpIdData(id: any) {
+        return this.httpClient.get(ApiService.getEmployeeTokenByIdURL + id);
+    }
     updateMarkAsRead(id: any) {
         return this.httpClient.get(ApiService.updateTokenUnreadStatusURL + id);
     }
@@ -39,4 +42,7 @@ export class TokensService {
         return this.httpClient.get(ApiService.getALLTokenImageURL + id);
     }
 
+    updateTokenStatus(data: any) {
+        return this.httpClient.post(ApiService.updateTokenStatusDetailsURL, data);
+    }
 }

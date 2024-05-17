@@ -61,6 +61,7 @@ export class OrganizationLoginComponent {
           localStorage.setItem('token', res[0].token);
           localStorage.setItem('Role', res[0].role);
           localStorage.setItem('Company', res[0].iscompany);
+          localStorage.setItem('Eid', res[0].id);
           this.toastr.success('Login Successfully', 'success', { timeOut: 3000, });
           this.router.navigate(['/']);
         } else if (res == 1) {

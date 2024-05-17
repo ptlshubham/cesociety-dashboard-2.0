@@ -230,9 +230,9 @@
 
   .mail-list {
 
-    // .checkbox-wrapper-mail {
-    //   box-shadow: inset 0 0 0 1px $gray-400;
-    // }
+    .checkbox-wrapper-mail {
+      box-shadow: inset 0 0 0 1px $gray-400;
+    }
     a {
       color: var(--#{$prefix}gray-400);
     }

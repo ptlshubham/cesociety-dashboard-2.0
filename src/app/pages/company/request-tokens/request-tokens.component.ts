@@ -32,7 +32,7 @@ export class RequestTokensComponent {
   breadCrumbItems!: Array<{}>;
   public Editor = ClassicEditor;
   emailData!: Array<any>;
-  emailIds: number[] = [];
+  emailIds: any[] = [];
   totalRecords = 0;
   startIndex = 1;
   endIndex = 15;
@@ -58,6 +58,7 @@ export class RequestTokensComponent {
   cancelData: any = [];
   cesLabelData: any = [];
   urgentLabelData: any = [];
+  isEditToken: boolean = false;
 
   constructor(private modalService: NgbModal,
     public formBuilder: UntypedFormBuilder,
@@ -65,7 +66,7 @@ export class RequestTokensComponent {
     public tokensService: TokensService,
     private companyService: CompanyService
   ) {
-
+    this.getClientsDetails();
   }
 
   ngOnInit(): void {
@@ -80,6 +81,9 @@ export class RequestTokensComponent {
     ];
     if (this.role != 'Designer') {
       this.getAllToken();
+    }
+    else {
+      this.getTokenByEmployee();
     }
     this.validationForm = this.formBuilder.group({
       client: ['', [Validators.required]],
@@ -127,7 +131,6 @@ export class RequestTokensComponent {
     })
   }
   open(content: any) {
-    this.getClientsDetails();
     this.getAllEmployeeDetails();
     this.modalService.open(content, { size: 'xl', centered: true });
   }
@@ -313,10 +316,113 @@ export class RequestTokensComponent {
         }
       }
     }
+    else {
+      if (this.activeTab == 'allTokens') {
+        this.getTokenByEmployee();
+      }
+      else if (this.activeTab == 'pendingTokens') {
+        this.emailData = this.pendingData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'processingTokens') {
+        this.emailData = this.processingData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'reviewTokens') {
+        this.emailData = this.reviewData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'changesTokens') {
+        this.emailData = this.changesData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'completedTokens') {
+        this.emailData = this.completedData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'cancelTokens') {
+        this.emailData = this.cancelData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'CES') {
+        this.emailData = this.cesLabelData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'Urgent') {
+        this.emailData = this.urgentLabelData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+    }
 
+  }
+  openClientWiseList(id: any) {
+    this.emailData = [];
+    this.tokenData.forEach((element: any) => {
+      if (element.clientid == id) {
+        this.emailData.push(element);
+      }
+      this.totalRecords = this.emailData.length;
+      for (let i = 0; i < this.emailData.length; i++) {
+        this.emailData[i].index = i + 1;
+      }
+    });
   }
   getAllToken() {
     this.tokensService.getAllTokenData().subscribe((res: any) => {
+      res.forEach((element: any, index: number) => {
+        if (res.length > 0) {
+          this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
+            res[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
+            res[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
+          })
+        }
+      });
+      this.pendingData = res.filter((token: any) => token.status === 'Pending');
+      this.processingData = res.filter((token: any) => token.status === 'Processing');
+      this.reviewData = res.filter((token: any) => token.status === 'Review');
+      this.changesData = res.filter((token: any) => token.status === 'Changes');
+      this.completedData = res.filter((token: any) => token.status === 'Completed');
+      this.cancelData = res.filter((token: any) => token.status === 'Cancel');
+      this.cesLabelData = res.filter((token: any) => token.label === 'CES');
+      this.urgentLabelData = res.filter((token: any) => token.label === 'Urgent');
+
+
+      this.tokenData = res;
+      this.emailData = this.tokenData;
+      this.totalRecords = this.tokenData.length;
+      for (let i = 0; i < this.tokenData.length; i++) {
+        this.tokenData[i].index = i + 1;
+      }
+    })
+  }
+
+  getTokenByEmployee() {
+    this.tokensService.getTokenByEmpIdData(localStorage.getItem('Eid')).subscribe((res: any) => {
+      debugger
       res.forEach((element: any, index: number) => {
         if (res.length > 0) {
           this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
@@ -401,6 +507,34 @@ export class RequestTokensComponent {
     const filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
     return filename;
   }
+  selectMail(event: any, id: any) {
+    debugger
+    if (event.target.checked) {
+      let req = {
+        id: id,
+        status: 'Cancel'
+      }
+      this.emailIds.push(req);
+      if (this.emailIds.length == 1) {
+        this.isEditToken = true;
+      }
+      else {
+        this.isEditToken = false;
+      }
+    } else {
+      this.emailIds.splice(this.emailIds.indexOf(id), 1);
+      if (this.emailIds.length == 1) {
+        this.isEditToken = true;
+      }
+      else {
+        this.isEditToken = false;
+      }
+    }
+  }
+  editTokenDetails() {
+    this.getAllEmployeeDetails();
+    // this.modalService.open(content, { size: 'xl', centered: true });
+  }
   confirm() {
     Swal.fire({
       title: 'Are you sure?',
@@ -436,13 +570,7 @@ export class RequestTokensComponent {
   /***
    * send mail select multiple mail
    */
-  selectMail(event: any, id: any) {
-    if (event.target.checked) {
-      this.emailIds.push(id);
-    } else {
-      this.emailIds.splice(this.emailIds.indexOf(id), 1);
-    }
-  }
+
 
   /**
    * Handle on page click event
