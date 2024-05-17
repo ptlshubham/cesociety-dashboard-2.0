@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { CompanyService } from 'src/app/core/services/company.service';
 import { ChartType, } from './dashboard.model';
-import { walletOverview } from './data';
+
+import { TokensService } from 'src/app/core/services/tokens.service';
+
 
 @Component({
   selector: 'app-company-dashboard',
@@ -18,15 +20,36 @@ export class CompanyDashboardComponent {
     duration: 2,
     // decimalPlaces: 2,
   };
-  walletOverview!: ChartType;
+  pendingData: any = [];
+  processingData: any = [];
+  reviewData: any = [];
+  changesData: any = [];
+  completedData: any = [];
+  cancelData: any = [];
+  Tokens: ChartType = {
+    chart: {
+      width: 227,
+      height: 227,
+      type: 'pie'
+    },
+    colors: ["#777aca", "#5156be", "#a8aada"],
+    legend: { show: false },
+    stroke: {
+      width: 0
+    },
+    series: [],
+    labels: [],
+  };
+
 
   constructor(
     private companyService: CompanyService,
+    public tokensService: TokensService,
+  ) {
 
-  ) { }
+  }
   ngOnInit(): void {
-    this.fetchData();
-
+    this.getAllToken();
     this.DashBoardTotals();
   }
   getStaffDetails() {
@@ -43,8 +66,14 @@ export class CompanyDashboardComponent {
     this.getStaffDetails();
     this.getClientsDetails();
   }
-  private fetchData() {
-    this.walletOverview = walletOverview;
-
+  getAllToken() {
+    this.tokensService.getAllTokenData().subscribe((res: any) => {
+      this.pendingData = res.filter((token: any) => token.status === 'Pending');
+      this.processingData = res.filter((token: any) => token.status === 'Processing');
+      this.completedData = res.filter((token: any) => token.status === 'Completed');
+      this.Tokens.series.push(this.pendingData.length, this.processingData.length, this.completedData.length);
+      this.Tokens.labels.push('Pending', 'Processing', 'Completed');
+      debugger;
+    });
   }
 }

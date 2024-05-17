@@ -11,7 +11,7 @@ const walletOverview: ChartType = {
     stroke: {
         width: 0
     },
-    series: [2, 70, 15],
-    labels: ["Complated", "Processing", "Pending"],
+    series: [2, 3],
+    labels: [],
 };
 export { walletOverview };
