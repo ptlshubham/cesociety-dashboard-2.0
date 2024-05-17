@@ -18,7 +18,7 @@
                     (click)="setActiveTab('pendingTokens')"><i class="mdi mdi-account-clock me-2"></i>Pending
                     Tokens<span class="ms-1 float-end">{{pendingData.length}}</span></a>
                 <a href="javascript:void(0);" [class.active]="activeTab === 'processingTokens'"
-                    (click)="setActiveTab('processingTokens')"><i class="mdi mdi-diamond-stone me-2"></i>Processing
+                    (click)="setActiveTab('processingTokens')"><i class="mdi mdi-spin mdi-loading me-2"></i>Processing
                     Tokens<span class="ms-1 float-end">{{processingData.length}}</span></a>
                 <a href="javascript:void(0);" [class.active]="activeTab === 'reviewTokens'"
                     (click)="setActiveTab('reviewTokens')"><i class="mdi mdi-message-draw  me-2"></i>Review Tokens<span
@@ -28,7 +28,7 @@
                         class="mdi mdi-swap-horizontal-circle-outline me-2"></i>Changes
                     Tokens<span class="ms-1 float-end">{{changesData.length}}</span></a>
                 <a href="javascript:void(0);" [class.active]="activeTab === 'completedTokens'"
-                    (click)="setActiveTab('completedTokens')"><i class="mdi mdi-check-circle me-2"></i>Completed
+                    (click)="setActiveTab('completedTokens')"><i class="mdi mdi-check-all me-2"></i>Completed
                     Tokens<span class="ms-1 float-end">{{completedData.length}}</span></a>
                 <a href="javascript:void(0);" [class.active]="activeTab === 'cancelTokens'"
                     (click)="setActiveTab('cancelTokens')"><i class="mdi mdi-trash-can-outline me-2"></i>Cancel
