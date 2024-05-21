@@ -36,12 +36,11 @@ export class EmployeeComponent {
   constructor(
     public toastr: ToastrService,
     public formBuilder: UntypedFormBuilder,
-    private companyService: CompanyService
+    private companyService: CompanyService,
   ) { }
 
   ngOnInit(): void {
     this.getStaffDetails();
-
     this.validationForm = this.formBuilder.group({
       role: ['', [Validators.required]],
       name: ['', [Validators.required]],
@@ -107,7 +106,9 @@ export class EmployeeComponent {
 
   }
   getStaffDetails() {
+
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
+      this.staffDataTable = res.filter((staff: any) => staff.role !== 'companyAdmin');
       this.staffDataTable = res;
       for (let i = 0; i < this.staffDataTable.length; i++) {
         this.staffDataTable[i].index = i + 1;

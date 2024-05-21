@@ -157,7 +157,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table mb-0">
+                    <table class="table mb-0" *ngIf="staffModel.role !== 'companyAdmin'">
                         <thead class="table-light">
                             <tr>
                                 <th class="text-left">#</th>
@@ -167,13 +167,12 @@
                                 <th class="text-center">Email</th>
                                 <th class="text-center">Birthday</th>
                                 <th class="text-center">Created Date</th>
-
-
                                 <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let s of paginateData;let i=index">
+
                                 <td class="text-left">{{s.index}}</td>
                                 <td class="text-center">
                                     <img src="http://localhost:9000{{s.profile_image}}" alt=""
@@ -195,8 +194,6 @@
                                         class="bx bx-edit font-size-16 align-middle"></i></button>
                 </div>
                 </td>
-
-
                 </tr>
                 </tbody>
                 </table>

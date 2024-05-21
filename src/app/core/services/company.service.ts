@@ -53,7 +53,7 @@ export class CompanyService {
     getEmployeeDataById(id: any) {
         return this.http.get(ApiService.getEmployeeDataByIdURL + id);
     }
-    // SaveAttendenceDetails(data: any): Observable<any> {
-    //     return this.http.post(ApiService.SaveAttendenceURL, data);
-    // }
+    SaveAttendanceDetails(data: any): Observable<any> {
+        return this.http.post(ApiService.SaveAttendanceDetailsURL, data);
+    }
 }

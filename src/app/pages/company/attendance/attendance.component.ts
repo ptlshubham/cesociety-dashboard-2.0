@@ -5,12 +5,12 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import { UntypedFormBuilder, Validators, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormGroup, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { category, calendarEvents, createEventId } from './data';
 import { CompanyService } from 'src/app/core/services/company.service';
-import ls from 'localstorage-slim';
+
 
 @Component({
   selector: 'app-attendance',
@@ -32,11 +32,13 @@ export class AttendanceComponent {
   collectionSize = 0;
   page = 1;
   pageSize = 10;
-  staffModel: any = {}
-  attendence!: UntypedFormGroup;
+  staffModel: any = {};
+  attendanceList: any = [];
+  attendance!: UntypedFormGroup;
   @ViewChild('editmodalShow') editmodalShow!: TemplateRef<any>;
   @ViewChild('modalShow') modalShow !: TemplateRef<any>;
   employeeList: any = [];
+  attendanceModel: any = {};
 
 
 
@@ -50,18 +52,21 @@ export class AttendanceComponent {
   ngOnInit(): void {
     this._fetchData();
     this.getAllEmployeeDetails();
+    this.saveAttendenceDetails();
     // VAlidation
-    this.attendence = this.formBuilder.group({
-      title: ['', [Validators.required]],
-      category: ['', [Validators.required]],
-    });
 
     //Edit Data Get
     this.formEditData = this.formBuilder.group({
       editTitle: ['', [Validators.required]],
       editCategory: [],
     });
+    this.attendance = this.formBuilder.group({
+      present: ['', Validators.required],
+      workfromhome: ['', Validators.required],
+      leave: ['', Validators.required]
+    });
   }
+  get f() { return this.attendance.controls; }
 
   /***
    * Calender Set
@@ -143,11 +148,11 @@ export class AttendanceComponent {
    * Close event modal
    */
   closeEventModal() {
-    this.attendence = this.formBuilder.group({
-      inoffice: ['', Validators.required],
-      workfromhome: ['', Validators.required],
-      Leave: ['', Validators.required]
-    });
+    // this.attendance = this.formBuilder.group({
+    //   present: ['', Validators.required],
+    //   workfromhome: ['', Validators.required],
+    //   Leave: ['', Validators.required]
+    // });
     this.modalService.dismissAll();
   }
 
@@ -155,7 +160,7 @@ export class AttendanceComponent {
    * Event Data Get
    */
   get form() {
-    return this.attendence.controls;
+    return this.attendance.controls;
   }
 
   /***
@@ -175,9 +180,9 @@ export class AttendanceComponent {
    * Save the event
    */
   saveEvent() {
-    if (this.attendence.valid) {
-      const title = this.attendence.get('title')!.value;
-      const className = this.attendence.get('category')!.value;
+    if (this.attendance.valid) {
+      const title = this.attendance.get('title')!.value;
+      const className = this.attendance.get('category')!.value;
       const calendarApi = this.newEventDate.view.calendar;
       calendarApi.addEvent({
         id: createEventId(),
@@ -191,7 +196,7 @@ export class AttendanceComponent {
 
 
       this.position();
-      this.attendence = this.formBuilder.group({
+      this.attendance = this.formBuilder.group({
         title: '',
         category: '',
       });
@@ -263,5 +268,21 @@ export class AttendanceComponent {
       this.employeeList = res;
       this.staffModel.role = localStorage.getItem('Role')
     })
+  }
+
+  saveAttendenceDetails() {
+    this.employeeList
+    debugger
+    this.companyService.SaveAttendanceDetails(this.attendanceModel).subscribe((res: any) => {
+      this.staffModel.eid = localStorage.getItem('Eid');
+      this.attendanceList = res;
+    })
+  }
+  radioSelected(employeeId: any, option: string) {
+    // Here, you can perform whatever action you need with the selected employee ID and option
+    console.log('Employee ID:', employeeId);
+    console.log('Selected Option:', option);
+    debugger
+    // You can store these values in another array or perform any other operation
   }
 }

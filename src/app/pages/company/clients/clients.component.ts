@@ -295,7 +295,6 @@ export class ClientsComponent {
   formatSelectedMedia(mediaArray: any[]): string {
     const formattedMedia = mediaArray.map(media => media.name).join(', ');
     this.clientModel.selectedmedia = formattedMedia;
-    debugger
     return formattedMedia;
   }
   selectedMediaList(e: any): void {
@@ -380,7 +379,7 @@ export class ClientsComponent {
         this.clientsData[i].index = i + 1;
       }
       this.collectionSize = this.clientsData.length;
-      debugger
+
       this.getPagintaion();
     })
   }
