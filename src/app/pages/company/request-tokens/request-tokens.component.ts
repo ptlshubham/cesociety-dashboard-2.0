@@ -544,14 +544,17 @@ export class RequestTokensComponent {
         })
         this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
           this.employeeList = res;
-        })
-        this.tokensService.getAssignedTokenEmp(this.tokenModel.id).subscribe((res: any) => {
+          this.designerList = this.employeeList.filter((employee: any) => employee.role === 'Designer');
+          this.managerList = this.employeeList.filter((employee: any) => employee.role === 'Manager');
+        });
 
-          this.designerList = res.filter((employee: any) => employee.role === 'Designer');
-          this.managerList = res.filter((employee: any) => employee.role === 'Manager');
-          this.tokenModel.designers = this.designerList;
-          this.tokenModel.managers = this.managerList;
-        })
+        // Fetch assigned employees and set tokenModel designers and managers
+        this.tokensService.getAssignedTokenEmp(this.tokenModel.id).subscribe((res: any) => {
+          const assignedDesignerList = res.filter((employee: any) => employee.role === 'Designer');
+          const assignedManagerList = res.filter((employee: any) => employee.role === 'Manager');
+          this.tokenModel.designers = assignedDesignerList;
+          this.tokenModel.managers = assignedManagerList;
+        });
         this.clientList.forEach((element: any) => {
           if (element.id == this.tokenModel.clientid) {
             this.tokenModel.client = element.name;

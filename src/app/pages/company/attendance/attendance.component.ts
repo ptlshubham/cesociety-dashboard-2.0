@@ -10,7 +10,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { category, calendarEvents, createEventId } from './data';
 import { CompanyService } from 'src/app/core/services/company.service';
-import ls from 'localstorage-slim';
 
 @Component({
   selector: 'app-attendance',
