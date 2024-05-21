@@ -261,7 +261,7 @@ export class AttendanceComponent {
   getAllEmployeeDetails() {
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.employeeList = res;
-      this.staffModel.role = ls.get('Role', { decrypt: true });
+      this.staffModel.role = localStorage.getItem('Role')
     })
   }
 }

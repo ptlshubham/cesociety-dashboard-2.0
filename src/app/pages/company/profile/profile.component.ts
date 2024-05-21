@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 // import { MustMatch } from 'src/app/account/auth/validation.mustmatch';
-import ls from 'localstorage-slim';
+
 import { ToastrService } from 'ngx-toastr';
 import { CompanyService } from 'src/app/core/services/company.service';
 
@@ -59,7 +59,7 @@ export class ProfileComponent {
     }
     else {
       if (this.valid) {
-        this.resetPwdModel.id = ls.get('Eid', { decrypt: true });
+        this.resetPwdModel.id = localStorage.getItem('Eid')
         this.resetPwdModel.password = this.a.password.value;
         this.resetPwdModel.confirmpwd = this.a.confirmpwd.value;
         this.companyService.updatePassword(this.resetPwdModel).subscribe((data) => {
@@ -81,9 +81,9 @@ export class ProfileComponent {
   }
   getStaffDetails() {
     debugger
-    this.companyService.getEmployeeDataById(ls.get('Eid', { decrypt: true })).subscribe((data: any) => {
+    this.companyService.getEmployeeDataById(localStorage.getItem('Eid')).subscribe((data: any) => {
       this.staffModel = data[0];
-      this.staffModel.name = ls.get('Name', { decrypt: true });
+      this.staffModel.name = localStorage.getItem('Name')
     })
   }
 
@@ -102,7 +102,7 @@ export class ProfileComponent {
   }
   onPasswordFocusOut() {
     let data = {
-      id: ls.get('Eid', { decrypt: true }),
+      id: localStorage.getItem('Eid'),
       password: this.passwordValue
     }
     debugger
