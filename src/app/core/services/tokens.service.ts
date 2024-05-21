@@ -45,4 +45,7 @@ export class TokensService {
     updateTokenStatus(data: any) {
         return this.httpClient.post(ApiService.updateTokenStatusDetailsURL, data);
     }
+    getAssignedTokenEmp(id: any){
+        return this.httpClient.get(ApiService.getAssignedEmpTokenByIdURL + id);
+    }
 }

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
@@ -59,6 +59,7 @@ export class RequestTokensComponent {
   cesLabelData: any = [];
   urgentLabelData: any = [];
   isEditToken: boolean = false;
+  @ViewChild('content') modalShow !: TemplateRef<any>;
 
   constructor(private modalService: NgbModal,
     public formBuilder: UntypedFormBuilder,
@@ -120,12 +121,12 @@ export class RequestTokensComponent {
     this.getAssignedEmpData(data.id);
   }
   onLabelChange(data: any) {
-    debugger
     this.tokenModel.label = data.name;
   }
   getAssignedEmpData(id: any) {
     this.companyService.getAssignedEmpDetailsById(id).subscribe((res: any) => {
       this.assignedEmpData = res;
+
       this.designerList = res.filter((employee: any) => employee.role === 'Designer');
       this.managerList = res.filter((employee: any) => employee.role === 'Manager');
     })
@@ -146,7 +147,6 @@ export class RequestTokensComponent {
     );
   }
   uploadFile(event: any) {
-    debugger
     let reader = new FileReader();
     let file = event.target.files[0];
     if (event.target.files && event.target.files[0]) {
@@ -163,7 +163,6 @@ export class RequestTokensComponent {
           this.tokensService.uploadTokenImage(formdata).subscribe((response) => {
             this.toastr.success('Image Uploaded Successfully', 'Uploaded', { timeOut: 3000, });
             this.tokenImage = response;
-            debugger
             this.editFile = false;
             this.removeUpload = true;
           });
@@ -190,7 +189,6 @@ export class RequestTokensComponent {
             this.toastr.success('Image Uploaded Successfully', 'Uploaded', { timeOut: 3000, });
             this.tokenMultiImage.push(response);
             this.addMultiImg[ind].multiImageUrl = response;
-            debugger
             this.editFile = false;
             this.removeUpload = true;
           });
@@ -213,7 +211,6 @@ export class RequestTokensComponent {
     this.imageUrl = 'assets/images/file-upload-image.jpg';
   }
   removeUploadedMultiImage(val: any) {
-    debugger
     let data = {
       img: this.addMultiImg[val].multiImageUrl
 
@@ -229,7 +226,6 @@ export class RequestTokensComponent {
 
   }
   SaveTokendetails() {
-    debugger
 
     this.submitted = true;
     if (this.validationForm.invalid) {
@@ -237,7 +233,6 @@ export class RequestTokensComponent {
     } else {
       this.tokenModel.image = this.tokenImage;
       this.tokenModel.tokenMultiImage = this.tokenMultiImage;
-      debugger
       this.tokenModel.status = 'Pending';
       this.tokenModel.createdby = this.createdby;
       this.tokensService.SaveTokendetails(this.tokenModel).subscribe((res: any) => {
@@ -251,7 +246,6 @@ export class RequestTokensComponent {
   }
 
   setActiveTab(tab: string): void {
-    debugger
     this.emailData = [];
     this.activeTab = tab;
 
@@ -422,7 +416,6 @@ export class RequestTokensComponent {
 
   getTokenByEmployee() {
     this.tokensService.getTokenByEmpIdData(localStorage.getItem('Eid')).subscribe((res: any) => {
-      debugger
       res.forEach((element: any, index: number) => {
         if (res.length > 0) {
           this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
@@ -449,24 +442,24 @@ export class RequestTokensComponent {
       }
     })
   }
-
+  getMultiTokenImages(id: any) {
+    this.tokensService.getMultiTokenImageData(id).subscribe((res: any) => {
+      this.multiTokenImgData = res;
+    })
+  }
   openTokenEmailDetails(data: any) {
-    debugger
+    this.isEditToken = false;
     this.multiTokenImgData = [];
     if (data.unread == true) {
       this.tokensService.updateMarkAsRead(data.id).subscribe((res: any) => {
         this.getAllToken();
       })
     }
-    this.tokensService.getMultiTokenImageData(data.id).subscribe((res: any) => {
-      this.multiTokenImgData = res;
-
-    })
+    this.getMultiTokenImages(data.id);
     this.companyService.getAllClientDetailsData().subscribe((res: any) => {
       res.forEach((element: any) => {
         if (data.clientid == element.id) {
           data.clientlogo = element.logo
-          debugger
         }
       });
     })
@@ -508,7 +501,6 @@ export class RequestTokensComponent {
     return filename;
   }
   selectMail(event: any, id: any) {
-    debugger
     if (event.target.checked) {
       let req = {
         id: id,
@@ -532,8 +524,44 @@ export class RequestTokensComponent {
     }
   }
   editTokenDetails() {
+    this.designerList = [];
+    this.managerList = [];
+    this.addMultiImg = [];
     this.getAllEmployeeDetails();
-    // this.modalService.open(content, { size: 'xl', centered: true });
+    this.modalService.open(this.modalShow, { size: 'xl', centered: true });
+    this.tokenData.forEach((element: any) => {
+      if (element.id == this.emailIds[0].id) {
+        this.tokenModel = element;
+
+        this.tokensService.getMultiTokenImageData(this.tokenModel.id).subscribe((res: any) => {
+          this.multiTokenImgData = res;
+          if (this.multiTokenImgData.length > 0) {
+
+            this.multiTokenImgData.forEach((element: any, ind: any) => {
+              this.addMultiImg.push({ name: ind + 1, multiImageUrl: 'http://localhost:9000' + element.image });
+            });
+          }
+        })
+        this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
+          this.employeeList = res;
+        })
+        this.tokensService.getAssignedTokenEmp(this.tokenModel.id).subscribe((res: any) => {
+
+          this.designerList = res.filter((employee: any) => employee.role === 'Designer');
+          this.managerList = res.filter((employee: any) => employee.role === 'Manager');
+          this.tokenModel.designers = this.designerList;
+          this.tokenModel.managers = this.managerList;
+        })
+        this.clientList.forEach((element: any) => {
+          if (element.id == this.tokenModel.clientid) {
+            this.tokenModel.client = element.name;
+
+          }
+        });
+        this.imageUrl = 'http://localhost:9000' + this.tokenModel.image;
+      }
+
+    });
   }
   confirm() {
     Swal.fire({

@@ -198,8 +198,7 @@ export class ApiService {
 
   public static getEmployeeTokenByIdURL: string = ApiService.HOST_URL + '/admin/GetEmployeeTokenById/';
   public static updateTokenStatusDetailsURL: string = ApiService.HOST_URL + '/admin/UpdateTokenStatusDetails';
-
-
+  public static getAssignedEmpTokenByIdURL: string = ApiService.HOST_URL + '/admin/GetAssignedEmpTokenById/';
 
 
 

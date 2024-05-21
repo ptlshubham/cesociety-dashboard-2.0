@@ -84,13 +84,13 @@ export class InfrastructureComponent implements OnInit {
   }
   removeUploadedImage() {
     // console.log(this.infraImages);
-    let data ={
-      img :this.infraImages
+    let data = {
+      img: this.infraImages
     };
-    this.homeService.deleteInfraImage(data).subscribe((res:any)=>{
-      if(res =='sucess'){
+    this.homeService.deleteInfraImage(data).subscribe((res: any) => {
+      if (res == 'sucess') {
         this.toastr.success('Image removed successfully.', 'Deleted', { timeOut: 2000, });
-      }else{
+      } else {
         this.toastr.error('Something went wrong try again later', 'Error', { timeOut: 2000, });
       }
     })
@@ -106,8 +106,8 @@ export class InfrastructureComponent implements OnInit {
       this.infraData = res;
       this.infraModel.infraImage = null;
       this.infraImages = null;
-      this.infraModel.infraMultiImage=[];
-      this.infraMultiImage=[];
+      this.infraModel.infraMultiImage = [];
+      this.infraMultiImage = [];
       this.toastr.success('Infrastructure Details added Successfully.', 'Saved', { timeOut: 3000, });
       this.isUpdate = false;
       this.isOpen = false;
@@ -124,7 +124,7 @@ export class InfrastructureComponent implements OnInit {
     );
   }
   uploadMultiFile(event: any, ind: any) {
-    
+
     let reader = new FileReader(); // HTML5 FileReader API
     let file = event.target.files[0];
     if (event.target.files && event.target.files[0]) {
@@ -142,7 +142,7 @@ export class InfrastructureComponent implements OnInit {
             this.homeService.uploadInfraMultiImage(formdata).subscribe((response) => {
               this.toastr.success('Image Uploaded Successfully', 'Uploaded', { timeOut: 3000, });
               this.infraMultiImage.push(response);
-              this.addMultiImg[ind].multiImageUrl ='http://localhost:9000' + response;
+              this.addMultiImg[ind].multiImageUrl = 'http://localhost:9000' + response;
               this.editFile = false;
               this.removeUpload = true;
             });
@@ -154,13 +154,13 @@ export class InfrastructureComponent implements OnInit {
     }
   }
   removeServiceList(val: any) {
-    let data ={
-      img :this.addMultiImg[val].multiImageUrl
+    let data = {
+      img: this.addMultiImg[val].multiImageUrl
     };
-    this.homeService.deleteInfraImage(data).subscribe((res:any)=>{
-      if(res =='sucess'){
+    this.homeService.deleteInfraImage(data).subscribe((res: any) => {
+      if (res == 'sucess') {
         this.toastr.success('Image removed successfully.', 'Deleted', { timeOut: 2000, });
-      }else{
+      } else {
         this.toastr.error('Something went wrong try again later', 'Error', { timeOut: 2000, });
       }
     })
@@ -178,8 +178,8 @@ export class InfrastructureComponent implements OnInit {
     this.homeService.getInfraMultiImageById(id).subscribe((res: any) => {
       this.infraMulti = res;
       if (this.infraMulti.length > 0) {
-        this.infraMulti.forEach((element: any,ind:any) => {
-          this.multiImage.push({ name: ind+1, multiImageUrl: 'http://localhost:9000' + element.image });
+        this.infraMulti.forEach((element: any, ind: any) => {
+          this.multiImage.push({ name: ind + 1, multiImageUrl: 'http://localhost:9000' + element.image });
         });
       }
       this.addMultiImg = this.multiImage;
@@ -187,7 +187,7 @@ export class InfrastructureComponent implements OnInit {
   }
   updateInfraDetails() {
     this.addMultiImg
-    
+
     if (this.infraImages != null || undefined) {
       this.infraModel.infraImage = this.infraImages;
     }
