@@ -384,6 +384,18 @@ export const comapnyAdmin: MenuItem[] = [
         label: 'Todo-List',
         icon: 'mdi mdi-clipboard-list-outline',
         link: '/company/todo-list',
+    },
+    {
+        id: 7,
+        label: 'Attendance',
+        icon: 'mdi mdi-clipboard-list-outline',
+        link: '/company/attendance',
+    },
+    {
+        id: 8,
+        label: 'Posting',
+        icon: 'mdi mdi-clipboard-list-outline',
+        link: '/company/posting',
     }
 ];
 export const Employee: MenuItem[] = [
@@ -394,9 +406,9 @@ export const Employee: MenuItem[] = [
     },
     {
         id: 2,
-        label: 'MENUITEMS.DASHBOARDS.TEXT',
-        icon: 'mdi mdi-desktop-mac-dashboard',
-        link: '/',
+        label: 'Generate Tokens',
+        icon: 'mdi mdi-clipboard-list-outline',
+        link: '/company/request-tokens',
     },
     {
         id: 3,
@@ -404,16 +416,18 @@ export const Employee: MenuItem[] = [
         icon: 'mdi mdi-account-multiple-outline',
         link: '/company/clients',
     },
+
     {
         id: 4,
-        label: 'Generate Tokens',
-        icon: 'mdi mdi-clipboard-list-outline',
-        link: '/company/request-tokens',
-    },
-    {
-        id: 6,
         label: 'Todo-List',
         icon: 'mdi mdi-clipboard-list-outline',
         link: '/company/todo-list',
+    },
+    {
+        id: 5,
+        label: 'Posting',
+        icon: 'mdi mdi-clipboard-list-outline',
+        link: '/company/posting',
     }
+
 ];

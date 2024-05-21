@@ -4,6 +4,9 @@ import { EmployeeComponent } from './employee/employee.component';
 import { RequestTokensComponent } from './request-tokens/request-tokens.component';
 import { ClientsComponent } from './clients/clients.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AttendanceComponent } from './attendance/attendance.component';
+import { PostingComponent } from './posting/posting.component';
 
 const routes: Routes = [
   {
@@ -21,6 +24,18 @@ const routes: Routes = [
   {
     path: 'todo-list',
     component: TodoListComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
+  },
+  {
+    path: 'attendance',
+    component: AttendanceComponent
+  },
+  {
+    path: 'posting',
+    component: PostingComponent
   }
 
 ];
