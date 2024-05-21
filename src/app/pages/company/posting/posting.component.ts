@@ -1,21 +1,24 @@
+
+
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import { CalendarOptions, EventApi, EventClickArg } from '@fullcalendar/core';
-
+import { UntypedFormBuilder, Validators, UntypedFormGroup } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { category, calendarEvents, createEventId } from './data';
+import { CompanyService } from 'src/app/core/services/company.service';
+import ls from 'localstorage-slim';
 
 @Component({
-  selector: 'app-todo-list',
-  templateUrl: './todo-list.component.html',
-  styleUrl: './todo-list.component.scss'
+  selector: 'app-posting',
+  templateUrl: './posting.component.html',
+  styleUrl: './posting.component.scss'
 })
-export class TodoListComponent implements OnInit {
+export class PostingComponent {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
   calendarEvents!: any[];
@@ -24,18 +27,26 @@ export class TodoListComponent implements OnInit {
   newEventDate: any;
   category!: any[];
   submitted = false;
+  clientlist: any = [];
+  staffModel: any = {}
+  employeeList: any = [];
+  posting!: UntypedFormGroup;
   // event form
   formData!: UntypedFormGroup;
   @ViewChild('editmodalShow') editmodalShow!: TemplateRef<any>;
   @ViewChild('modalShow') modalShow !: TemplateRef<any>;
 
-  constructor(private modalService: NgbModal, private formBuilder: UntypedFormBuilder) {
+  constructor(
+    private modalService: NgbModal,
+    private formBuilder: UntypedFormBuilder,
+    private companyService: CompanyService,
 
-    this.setupDraggableEvents();
-  }
+  ) { }
 
   ngOnInit(): void {
     this._fetchData();
+    this.getclientdetails();
+    this.getAllEmployeeDetails();
     // VAlidation
     this.formData = this.formBuilder.group({
       title: ['', [Validators.required]],
@@ -74,13 +85,9 @@ export class TodoListComponent implements OnInit {
     dayMaxEvents: true,
     select: this.openModal.bind(this),
     eventClick: this.handleEventClick.bind(this),
-    eventsSet: this.handleEvents.bind(this),
-
-    droppable: true, // Allows things to be dropped onto the calendar
-    drop: this.handleEventReceive.bind(this)
+    eventsSet: this.handleEvents.bind(this)
   };
   currentEvents: EventApi[] = [];
-
   /**
    * Event add modal
    */
@@ -243,37 +250,17 @@ export class TodoListComponent implements OnInit {
     this.editEvent.remove();
     this.modalService.dismissAll();
   }
-  setupDraggableEvents() {
-    debugger
-    const containerEl = document.getElementById('external-events');
-    if (containerEl) {
-      const draggableEl = containerEl.querySelectorAll('.external-event');
 
-      draggableEl.forEach(el => {
-        el.addEventListener('dragstart', function (e) {
-          const dragEvent = e as DragEvent;
-          dragEvent.dataTransfer?.setData('text/plain', (dragEvent.target as HTMLElement).getAttribute('data-event') || '');
-        });
-      });
-
-      containerEl.addEventListener('dragend', function (e) {
-        e.preventDefault();
-      });
-    }
+  getclientdetails() {
+    this.companyService.getAllClientDetailsData().subscribe((res: any) => {
+      this.clientlist = res;
+    })
   }
-
-  handleEventReceive(event: any) {
-    debugger
-    const eventData = event.draggedEl.getAttribute('data-event');
-    event.event.setProp('title', eventData);
-  }
-
-  dragStart(event: DragEvent) {
-    const target = event.target as HTMLDivElement;
-    const eventData = target.getAttribute('data-event');
-    if (eventData) {
-      event.dataTransfer?.setData('text/plain', eventData);
-    }
+  getAllEmployeeDetails() {
+    this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
+      this.employeeList = res;
+      this.staffModel.role = ls.get('Role', { decrypt: true });
+    })
   }
 
 }

@@ -10,8 +10,8 @@ describe('CompanyDashboardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CompanyDashboardComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(CompanyDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

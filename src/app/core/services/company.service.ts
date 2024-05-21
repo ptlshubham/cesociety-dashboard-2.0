@@ -42,4 +42,18 @@ export class CompanyService {
     getAssignedEmpDetailsById(id: any) {
         return this.http.get(ApiService.getAssignedEmployeeDetailsURL + id);
     }
+    ChackForPassword(data: any) {
+        debugger
+        return this.http.post(ApiService.ChackForPasswordURL, data);
+    }
+    updatePassword(admin: any): Observable<any> {
+        debugger
+        return this.http.post<any>(ApiService.updatePasswordURL, admin);
+    }
+    getEmployeeDataById(id: any) {
+        return this.http.get(ApiService.getEmployeeDataByIdURL + id);
+    }
+    // SaveAttendenceDetails(data: any): Observable<any> {
+    //     return this.http.post(ApiService.SaveAttendenceURL, data);
+    // }
 }

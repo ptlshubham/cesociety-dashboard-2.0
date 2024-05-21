@@ -198,6 +198,12 @@ export class ApiService {
 
   public static getEmployeeTokenByIdURL: string = ApiService.HOST_URL + '/admin/GetEmployeeTokenById/';
   public static updateTokenStatusDetailsURL: string = ApiService.HOST_URL + '/admin/UpdateTokenStatusDetails';
+  public static ChackForPasswordURL: string = ApiService.HOST_URL + '/admin/ChackForPassword';
+  public static updatePasswordURL: string = ApiService.HOST_URL + '/admin/UpdateCompanyPassword';
+  public static getEmployeeDataByIdURL: string = ApiService.HOST_URL + '/admin/getEmployeeDataById/';
+
+
+
 
 
 

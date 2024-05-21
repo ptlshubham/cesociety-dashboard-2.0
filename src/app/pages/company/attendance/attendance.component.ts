@@ -1,21 +1,23 @@
+
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import { CalendarOptions, EventApi, EventClickArg } from '@fullcalendar/core';
-
+import { UntypedFormBuilder, Validators, UntypedFormGroup } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { category, calendarEvents, createEventId } from './data';
+import { CompanyService } from 'src/app/core/services/company.service';
+import ls from 'localstorage-slim';
 
 @Component({
-  selector: 'app-todo-list',
-  templateUrl: './todo-list.component.html',
-  styleUrl: './todo-list.component.scss'
+  selector: 'app-attendance',
+  templateUrl: './attendance.component.html',
+  styleUrl: './attendance.component.scss'
 })
-export class TodoListComponent implements OnInit {
+export class AttendanceComponent {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
   calendarEvents!: any[];
@@ -25,19 +27,31 @@ export class TodoListComponent implements OnInit {
   category!: any[];
   submitted = false;
   // event form
-  formData!: UntypedFormGroup;
+  paginateData: any = [];
+  filterData: any = [];
+  collectionSize = 0;
+  page = 1;
+  pageSize = 10;
+  staffModel: any = {}
+  attendence!: UntypedFormGroup;
   @ViewChild('editmodalShow') editmodalShow!: TemplateRef<any>;
   @ViewChild('modalShow') modalShow !: TemplateRef<any>;
+  employeeList: any = [];
 
-  constructor(private modalService: NgbModal, private formBuilder: UntypedFormBuilder) {
 
-    this.setupDraggableEvents();
-  }
+
+  constructor(
+    private modalService: NgbModal,
+    private formBuilder: UntypedFormBuilder,
+    private companyService: CompanyService,
+
+  ) { }
 
   ngOnInit(): void {
     this._fetchData();
+    this.getAllEmployeeDetails();
     // VAlidation
-    this.formData = this.formBuilder.group({
+    this.attendence = this.formBuilder.group({
       title: ['', [Validators.required]],
       category: ['', [Validators.required]],
     });
@@ -74,10 +88,7 @@ export class TodoListComponent implements OnInit {
     dayMaxEvents: true,
     select: this.openModal.bind(this),
     eventClick: this.handleEventClick.bind(this),
-    eventsSet: this.handleEvents.bind(this),
-
-    droppable: true, // Allows things to be dropped onto the calendar
-    drop: this.handleEventReceive.bind(this)
+    eventsSet: this.handleEvents.bind(this)
   };
   currentEvents: EventApi[] = [];
 
@@ -132,9 +143,10 @@ export class TodoListComponent implements OnInit {
    * Close event modal
    */
   closeEventModal() {
-    this.formData = this.formBuilder.group({
-      title: '',
-      category: '',
+    this.attendence = this.formBuilder.group({
+      inoffice: ['', Validators.required],
+      workfromhome: ['', Validators.required],
+      Leave: ['', Validators.required]
     });
     this.modalService.dismissAll();
   }
@@ -143,7 +155,7 @@ export class TodoListComponent implements OnInit {
    * Event Data Get
    */
   get form() {
-    return this.formData.controls;
+    return this.attendence.controls;
   }
 
   /***
@@ -163,9 +175,9 @@ export class TodoListComponent implements OnInit {
    * Save the event
    */
   saveEvent() {
-    if (this.formData.valid) {
-      const title = this.formData.get('title')!.value;
-      const className = this.formData.get('category')!.value;
+    if (this.attendence.valid) {
+      const title = this.attendence.get('title')!.value;
+      const className = this.attendence.get('category')!.value;
       const calendarApi = this.newEventDate.view.calendar;
       calendarApi.addEvent({
         id: createEventId(),
@@ -179,7 +191,7 @@ export class TodoListComponent implements OnInit {
 
 
       this.position();
-      this.formData = this.formBuilder.group({
+      this.attendence = this.formBuilder.group({
         title: '',
         category: '',
       });
@@ -243,37 +255,13 @@ export class TodoListComponent implements OnInit {
     this.editEvent.remove();
     this.modalService.dismissAll();
   }
-  setupDraggableEvents() {
-    debugger
-    const containerEl = document.getElementById('external-events');
-    if (containerEl) {
-      const draggableEl = containerEl.querySelectorAll('.external-event');
-
-      draggableEl.forEach(el => {
-        el.addEventListener('dragstart', function (e) {
-          const dragEvent = e as DragEvent;
-          dragEvent.dataTransfer?.setData('text/plain', (dragEvent.target as HTMLElement).getAttribute('data-event') || '');
-        });
-      });
-
-      containerEl.addEventListener('dragend', function (e) {
-        e.preventDefault();
-      });
-    }
+  getPagintaion() {
+    this.paginateData = this.filterData.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
-
-  handleEventReceive(event: any) {
-    debugger
-    const eventData = event.draggedEl.getAttribute('data-event');
-    event.event.setProp('title', eventData);
+  getAllEmployeeDetails() {
+    this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
+      this.employeeList = res;
+      this.staffModel.role = ls.get('Role', { decrypt: true });
+    })
   }
-
-  dragStart(event: DragEvent) {
-    const target = event.target as HTMLDivElement;
-    const eventData = target.getAttribute('data-event');
-    if (eventData) {
-      event.dataTransfer?.setData('text/plain', eventData);
-    }
-  }
-
 }
