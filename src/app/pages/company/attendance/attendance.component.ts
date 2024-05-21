@@ -11,7 +11,6 @@ import Swal from 'sweetalert2';
 import { category, calendarEvents, createEventId } from './data';
 import { CompanyService } from 'src/app/core/services/company.service';
 
-
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
