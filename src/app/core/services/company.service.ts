@@ -21,8 +21,12 @@ export class CompanyService {
     getAllEmployeeDetailsData() {
         return this.http.get(ApiService.getAllEmployeeDetailsURL);
     }
-    removeEmployeeDetailsById(id: any) {
-        return this.http.get(ApiService.removeEmployeeDetailsByIdURL + id);
+    getEmployeeDetailsData(): Observable<any> {
+        return this.http.get(ApiService.getEmployeeDetailsURL);
+    }
+    removeEmployeeDetailsById(data: any): Observable<any> {
+        debugger
+        return this.http.post(ApiService.removeEmployeeDetailsByIdURL, data);
     }
 
 

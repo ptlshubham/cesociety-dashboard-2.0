@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-lg-4 col-md-6">
                                 <div class="mb-3">
-                                    <label for="choices-multiple-default" class="form-label font-size-13 ">Select
+                                    <label for="choices-multiple-default" class="form-label font-size-13">Select
                                         Media</label>
                                     <div class="multi_default">
                                         <ng-select [items]="medialist" [multiple]="true" bindLabel="name"
@@ -51,9 +51,7 @@
                                             (change)="formatSelectedMedia(clientModel.media)"
                                             (change)="selectedMediaList($event)">
                                             <ng-option value="" hidden>Select Media</ng-option>
-                                            <ng-option *ngFor="let c of medialist"
-                                                [value]="c.name">{{c.name}}</ng-option>
-
+                                            <ng-option *ngFor="let c of medialist" [value]="c">{{ c.name }}</ng-option>
                                         </ng-select>
                                         <div *ngIf="f.media.touched && f.media.errors" class="invalid-feedback">
                                             <span *ngIf="f.media.errors.required">This Field is required.</span>
@@ -373,35 +371,34 @@
                                 <!-- <td>
                                     <span class="badge bg-primary me-1" *ngFor="let m of s.mediaArray">{{ m }}</span>
                                 </td> -->
-                                <td class="text-end">
-                                    <div class="d-flex justify-content-end gap-1">
-                                <td class="form-check form-switch form-switch-md mb-3 align-items-center" dir="ltr">
-                                    <input type="checkbox" class="form-check-input"
-                                        (click)="removeClientsDetails(s.id)">
+                                <td class="d-flex justify-content-end gap-1">
+                                    <span class="form-check form-switch form-switch-md mb-3 align-items-center"
+                                        dir="ltr">
+                                        <input type="checkbox" class="form-check-input"
+                                            (click)="removeClientsDetails(s.id)">
+                                    </span>
+                                    <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                        ngbTooltip="View calendar" placement="top" (click)="openAttendance(content)"><i
+                                            class="bx bxs-calendar font-size-16 align-middle"></i></button>
+                                    <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                        (click)="openUpdateClients(s)"><i
+                                            class="bx bx-edit font-size-16 align-middle"></i></button>
                                 </td>
-                                <button type="button" class="btn btn-soft-primary waves-effect waves-light"
-                                    ngbTooltip="View calendar" placement="top" (click)="openAttendance(content)"><i
-                                        class="bx bxs-calendar font-size-16 align-middle"></i></button>
-                                <button type="button" class="btn btn-soft-primary waves-effect waves-light"
-                                    (click)="openUpdateClients(s)"><i
-                                        class="bx bx-edit font-size-16 align-middle"></i></button>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                </td>
-                </tr>
-                </tbody>
-                </table>
+                <div class="row mt-4">
+                    <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page"
+                        [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
+                        (pageChange)="getPagintaion();" aria-label="Default pagination"
+                        class="d-flex justify-content-end pagination-rounded-flat pagination-primbg-primary "></ngb-pagination>
+                </div>
             </div>
-            <div class="row mt-4">
-                <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page" [maxSize]="5"
-                    [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="getPagintaion();"
-                    aria-label="Default pagination"
-                    class="d-flex justify-content-end pagination-rounded-flat pagination-primbg-primary "></ngb-pagination>
-            </div>
+            <!-- end card body -->
         </div>
-        <!-- end card body -->
+        <!-- end card -->
     </div>
-    <!-- end card -->
-</div>
 </div>
 
 <!-- <td class="text-end">
