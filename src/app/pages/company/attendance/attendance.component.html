@@ -60,27 +60,24 @@
                                         <td class="text-center">{{ s.name }}</td>
                                         <td>
                                             <div class="form-check mb-3">
-                                                <input class="form-check-input" type="radio" name="formRadios"
-                                                    id="formRadios1"
-                                                    (change)="radioSelected(attendanceModel.employeeId, 'option1')">
+                                                <input class="form-check-input" type="radio" name="formRadios{{i}}"
+                                                    id="formRadios1{{i}}" (change)="radioSelected(s.id, 'Present')">
                                             </div>
                                         </td>
                                         <td class="d-flex justify-content-center align-items-center">
                                             <div class="form-check mb-3">
-                                                <input class="form-check-input" type="radio" name="formRadios"
-                                                    id="formRadios2"
-                                                    (change)="radioSelected(attendanceModel.employeeId, 'option2')">
+                                                <input class="form-check-input" type="radio" name="formRadios{{i}}"
+                                                    id="formRadios2{{i}}"
+                                                    (change)="radioSelected(s.id, 'Work From Home')">
                                             </div>
                                         </td>
                                         <td class="text-center">
                                             <div class="form-check mb-3">
-                                                <input class="form-check-input" type="radio" name="formRadios"
-                                                    id="formRadios3"
-                                                    (change)="radioSelected(attendanceModel.employeeId, 'option3')">
+                                                <input class="form-check-input" type="radio" name="formRadios{{i}}"
+                                                    id="formRadios3{{i}}" (change)="radioSelected(s.id, 'Leave')">
                                             </div>
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                         </div>

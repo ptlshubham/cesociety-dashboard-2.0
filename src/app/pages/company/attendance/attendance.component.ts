@@ -38,7 +38,7 @@ export class AttendanceComponent {
   @ViewChild('modalShow') modalShow !: TemplateRef<any>;
   employeeList: any = [];
   attendanceModel: any = {};
-
+  employeeSelections: { employeeId: any, option: string, startDate: string }[] = [];
 
 
   constructor(
@@ -101,6 +101,7 @@ export class AttendanceComponent {
    */
   openModal(event?: any) {
     this.newEventDate = event;
+    debugger
     this.modalService.open(this.modalShow, { centered: true });
   }
 
@@ -265,6 +266,7 @@ export class AttendanceComponent {
   getAllEmployeeDetails() {
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.employeeList = res;
+      debugger
       this.staffModel.role = localStorage.getItem('Role')
     })
   }
@@ -278,10 +280,24 @@ export class AttendanceComponent {
     })
   }
   radioSelected(employeeId: any, option: string) {
-    // Here, you can perform whatever action you need with the selected employee ID and option
-    console.log('Employee ID:', employeeId);
-    console.log('Selected Option:', option);
-    debugger
-    // You can store these values in another array or perform any other operation
+    // Find if the employeeId already exists in the array
+    const index = this.employeeSelections.findIndex((selection: any) => selection.employeeId === employeeId);
+
+    if (index > -1) {
+      // Update the existing entry
+      this.employeeSelections[index] = {
+        employeeId: employeeId,
+        option: option,
+        startDate: this.newEventDate.startdate
+      };
+    } else {
+      // Add a new entry
+      this.employeeSelections.push({
+        employeeId: employeeId,
+        option: option,
+        startDate: this.newEventDate.startStr
+      });
+    }
+    console.log('Employee Selections:', this.employeeSelections);
   }
 }
