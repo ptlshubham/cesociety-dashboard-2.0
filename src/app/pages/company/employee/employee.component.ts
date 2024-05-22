@@ -106,10 +106,9 @@ export class EmployeeComponent {
 
   }
   getStaffDetails() {
-
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.staffDataTable = res.filter((staff: any) => staff.role !== 'companyAdmin');
-      this.staffDataTable = res;
+      debugger
       for (let i = 0; i < this.staffDataTable.length; i++) {
         this.staffDataTable[i].index = i + 1;
       }

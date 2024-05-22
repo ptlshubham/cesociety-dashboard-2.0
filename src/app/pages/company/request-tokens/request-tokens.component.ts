@@ -58,6 +58,7 @@ export class RequestTokensComponent {
   cancelData: any = [];
   cesLabelData: any = [];
   urgentLabelData: any = [];
+  statusChange: any = []
   isEditToken: boolean = false;
   @ViewChild('content') modalShow !: TemplateRef<any>;
 
@@ -613,5 +614,16 @@ export class RequestTokensComponent {
       this.endIndex = this.totalRecords;
     }
     this.emailData = emailData.slice(this.startIndex - 1, this.endIndex - 1);
+  }
+  changeStatusById(id: any, status: any) {
+    debugger
+    let data = {
+      id: id,
+      status: status,
+      isStateUpdate: true
+    }
+    this.tokensService.updateTokenStatus(data).subscribe((res: any) => {
+      this.openTokenData.status = res;
+    });
   }
 }

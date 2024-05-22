@@ -365,7 +365,7 @@
                                         <span *ngIf="i < 1" class="badge bg-primary me-1" [ngbTooltip]="d">{{ d
                                             }}</span>
                                         <span *ngIf="i === 1 && s.mediaArray.length > 1" class="badge bg-secondary me-1"
-                                            [ngbTooltip]="formatSelectedMedia(s.mediaArray)">{{ s.mediaArray.length - 1
+                                            [ngbTooltip]="s.mediaArray.join(', ')">{{ s.mediaArray.length - 1
                                             }}+more</span>
                                         <span *ngIf="i > 1" class="d-none" [ngbTooltip]="d"></span>
                                     </span>
