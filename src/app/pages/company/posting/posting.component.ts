@@ -11,6 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { category, calendarEvents, createEventId } from './data';
 import { CompanyService } from 'src/app/core/services/company.service';
+import { TokensService } from 'src/app/core/services/tokens.service';
 
 @Component({
   selector: 'app-posting',
@@ -32,6 +33,21 @@ export class PostingComponent {
   posting!: UntypedFormGroup;
   // event form
   formData!: UntypedFormGroup;
+  pendingData: any = [];
+  processingData: any = [];
+  reviewData: any = [];
+  changesData: any = [];
+  completedData: any = [];
+  cancelData: any = [];
+  cesLabelData: any = [];
+  urgentLabelData: any = [];
+  tokenData: any = [];
+  isMailOpen: boolean = false;
+  openTokenData: any = {};
+  totalRecords = 0;
+  emailData!: Array<any>;
+
+
   @ViewChild('editmodalShow') editmodalShow!: TemplateRef<any>;
   @ViewChild('modalShow') modalShow !: TemplateRef<any>;
 
@@ -39,6 +55,8 @@ export class PostingComponent {
     private modalService: NgbModal,
     private formBuilder: UntypedFormBuilder,
     private companyService: CompanyService,
+    public tokensService: TokensService,
+
 
   ) { }
 

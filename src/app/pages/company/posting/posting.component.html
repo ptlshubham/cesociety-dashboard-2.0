@@ -10,6 +10,7 @@
 
                         <tbody>
                             <tr *ngFor="let s of clientlist; let i = index">
+                                <td class="text-center">{{ i+1}}</td>
                                 <td class="text-center">{{ s.name }}</td>
                             </tr>
                         </tbody>
@@ -41,6 +42,7 @@
                                 <thead
                                     [ngClass]="{ 'table-info': staffModel.role === 'Designer', 'table-dark': staffModel.role === 'Manager' || staffModel.role === 'companyAdmin' }">
                                     <tr class="bg-dark">
+                                        <th class="text-center">#</th>
                                         <th class="text-center">Client List</th>
                                         <th class="text-center">Post</th>
                                         <th class="text-center">Reels</th>
@@ -52,7 +54,7 @@
                                 <tbody
                                     [ngClass]="{ 'table-info': staffModel.role === 'Designer', 'table-dark': staffModel.role === 'Manager' || staffModel.role === 'companyAdmin' }">
                                     <tr *ngFor="let s of clientlist; let i = index">
-
+                                        <td class="text-center">{{i+1}}</td>
                                         <td class="text-center">{{ s.name }}</td>
                                         <td class="">
                                             <div class="form-check mb-3">
