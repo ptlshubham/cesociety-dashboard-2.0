@@ -28,16 +28,16 @@ export class RequestTokensComponent {
   tokenImage: any;
   tokenMultiImage: any = [];
   multiTokenImgData: any = [];
-
+  staffModel: any = {}
   breadCrumbItems!: Array<{}>;
   public Editor = ClassicEditor;
   emailData!: Array<any>;
   emailIds: any[] = [];
   totalRecords = 0;
   startIndex = 1;
-  endIndex = 15;
+  endIndex = 20;
   page = 1;
-  pageSize = 15;
+  pageSize = 20;
   managerList: any = [];
   designerList: any = [];
   clientList: any = [];
@@ -632,5 +632,11 @@ export class RequestTokensComponent {
       this.openTokenEmailDetails(data);
       this.getAllToken();
     });
+  }
+  getStaffDetails() {
+    debugger
+    this.companyService.getEmployeeDataById(localStorage.getItem('Eid')).subscribe((data: any) => {
+      this.staffModel.role = localStorage.getItem('Role')
+    })
   }
 }

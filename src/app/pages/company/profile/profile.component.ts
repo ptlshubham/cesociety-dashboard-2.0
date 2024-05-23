@@ -24,6 +24,12 @@ export class ProfileComponent {
   in_time: any;
   StaffData: any = []
   staffModel: any = {};
+  imageUrl: any = "assets/images/file-upload-image.jpg";
+  editFile: boolean = true;
+  removeUpload: boolean = false;
+  cardImageBase64: any;
+  clientlogo: any = null;
+  staffProfileImage: any = null;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -117,5 +123,48 @@ export class ProfileComponent {
         }
       }
     })
+  }
+  uploadFile(event: any) {
+    let reader = new FileReader(); // HTML5 FileReader API
+    let file = event.target.files[0];
+    const img = new Image();
+    img.src = window.URL.createObjectURL(file);
+    img.onload = () => {
+      if (img.width === 200 && img.height === 200) {
+        if (event.target.files && event.target.files[0]) {
+          reader.readAsDataURL(file);
+          reader.onload = () => {
+            this.imageUrl = reader.result;
+            const imgBase64Path = reader.result;
+            this.cardImageBase64 = imgBase64Path;
+            const formdata = new FormData();
+            formdata.append('file', file);
+            this.companyService.saveEmployeeProfileImages(formdata).subscribe((response) => {
+              this.staffProfileImage = response;
+              this.updatelogo()
+              this.toastr.success('Image Uploaded Successfully', 'Uploaded', { timeOut: 3000, });
+              this.editFile = false;
+              this.removeUpload = true;
+
+            })
+          }
+        }
+      } else {
+        this.imageUrl = 'assets/images/file-upload-image.jpg';
+        this.staffProfileImage = null;
+        this.toastr.error('Please upload an image with dimensions of 200X200', 'Invalid Dimension', { timeOut: 3000, });
+      }
+    };
+
+  }
+  updatelogo() {
+    this.companyService.saveEmployeeProfileImages(this.staffModel).subscribe((req) => {
+      this.toastr.success('Logo updated successfully', 'Updated', { timeOut: 3000 });
+    });
+  }
+  removeUploadedImage() {
+    this.staffProfileImage = null;
+    this.imageUrl = 'assets/images/file-upload-image.jpg';
+
   }
 }

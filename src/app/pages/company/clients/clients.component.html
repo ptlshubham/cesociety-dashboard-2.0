@@ -62,7 +62,7 @@
                             <div class="col-lg-6 col-md-6">
                                 <div class="mb-3">
                                     <label for="choices-multiple-default" class="form-label font-size-13 ">Select
-                                        designers</label>
+                                        Designers</label>
                                     <div class="multi_default">
                                         <ng-select [items]="designerlist" [multiple]="true" bindLabel="name"
                                             [(ngModel)]="clientModel.designers" placeholder="Select designers"
@@ -305,6 +305,13 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between">
                     <h5 class="card-title">Client Details List</h5>
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+
+                            <input type="text" class="form-control" id="fname" placeholder="Search Client Name"
+                                [(ngModel)]="searchQuery" (input)="applySearchFilter()">
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-primary waves-effect btn-label waves-light"
                         (click)="openAddClients()"><i class="bx bx-user-plus label-icon"></i>
                         Add New Client</button>
@@ -316,8 +323,8 @@
                         <thead class="table-light">
                             <tr>
                                 <th class="text-left">#</th>
-                                <th class="text-center">Name</th>
                                 <th class="text-center">Profile</th>
+                                <th class="text-center">Name</th>
                                 <th class="text-center">Business Type</th>
                                 <th class="text-center">Manager</th>
                                 <th class="text-center">designers</th>
@@ -411,131 +418,3 @@
     (click)="openUpdateClients(s)"><i
         class="bx bx-edit font-size-16 align-middle"></i></button> -->
 <!-- start page title -->
-<ng-template #content role="document" let-modal>
-
-    <div class="modal-header">
-        <h5 class="modal-title mt-0">Client Status</h5>
-        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
-    </div>
-    <!-- end page title -->
-
-    <!-- calendar -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card mb-lg-0">
-                <div class="card-body app-calendar">
-                    <full-calendar [options]="calendarOptions "></full-calendar>
-                </div>
-            </div>
-
-            <!-- Add New Event MODAL -->
-            <ng-template #modalShow let-modal>
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-title">Add New Event</h5>
-                    <button type="button" class="btn-close" (click)="closeEventModal()"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <form (ngSubmit)="saveEvent()" [formGroup]="formData">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label class="control-label">Event Name</label>
-                                    <input class="form-control" placeholder="Insert Event Name" type="text" name="title"
-                                        formControlName="title"
-                                        [ngClass]="{ 'is-invalid': submitted && form.title.errors }" />
-                                    @if(submitted && form.title.errors){
-                                    <div class="invalid-feedback">
-                                        @if(form.title.errors.required){
-                                        <span>This value is required.</span>
-                                        }
-                                    </div>}
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label class="control-label">Category</label>
-                                    <select class="form-control" name="category" formControlName="category" [ngClass]="{
-                    'is-invalid': submitted && form.category.errors
-                  }">
-                                        @for (option of category; track $index) {
-                                        <option value="{{ option.value }}">
-                                            {{ option.name }}
-                                        </option>
-                                        }
-                                    </select>
-                                    @if(submitted && form.category.errors){
-                                    <div class="invalid-feedback">
-                                        @if(form.category.errors.required){
-                                        <div>
-                                            This value is required
-                                        </div>}
-                                    </div>}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-end mt-2">
-                            <button type="button" class="btn btn-light me-1" (click)="closeEventModal()">Close</button>
-                            <button type="submit" class="btn btn-success" id="btn-save-event">
-                                Save
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                <!-- end modal dialog-->
-            </ng-template>
-
-            <!-- Edit event modal -->
-            <ng-template #editmodalShow let-modal>
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Event</h5>
-                    <button type="button" class="btn-close" aria-hidden="true"
-                        (click)="modal.dismiss('Cross click')"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <form [formGroup]="formEditData" (ngSubmit)="editEventSave()">
-                        <input type="hidden" name="eventid" id="eventid">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label class="control-label">Event name</label>
-                                    <input class="form-control" placeholder="Insert Event Name" type="text"
-                                        name="editTitle" formControlName="editTitle" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label class="control-label">Event category</label>
-                                    <select class="form-control" name="ecategory" formControlName="editCategory"
-                                        required>
-                                        @for (option of category; track $index) {
-                                        <option value="{{ option.value }}">
-                                            {{ option.name }}
-                                        </option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-6">
-                                <button type="button" class="btn btn-danger delete-event ms-1" (click)="confirm()">
-                                    Delete
-                                </button>
-                            </div>
-                            <div class="col-6 d-flex text-end">
-                                <button type="button" class="btn btn-light" (click)="modal.dismiss('Close')">
-                                    Close
-                                </button>
-                                <button type="submit" class="btn btn-success ms-1">Save</button>
-                                <button type="submit" class="btn btn-success" id="edit-event-btn">Update</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </ng-template>
-            <!-- end modal-->
-        </div>
-    </div>
-</ng-template>

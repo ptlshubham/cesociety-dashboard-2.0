@@ -36,7 +36,8 @@ export class TopbarComponent implements OnInit {
   emailData!: Array<any>;
   emailIds: number[] = [];
   totalRecords = 0;
-
+  staffModel: any = {}
+  profile: any = localStorage.getItem('profile')
   constructor(
     private router: Router,
     public languageService: LanguageService,
@@ -151,4 +152,5 @@ export class TopbarComponent implements OnInit {
     })
   }
   openTokenEmailDetails() { }
+
 }

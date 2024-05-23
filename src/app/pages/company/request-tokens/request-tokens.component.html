@@ -73,21 +73,10 @@
                     </div>
                     <div class="btn-group me-2 mb-2 mb-sm-0">
                         <button type="button" class="btn btn-danger waves-light waves-effect" (click)="confirm()"
-                            ngbTooltip="Delete Token" placement="top"><i class="far fa-trash-alt"></i></button>
+                            *ngIf="staffModel.role == 'CompanyAdmin'" ngbTooltip="Delete Token" placement="top"><i
+                                class="far fa-trash-alt"></i></button>
                     </div>
-                    <div class="btn-group me-2 mb-2 mb-sm-0" ngbDropdown>
-                        <button type="button" class="btn btn-primary waves-light waves-effect dropdown-toggle"
-                            data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
-                            More <i class="mdi mdi-dots-vertical ms-2"></i>
-                        </button>
-                        <div class="dropdown-menu" ngbDropdownMenu>
-                            <a class="dropdown-item" href="javascript:void(0);">Mark as Unread</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Mark as Important</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Add to Tasks</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Add Star</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Mute</a>
-                        </div>
-                    </div>
+
                 </div>
                 <ul class="message-list">
                     @for (e of emailData | slice:0:20; track $index) {
@@ -112,6 +101,9 @@
                                     <span class="star-toggle mdi mdi-check-all text-success"
                                         *ngIf="e.status=='Completed'" ngbTooltip="Token Completed"
                                         placement="top"></span>
+                                    <span class="star-toggle mdi mdi-trash-can-outline" *ngIf="e.status=='Cancel'"
+                                        ngbTooltip="Token Cancel" placement="top"></span>
+
                                 </div>
                             </div>
                             <div class="col-mail col-mail-2" (click)="openTokenEmailDetails(e)">
@@ -163,11 +155,13 @@
                             (click)="changeStatusById(openTokenData.id,'Changes')" ngbTooltip="Token Chnages"><i
                                 class="mdi mdi-swap-horizontal-circle-outline"></i></button>
                         <button type="button" class="btn btn-primary waves-light waves-effect me-2"
+                            *ngIf="staffModel.role == 'CompanyAdmin' || staffModel.role ==='Manager'"
                             [ngClass]="{'btn-success':  openTokenData.status == 'Completed'}"
-                            (click)="changeStatusById(openTokenData.id,'Completed')" ngbTooltip="Token Complated "><i
-                                class="mdi mdi-check-all"></i></button>
+                            (click)="changeStatusById(openTokenData.id,'Completed')" ngbTooltip="Token Complated                     
+                            "><i class="mdi mdi-check-all"></i></button>
                         <button type="button" class="btn btn-primary waves-light waves-effect me-2"
                             [ngClass]="{'btn-success':  openTokenData.status == 'Cancel'}"
+                            *ngIf="staffModel.role == 'CompanyAdmin' || staffModel.role ==='Manager'"
                             (click)="changeStatusById(openTokenData.id,'Cancel')" ngbTooltip="Token Cancel"><i
                                 class="mdi mdi-trash-can-outline"></i></button>
                     </div>

@@ -58,6 +58,7 @@ export class OrganizationLoginComponent {
 
         if (res.length > 0) {
           localStorage.setItem('Name', res[0].name);
+          localStorage.setItem('profile', res[0].profile_image);
           localStorage.setItem('token', res[0].token);
           localStorage.setItem('Role', res[0].role);
           localStorage.setItem('Company', res[0].iscompany);
