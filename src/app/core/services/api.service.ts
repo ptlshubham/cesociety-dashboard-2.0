@@ -180,7 +180,8 @@ export class ApiService {
   public static saveEmployeeDetailsListURL: string = ApiService.HOST_URL + '/admin/SaveEmployeeDetailsList';
   public static updateEmployeeDetailsByIdURL: string = ApiService.HOST_URL + '/admin/UpdateEmployeeDetailsById';
   public static getAllEmployeeDetailsURL: string = ApiService.HOST_URL + '/admin/GetAllEmployeeDetails';
-  public static removeEmployeeDetailsByIdURL: string = ApiService.HOST_URL + '/admin/RemoveEmployeeDetailsById/';
+  public static getEmployeeDetailsURL: string = ApiService.HOST_URL + '/admin/GetEmployeeDetails';
+  public static removeEmployeeDetailsByIdURL: string = ApiService.HOST_URL + '/admin/RemoveEmployeeDetailsById';
 
   public static SaveClientImageURL: string = ApiService.HOST_URL + '/admin/SaveClientImage';
   public static SaveClientDetailsURL: string = ApiService.HOST_URL + '/admin/SaveClientDetails';

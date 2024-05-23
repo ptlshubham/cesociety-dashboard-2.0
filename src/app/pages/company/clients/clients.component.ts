@@ -414,9 +414,28 @@ export class ClientsComponent {
 
   }
   openUpdateClients(data: any) {
-    // this.selectedmedialist = data.media;
-    this.imageUrl = 'http://localhost:9000' + data.profile_image
-    this.clientModel.profile = data.profile_image;
+    const mediaString = data.media;
+    this.clientModel.media = data.mediaArray;
+    if (mediaString) {
+      const mediaArray = mediaString.split(',').map((item: any) => ({ name: item.trim() }));
+      this.clientModel.media = this.medialist.filter((media: any) =>
+        mediaArray.some((m: any) => m.name === media.name)
+      );
+    }
+    debugger
+
+    this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
+      this.designerlist = res.filter((employee: any) => employee.role === 'Designer');
+      this.managerlist = res.filter((employee: any) => employee.role === 'Manager');
+    })
+    this.companyService.getAssignedEmpDetailsById(data.id).subscribe((data: any) => {
+      const assignedDesignerList = data.filter((employee: any) => employee.role === 'Designer');
+      const assignedManagerList = data.filter((employee: any) => employee.role === 'Manager');
+      this.clientModel.designers = assignedDesignerList;
+      this.clientModel.managers = assignedManagerList;
+    })
+    this.imageUrl = 'http://localhost:9000' + data.logo;
+    this.clientModel.profile = data.logo;
     this.clientModel = data;
     this.isOpen = true;
     this.isUpdate = true;

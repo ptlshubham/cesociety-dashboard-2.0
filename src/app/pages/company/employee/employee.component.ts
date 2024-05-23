@@ -106,9 +106,8 @@ export class EmployeeComponent {
 
   }
   getStaffDetails() {
-    this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
+    this.companyService.getEmployeeDetailsData().subscribe((res: any) => {
       this.staffDataTable = res.filter((staff: any) => staff.role !== 'companyAdmin');
-      debugger
       for (let i = 0; i < this.staffDataTable.length; i++) {
         this.staffDataTable[i].index = i + 1;
       }
@@ -116,9 +115,7 @@ export class EmployeeComponent {
       this.getPagintaion();
     })
   }
-
   saveStaffDetails() {
-    debugger
     this.submitted = true;
     if (this.validationForm.invalid) {
       return;
@@ -146,7 +143,13 @@ export class EmployeeComponent {
     this.isOpen = true;
     this.isUpdate = true;
   }
-  removeStaffDetails(id: any) {
+  removeStaffDetails(id: any, status: any) {
+    if (status == 0) {
+      var isactive = true;
+    }
+    else{
+      var isactive = false;
+    }
     Swal.fire({
       title: 'Are you sure?',
       text: 'You won\'t be able to revert this!',
@@ -157,7 +160,11 @@ export class EmployeeComponent {
       confirmButtonText: 'Yes, delete it!'
     }).then(result => {
       if (result.value) {
-        this.companyService.removeEmployeeDetailsById(id).subscribe((req) => {
+        let data = {
+          id: id,
+          isactive: isactive
+        }
+        this.companyService.removeEmployeeDetailsById(data).subscribe((req) => {
         })
         Swal.fire('Deleted!', 'Staff details has been deleted.', 'success');
 
@@ -169,6 +176,7 @@ export class EmployeeComponent {
     if (this.staffProfileImage != null || undefined) {
       this.staffModel.profile = this.staffProfileImage;
     }
+    debugger
     this.companyService.updaetEmployeeDetails(this.staffModel).subscribe((res: any) => {
       this.staffData = res;
       this.toastr.success('Update Staff Details Successfully.', 'Updated', { timeOut: 3000, });
