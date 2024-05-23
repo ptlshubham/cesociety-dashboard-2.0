@@ -97,6 +97,7 @@
         </ng-template>
 
         <!-- Edit event modal -->
+        <!-- Edit event modal -->
         <ng-template #editmodalShow let-modal>
             <div class="modal-header">
                 <h5 class="modal-title">Edit Event</h5>
@@ -105,47 +106,55 @@
             </div>
             <div class="modal-body p-4">
                 <form [formGroup]="formEditData" (ngSubmit)="editEventSave()">
-                    <input type="hidden" name="eventid" id="eventid">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label class="control-label">Event name</label>
-                                <input class="form-control" placeholder="Insert Event Name" type="text" name="editTitle"
-                                    formControlName="editTitle" />
-                            </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Employee Name</th>
+                                        <th class="text-center">Attendance Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let s of employeeList; let i = index">
+                                        <td class="text-center">{{ i + 1 }}</td>
+                                        <td class="text-center">{{ s.name }}</td>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" [id]="'present' + i"
+                                                    [name]="'attendanceStatus' + i" [value]="'Present'"
+                                                    [checked]="s.attendanceStatus === 'Present'" />
+                                                <label class="form-check-label" [for]="'present' + i">Present</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" [id]="'home' + i"
+                                                    [name]="'attendanceStatus' + i" [value]="'Work From Home'"
+                                                    [checked]="s.attendanceStatus === 'Work From Home'" />
+                                                <label class="form-check-label" [for]="'home' + i">Work From
+                                                    Home</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" [id]="'leave' + i"
+                                                    [name]="'attendanceStatus' + i" [value]="'Leave'"
+                                                    [checked]="s.attendanceStatus === 'Leave'" />
+                                                <label class="form-check-label" [for]="'leave' + i">Leave</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label class="control-label">Event category</label>
-                                <select class="form-control" name="ecategory" formControlName="editCategory" required>
-                                    @for (option of category; track $index) {
-                                    <option value="{{ option.value }}">
-                                        {{ option.name }}
-                                    </option>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-6">
-                            <button type="button" class="btn btn-danger delete-event ms-1" (click)="confirm()">
-                                Delete
-                            </button>
-                        </div>
-                        <div class="col-6 d-flex text-end">
-                            <button type="button" class="btn btn-light" (click)="modal.dismiss('Close')">
-                                Close
-                            </button>
-                            <button type="submit" class="btn btn-success ms-1">Save</button>
-                            <button type="submit" class="btn btn-success" id="edit-event-btn">Update</button>
-                        </div>
+
+                    <div class="text-end mt-2">
+                        <button type="button" class="btn btn-light me-1" (click)="modal.dismiss('Close')">Close</button>
+                        <button type="submit" class="btn btn-success" id="btn-save-event">Update</button>
                     </div>
                 </form>
             </div>
         </ng-template>
+
         <!-- end modal-->
     </div>
 </div>
