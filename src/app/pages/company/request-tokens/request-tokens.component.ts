@@ -253,6 +253,7 @@ export class RequestTokensComponent {
     if (this.role != 'Designer') {
       if (this.activeTab == 'allTokens') {
         this.getAllToken();
+
       }
       else if (this.activeTab == 'pendingTokens') {
         this.emailData = this.pendingData;
@@ -388,6 +389,7 @@ export class RequestTokensComponent {
   }
   getAllToken() {
     this.tokensService.getAllTokenData().subscribe((res: any) => {
+
       res.forEach((element: any, index: number) => {
         if (res.length > 0) {
           this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
@@ -404,8 +406,6 @@ export class RequestTokensComponent {
       this.cancelData = res.filter((token: any) => token.status === 'Cancel');
       this.cesLabelData = res.filter((token: any) => token.label === 'CES');
       this.urgentLabelData = res.filter((token: any) => token.label === 'Urgent');
-
-
       this.tokenData = res;
       this.emailData = this.tokenData;
       this.totalRecords = this.tokenData.length;
@@ -413,6 +413,7 @@ export class RequestTokensComponent {
         this.tokenData[i].index = i + 1;
       }
     })
+
   }
 
   getTokenByEmployee() {
@@ -449,11 +450,14 @@ export class RequestTokensComponent {
     })
   }
   openTokenEmailDetails(data: any) {
+    debugger
     this.isEditToken = false;
     this.multiTokenImgData = [];
     if (data.unread == true) {
       this.tokensService.updateMarkAsRead(data.id).subscribe((res: any) => {
         this.getAllToken();
+
+
       })
     }
     this.getMultiTokenImages(data.id);
@@ -462,11 +466,13 @@ export class RequestTokensComponent {
         if (data.clientid == element.id) {
           data.clientlogo = element.logo
         }
+
       });
     })
 
     this.isMailOpen = true;
     this.openTokenData = data;
+
   }
 
   backToToken() {
@@ -616,7 +622,6 @@ export class RequestTokensComponent {
     this.emailData = emailData.slice(this.startIndex - 1, this.endIndex - 1);
   }
   changeStatusById(id: any, status: any) {
-    debugger
     let data = {
       id: id,
       status: status,
@@ -624,6 +629,8 @@ export class RequestTokensComponent {
     }
     this.tokensService.updateTokenStatus(data).subscribe((res: any) => {
       this.openTokenData.status = res;
+      this.openTokenEmailDetails(data);
+      this.getAllToken();
     });
   }
 }

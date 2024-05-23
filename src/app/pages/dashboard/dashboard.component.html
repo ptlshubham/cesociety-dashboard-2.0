@@ -1,5 +1,5 @@
 <!-- start page title -->
-<app-pagetitle title="Dashboard" [breadcrumbItems]="breadCrumbItems"></app-pagetitle>
+<app-pagetitle title="Dashboard" *ngIf="!company" [breadcrumbItems]="breadCrumbItems"></app-pagetitle>
 <!-- end page title -->
 
 <div class="row" *ngIf="role=='Institute'">
@@ -197,8 +197,8 @@
                     </div>
                 </div>
                 <div class="text-nowrap">
-                    <span class="badge text-muted font-size-13"><a routerLink="/college-list"><i class="fa fa-arrow-right"
-                                aria-hidden="true"></i> View More</a></span>
+                    <span class="badge text-muted font-size-13"><a routerLink="/college-list"><i
+                                class="fa fa-arrow-right" aria-hidden="true"></i> View More</a></span>
                 </div>
             </div>
         </div>

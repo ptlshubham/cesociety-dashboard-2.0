@@ -10,6 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { category, calendarEvents, createEventId } from './data';
 import { CompanyService } from 'src/app/core/services/company.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-attendance',
@@ -37,7 +38,6 @@ export class AttendanceComponent {
   @ViewChild('editmodalShow') editmodalShow!: TemplateRef<any>;
   @ViewChild('modalShow') modalShow !: TemplateRef<any>;
   employeeList: any = [];
-  attendanceModel: any = {};
   employeeSelections: { employeeId: any, option: string, startDate: string }[] = [];
 
 
@@ -45,13 +45,15 @@ export class AttendanceComponent {
     private modalService: NgbModal,
     private formBuilder: UntypedFormBuilder,
     private companyService: CompanyService,
+    public toastr: ToastrService,
+
 
   ) { }
 
   ngOnInit(): void {
     this._fetchData();
     this.getAllEmployeeDetails();
-    this.saveAttendenceDetails();
+
     // VAlidation
 
     //Edit Data Get
@@ -272,26 +274,25 @@ export class AttendanceComponent {
   }
 
   saveAttendenceDetails() {
-    this.employeeList
-    debugger
-    this.companyService.SaveAttendanceDetails(this.attendanceModel).subscribe((res: any) => {
-      this.staffModel.eid = localStorage.getItem('Eid');
+    debugger;
+    this.companyService.SaveAttendanceDetails(this.employeeSelections).subscribe((res: any) => {
       this.attendanceList = res;
-    })
+      this.toastr.success('Attendence Done Successfully.', 'Updated', { timeOut: 3000, });
+      this.closeEventModal();
+      this.attendanceList = [];
+    });
   }
-  radioSelected(employeeId: any, option: string) {
-    // Find if the employeeId already exists in the array
-    const index = this.employeeSelections.findIndex((selection: any) => selection.employeeId === employeeId);
 
+  radioSelected(employeeId: any, option: string) {
+    const index = this.employeeSelections.findIndex((selection: any) => selection.employeeId === employeeId);
+    debugger
     if (index > -1) {
-      // Update the existing entry
       this.employeeSelections[index] = {
         employeeId: employeeId,
         option: option,
         startDate: this.newEventDate.startdate
       };
     } else {
-      // Add a new entry
       this.employeeSelections.push({
         employeeId: employeeId,
         option: option,

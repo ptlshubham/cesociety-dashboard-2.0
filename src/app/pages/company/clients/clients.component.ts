@@ -134,7 +134,7 @@ export class ClientsComponent {
    */
   openModal(event?: any) {
     this.newEventDate = event;
-    this.modalService.open(this.modalShow, { centered: true });
+    this.modalService.open(this.modalShow, { size: 'md', windowClass: 'modal-holder', centered: true });
   }
 
   /**
@@ -165,7 +165,7 @@ export class ClientsComponent {
       editTitle: clickInfo.event.title,
       editCategory: clickInfo.event.classNames[0],
     });
-    this.modalService.open(this.editmodalShow, { centered: true });
+    this.modalService.open(this.editmodalShow, { size: 'md', windowClass: 'modal-holder', centered: true });
   }
 
   /**
@@ -174,6 +174,7 @@ export class ClientsComponent {
    */
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
+
   }
 
   /**
@@ -224,8 +225,6 @@ export class ClientsComponent {
         className: className + ' ' + 'text-white'
       });
       console.log('titl', calendarApi);
-
-
       this.position();
       this.formData = this.formBuilder.group({
         title: '',
@@ -428,7 +427,7 @@ export class ClientsComponent {
     this.validationForm.markAsUntouched();
     this.getClientsDetails();
   }
-  openAttendance(largeDataModal: any) {
+  openClientCalander(largeDataModal: any) {
     this.modalService.open(largeDataModal, { size: 'lg', windowClass: 'modal-holder', centered: true });
   }
 }

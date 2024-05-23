@@ -1,4 +1,5 @@
-<div class="row">
+<app-request-tokens *ngIf="staffModel.role === 'Designer'"></app-request-tokens>
+<div class="row" *ngIf="staffModel.role === 'companyAdmin'|| staffModel.role ==='Manager'">
     <div class="col-xl-3 col-md-6">
         <a routerLink="/company/employee">
             <div class="card card-h-100">
@@ -99,7 +100,8 @@
             <div class="card-body bg-info  ">
                 <div class="row align-items-center">
                     <div class="col-6 text-white">
-                        <span class="text-white mb-3 lh-1 d-block text-truncate text-white">CES Token Complate</span>
+                        <span class="text-white mb-3 lh-1 d-block text-truncate text-white">CES Token
+                            Complate</span>
                         <h4 class="mb-3 text-white">
                             <span [countUp]="0" class="counter-value" [options]="option"></span>
                         </h4>
@@ -187,7 +189,7 @@
     </div>
 
 </div>
-<div class="row">
+<div class="row" *ngIf="staffModel.role === 'companyAdmin'">
     <div class="col-xl-6 col-md-6">
         <div class="card">
             <!-- card body -->
@@ -216,7 +218,8 @@
                             <div>
                                 <p class="mb-2"><i class="mdi mdi-circle align-middle font-size-15 me-2 text-info"></i>
                                     Pending Tokens</p>
-                                <h6> <span class="text-muted font-size-15 fw-normal">{{pendingData.length}}</span></h6>
+                                <h6> <span class="text-muted font-size-15 fw-normal">{{pendingData.length}}</span>
+                                </h6>
                             </div>
                             <div>
                                 <p class="mb-2"><i class="mdi mdi-circle align-middle font-size-15 me-2 text-info"></i>
@@ -229,7 +232,8 @@
                                         class="mdi mdi-circle align-middle font-size-15 me-2 text-success"></i>
                                     Complated Token
                                 </p>
-                                <h6><span class="text-muted font-size-15 fw-normal">{{completedData.length}}</span></h6>
+                                <h6><span class="text-muted font-size-15 fw-normal">{{completedData.length}}</span>
+                                </h6>
                             </div>
                         </div>
                     </div>

@@ -27,6 +27,7 @@ export class CompanyDashboardComponent {
   changesData: any = [];
   completedData: any = [];
   cancelData: any = [];
+  staffModel: any = {};
   Tokens: ChartType = {
     chart: {
       width: 227,
@@ -130,7 +131,7 @@ export class CompanyDashboardComponent {
 
   }
   ngOnInit(): void {
-
+    this.getAllEmployeeDetails();
     this.getAllToken();
     this.DashBoardTotals();
     this.GetEmployeeBar();
@@ -165,6 +166,13 @@ export class CompanyDashboardComponent {
         this.barChart.categories.push(employee.name);
       });
     });
+  }
+  getAllEmployeeDetails() {
+    this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
+      this.employeeList = res;
+      debugger
+      this.staffModel.role = localStorage.getItem('Role')
+    })
   }
 
 }

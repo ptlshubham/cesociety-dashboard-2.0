@@ -16,6 +16,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor=" let s of employeeList;let i=index">
+                                    <td class="text-center">{{i+1}} </td>
 
                                     <td class="text-center">{{s.name}} </td>
                                 </tr>
@@ -47,16 +48,16 @@
                                 *ngIf="staffModel.role === 'companyAdmin' || staffModel.role === 'Manager'">
                                 <thead class="table-light">
                                     <tr>
+                                        <th class="text-center">#</th>
                                         <th class="text-center">Employee List</th>
                                         <th class="text-center">Present</th>
                                         <th class="text-center">Work From Home</th>
                                         <th class="text-center">Leave</th>
-
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     <tr *ngFor="let s of employeeList; let i = index">
+                                        <td class="text-center">{{i+1}}</td>
                                         <td class="text-center">{{ s.name }}</td>
                                         <td>
                                             <div class="form-check mb-3">

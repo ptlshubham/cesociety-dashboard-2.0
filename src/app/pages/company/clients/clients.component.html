@@ -380,7 +380,7 @@
                                         (click)="removeClientsDetails(s.id)">
                                 </td>
                                 <button type="button" class="btn btn-soft-primary waves-effect waves-light"
-                                    ngbTooltip="View calendar" placement="top" (click)="openAttendance(content)"><i
+                                    ngbTooltip="View calendar" placement="top" (click)="openClientCalander(content)"><i
                                         class="bx bxs-calendar font-size-16 align-middle"></i></button>
                                 <button type="button" class="btn btn-soft-primary waves-effect waves-light"
                                     (click)="openUpdateClients(s)"><i
@@ -427,7 +427,7 @@
         <div class="col-12">
             <div class="card mb-lg-0">
                 <div class="card-body app-calendar">
-                    <full-calendar [options]="calendarOptions"></full-calendar>
+                    <full-calendar [options]="calendarOptions "></full-calendar>
                 </div>
             </div>
 
