@@ -36,6 +36,7 @@ export class ClientsComponent {
   isUpdate: boolean = false;
   editFile: boolean = true;
   removeUpload: boolean = false;
+  searchQuery: string = '';
   designerlist: any = [];
   managerlist: any = []
   clientsData: any = [];
@@ -48,20 +49,18 @@ export class ClientsComponent {
 
   validationForm!: FormGroup;
   page = 1;
-  pageSize = 10;
+  pageSize = 50;
   collectionSize = 0;
   paginateData: any = [];
   assignedEmpData: any = [];
   assignedDesignerList: any = [];
   assignedManagerList: any = [];
   breadCrumbItems!: Array<{}>;
-  calendarEvents!: any[];
-  editEvent: any;
-  formEditData!: UntypedFormGroup;
-  newEventDate: any;
+
   formData!: UntypedFormGroup;
-  @ViewChild('editmodalShow') editmodalShow!: TemplateRef<any>;
-  @ViewChild('modalShow') modalShow !: TemplateRef<any>;
+  filterClientList: any = [];
+
+
   constructor(
     public formBuilder: UntypedFormBuilder,
     private companyService: CompanyService,
@@ -80,10 +79,6 @@ export class ClientsComponent {
     });
 
     //Edit Data Get
-    this.formEditData = this.formBuilder.group({
-      editTitle: ['', [Validators.required]],
-      editCategory: [],
-    });
 
     this.validationForm = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -123,172 +118,16 @@ export class ClientsComponent {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
-    select: this.openModal.bind(this),
-    eventClick: this.handleEventClick.bind(this),
-    eventsSet: this.handleEvents.bind(this)
   };
   currentEvents: EventApi[] = [];
 
-  /**
-   * Event add modal
-   */
-  openModal(event?: any) {
-    this.newEventDate = event;
-    this.modalService.open(this.modalShow, { size: 'md', windowClass: 'modal-holder', centered: true });
-  }
-
-  /**
-   * Fetches the data
-   */
   private _fetchData() {
     //BreadCrumb 
     this.breadCrumbItems = [
       { label: 'Apps' },
       { label: 'Calendar', active: true }];
 
-    // Event category
-    this.category = category;
 
-    // Calender Event Data
-    this.calendarEvents = calendarEvents;
-
-    // form submit
-    this.submitted = false;
-  }
-
-  /**
-   * Event click modal show
-   */
-  handleEventClick(clickInfo: EventClickArg) {
-    this.editEvent = clickInfo.event;
-    this.formEditData = this.formBuilder.group({
-      editTitle: clickInfo.event.title,
-      editCategory: clickInfo.event.classNames[0],
-    });
-    this.modalService.open(this.editmodalShow, { size: 'md', windowClass: 'modal-holder', centered: true });
-  }
-
-  /**
-   * Events bind in calander
-   * @param events events
-   */
-  handleEvents(events: EventApi[]) {
-    this.currentEvents = events;
-
-  }
-
-  /**
-   * Close event modal
-   */
-  closeEventModal() {
-    this.formData = this.formBuilder.group({
-      title: '',
-      category: '',
-    });
-    this.modalService.dismissAll();
-  }
-
-  /**
-   * Event Data Get
-   */
-  get form() {
-    return this.formData.controls;
-  }
-
-  /***
-   * Model Position Set
-   */
-  position() {
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Event has been saved',
-      showConfirmButton: false,
-      timer: 1000,
-    });
-  }
-
-  /**
-   * Save the event
-   */
-  saveEvent() {
-    if (this.formData.valid) {
-      const title = this.formData.get('title')!.value;
-      const className = this.formData.get('category')!.value;
-      const calendarApi = this.newEventDate.view.calendar;
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: this.newEventDate.startStr,
-        end: this.newEventDate.endStr,
-        allDay: this.newEventDate.allDay,
-        className: className + ' ' + 'text-white'
-      });
-      console.log('titl', calendarApi);
-      this.position();
-      this.formData = this.formBuilder.group({
-        title: '',
-        category: '',
-      });
-      this.modalService.dismissAll();
-    }
-    this.submitted = true;
-  }
-
-  /**
-   * save edit event data
-   */
-  editEventSave() {
-    const editTitle = this.formEditData.get('editTitle')!.value;
-    const editCategory = this.formEditData.get('editCategory')!.value;
-
-    const editId = this.calendarEvents.findIndex(
-      (x) => x.id + '' === this.editEvent.id + ''
-    );
-
-    this.editEvent.setProp('title', editTitle);
-    this.editEvent.setProp('classNames', editCategory);
-
-    this.calendarEvents[editId] = {
-      ...this.editEvent,
-      title: editTitle,
-      id: this.editEvent.id,
-      classNames: editCategory,
-    };
-    this.position();
-    this.formEditData = this.formBuilder.group({
-      editTitle: '',
-      editCategory: '',
-    });
-    this.modalService.dismissAll();
-  }
-
-  /**
-   * Delete-confirm
-   */
-  confirm() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#34c38f',
-      cancelButtonColor: '#f46a6a',
-      confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
-      if (result.value) {
-        this.deleteEventData();
-        Swal.fire('Deleted!', 'Event has been deleted.', 'success');
-      }
-    });
-  }
-
-  /**
-   * Delete event
-   */
-  deleteEventData() {
-    this.editEvent.remove();
-    this.modalService.dismissAll();
   }
   get f() { return this.validationForm.controls }
   formatSelectedMedia(mediaArray: any[]): string {
@@ -378,12 +217,14 @@ export class ClientsComponent {
         this.clientsData[i].index = i + 1;
       }
       this.collectionSize = this.clientsData.length;
+      this.filterClientList = [...this.clientsData];
+
 
       this.getPagintaion();
     })
   }
   getPagintaion() {
-    this.paginateData = this.clientsData.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+    this.paginateData = this.filterClientList.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
   removeClientsDetails(id: any) {
     Swal.fire({
@@ -402,7 +243,6 @@ export class ClientsComponent {
 
       }
     });
-
   }
   openAddClients() {
     this.isOpen = true;
@@ -422,7 +262,6 @@ export class ClientsComponent {
         mediaArray.some((m: any) => m.name === media.name)
       );
     }
-    debugger
 
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.designerlist = res.filter((employee: any) => employee.role === 'Designer');
@@ -448,5 +287,12 @@ export class ClientsComponent {
   }
   openClientCalander(largeDataModal: any) {
     this.modalService.open(largeDataModal, { size: 'lg', windowClass: 'modal-holder', centered: true });
+  }
+  applySearchFilter() {
+    this.page = 1; // Reset the page when the search query changes
+    this.filterClientList = this.clientsData.filter((client: any) =>
+      (client.name).toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+    this.getPagintaion();
   }
 }

@@ -150,6 +150,13 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between">
                     <h5 class="card-title">Employee Details List</h5>
+
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="fname" placeholder="Search Employee Name"
+                                [(ngModel)]="searchQuery" (input)="applySearchFilter()">
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-primary waves-effect btn-label waves-light"
                         (click)="openAddStaff()"><i class="bx bx-user-plus label-icon"></i>
                         Add New Staff</button>
@@ -157,7 +164,8 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table mb-0" *ngIf="staffModel.role !== 'companyAdmin'">
+                    <!-- *ngIf="staffModel.role == 'companyAdmin'" -->
+                    <table class="table mb-0">
                         <thead class="table-light">
                             <tr>
                                 <th class="text-left">#</th>
@@ -167,7 +175,6 @@
                                 <th class="text-center">Email</th>
                                 <th class="text-center">Birthday</th>
                                 <th class="text-center">Role</th>
-                                <th class="text-center">Created Date</th>
                                 <th class="text-end">Action</th>
                             </tr>
                         </thead>
@@ -184,7 +191,6 @@
                                 <td class="text-center">{{s.email}} </td>
                                 <td class="text-center">{{s.birthday_date |date:'dd/MM/yyyy'}} </td>
                                 <td class="text-center">{{s.role}} </td>
-                                <td class="text-center">{{s.createddate |date:'dd/MM/yyyy'}} </td>
                                 <td class="text-end d-flex justify-content-end gap-1">
                                     <span class="form-check form-switch form-switch-md" dir="ltr">
                                         <input type="checkbox" class="form-check-input" [checked]="!s.isactive"

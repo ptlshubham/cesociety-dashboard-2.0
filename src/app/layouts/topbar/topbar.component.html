@@ -106,7 +106,9 @@
                     <img class="rounded-circle header-profile-user" src="assets/images/users/inst.jpg"
                         alt="Header Avatar" *ngIf="role=='Institute' || role=='superAdmin'">
                     <img class="rounded-circle header-profile-user" src="assets/images/users/keryar.jpg"
-                        alt="Header Avatar" *ngIf="company">
+                        *ngIf="profile=='null' ||profile==null && company" alt="Header Avatar">
+                    <img class="rounded-circle header-profile-user" src="http://localhost:9000{{ profile }}"
+                        *ngIf="profile!='null' && profile!=null && company" alt="Header Avatar">
                     <span class="d-none d-xl-inline-block ms-1 fw-medium">{{adminName}}</span>
                     <span class="d-none d-xl-inline-block ms-1 fw-medium">{{collegeName}}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>

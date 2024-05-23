@@ -24,7 +24,7 @@ export class EmployeeComponent {
   isOpen: boolean = false;
   isUpdate: boolean = false;
   page = 1;
-  pageSize = 10;
+  pageSize = 50;
   collectionSize = 0;
   paginateData: any = [];
   staffModel: any = {};
@@ -32,7 +32,13 @@ export class EmployeeComponent {
     { name: 'Manager' },
     { name: 'Designer' },
     { name: 'Developer' },
+    { name: 'SubAdmin' },
   ]
+  filterEmployeeList: any = [];
+
+  searchQuery: string = '';
+
+  designerData: any = []
   constructor(
     public toastr: ToastrService,
     public formBuilder: UntypedFormBuilder,
@@ -112,6 +118,7 @@ export class EmployeeComponent {
         this.staffDataTable[i].index = i + 1;
       }
       this.collectionSize = this.staffDataTable.length;
+      this.filterEmployeeList = [...this.staffDataTable];
       this.getPagintaion();
     })
   }
@@ -132,7 +139,7 @@ export class EmployeeComponent {
     this.getStaffDetails();
   }
   getPagintaion() {
-    this.paginateData = this.staffDataTable.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+    this.paginateData = this.filterEmployeeList.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
   openUpdateStaff(data: any) {
     this.imageUrl = 'http://localhost:9000' + data.profile_image;
@@ -147,7 +154,7 @@ export class EmployeeComponent {
     if (status == 0) {
       var isactive = true;
     }
-    else{
+    else {
       var isactive = false;
     }
     Swal.fire({
@@ -183,6 +190,34 @@ export class EmployeeComponent {
       this.getStaffDetails();
       this.isOpen = false;
     })
+  }
+
+  getClientsDetails() {
+    this.companyService.getAllClientDetailsData().subscribe((res: any) => {
+      res.forEach((element: any, index: number) => {
+        if (res.length > 0) {
+          const mediaArray = element.media.split(',').map((item: any) => item.trim());
+          res[index].mediaArray = mediaArray;
+          this.companyService.getAssignedEmpDetailsById(element.id).subscribe((data: any) => {
+            res[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
+          })
+        }
+      });
+      this.designerData = res;
+      for (let i = 0; i < this.designerData.length; i++) {
+        this.designerData[i].index = i + 1;
+      }
+      this.collectionSize = this.designerData.length;
+
+      this.getPagintaion();
+    })
+  }
+  applySearchFilter() {
+    this.page = 1; // Reset the page when the search query changes
+    this.filterEmployeeList = this.staffDataTable.filter((employee: any) =>
+      (employee.name).toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+    this.getPagintaion();
   }
 }
 
