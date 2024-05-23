@@ -24,7 +24,6 @@ export class AttendanceComponent implements OnInit {
   newEventDate: any;
   category!: any[];
   submitted = false;
-  paginateData: any = [];
   filterData: any = [];
   collectionSize = 0;
   page = 1;
@@ -36,7 +35,7 @@ export class AttendanceComponent implements OnInit {
   @ViewChild('modalShow') modalShow !: TemplateRef<any>;
   employeeList: any = [];
   employeeSelections: { employeeId: any, option: string, startDate: string }[] = [];
-
+  tempAttandance: any = [];
   calendarEvents: EventInput[] = [];
 
   constructor(
@@ -111,40 +110,29 @@ export class AttendanceComponent implements OnInit {
 
 
   handleEventClick(clickInfo: EventClickArg) {
-    debugger
-    // const event = this.calendarEvents.find(e => e.id === eventId);
-    // if (event) {
-    //   this.selectedEvent = event;
-    //   this.initializeEditForm(event);
-    //   // Open your modal here
-    // }
     this.editEvent = clickInfo.event;
-    this.formEditData = this.formBuilder.group({
-      editTitle: clickInfo.event.title,
-      editCategory: clickInfo.event.classNames[0],
+    const selectedDate = this.editEvent.start;
+
+    const formatDate = (date: Date) => {
+      const d = new Date(date);
+      return `${d.getFullYear()}-${('0' + (d.getMonth() + 1)).slice(-2)}-${('0' + d.getDate()).slice(-2)}`;
+    };
+
+    const formattedSelectedDate = formatDate(selectedDate);
+    this.tempAttandance = [];
+
+    this.attendanceList.forEach((element: any) => {
+      const formattedElementDate = formatDate(element.date);
+      if (formattedElementDate === formattedSelectedDate) {
+        debugger
+        this.tempAttandance.push(element);
+      }
     });
+
     this.modalService.open(this.editmodalShow, { centered: true });
   }
-  initializeEditForm(event: any) {
-    const employeeStatus = this.formEditData.get('employeeStatus') as FormArray;
-    employeeStatus.clear();
 
-    this.employeeList.forEach((employee:any) => {
-      const status = event.attendance.find((a:any) => a.employeeId === employee.id)?.status || 'Absent';
-      employeeStatus.push(this.fb.group({
-        employeeId: [employee.id],
-        status: [status]
-      }));
-    });
-  }
 
-  // radioSelected(employeeId: number, status: string) {
-  //   const employeeStatus = this.formEditData.get('employeeStatus') as FormArray;
-  //   const control = employeeStatus.controls.find(c => c.value.employeeId === employeeId);
-  //   if (control) {
-  //     control.patchValue({ status });
-  //   }
-  // }
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
   }
@@ -152,88 +140,7 @@ export class AttendanceComponent implements OnInit {
   closeEventModal() {
     this.modalService.dismissAll();
   }
-  position() {
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Event has been saved',
-      showConfirmButton: false,
-      timer: 1000,
-    });
-  }
 
-  saveEvent() {
-    if (this.attendance.valid) {
-      const title = this.attendance.get('title')!.value;
-      const className = this.attendance.get('category')!.value;
-      const calendarApi = this.newEventDate.view.calendar;
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: this.newEventDate.startStr,
-        end: this.newEventDate.endStr,
-        allDay: this.newEventDate.allDay,
-        className: className + ' ' + 'text-white'
-      });
-
-      this.position();
-      this.attendance.reset();
-      this.modalService.dismissAll();
-    }
-    this.submitted = true;
-  }
-
-  editEventSave() {
-    // const updatedEvent = {
-    //   ...this.selectedEvent,
-    //   attendance: this.formEditData.value.employeeStatus
-    // };
-    // console.log(updatedEvent);
-    const editTitle = this.formEditData.get('editTitle')!.value;
-    const editCategory = this.formEditData.get('editCategory')!.value;
-
-    const editId = this.calendarEvents.findIndex(
-      (x) => x.id + '' === this.editEvent.id + ''
-    );
-
-    this.editEvent.setProp('title', editTitle);
-    this.editEvent.setProp('classNames', editCategory);
-
-    this.calendarEvents[editId] = {
-      ...this.editEvent,
-      title: editTitle,
-      id: this.editEvent.id,
-      classNames: editCategory,
-    };
-    this.position();
-    this.formEditData.reset();
-    this.modalService.dismissAll();
-  }
-
-  confirm() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#34c38f',
-      cancelButtonColor: '#f46a6a',
-      confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
-      if (result.value) {
-        this.deleteEventData();
-        Swal.fire('Deleted!', 'Event has been deleted.', 'success');
-      }
-    });
-  }
-
-  deleteEventData() {
-    this.editEvent.remove();
-    this.modalService.dismissAll();
-  }
-  getPagintaion() {
-    this.paginateData = this.filterData.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-  }
   getAllEmployeeDetails() {
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.employeeList = res;
@@ -276,6 +183,7 @@ export class AttendanceComponent implements OnInit {
     this.companyService.SaveAttendanceDetails(this.employeeSelections).subscribe((res: any) => {
       this.attendanceList = res;
       this.getAllAttandanceDetails();
+      this.employeeSelections = [];
       this.toastr.success('Attendence Done Successfully.', 'Updated', { timeOut: 3000 });
       this.closeEventModal();
     });
@@ -297,16 +205,5 @@ export class AttendanceComponent implements OnInit {
       });
     }
   }
-  editAttendance(employeeId: any, option: string) {
-    // Assuming this.employeeSelections contains the selected data for editing
-    const selection = this.employeeSelections.find((sel: any) => sel.employeeId === employeeId && sel.option === option);
-    if (selection) {
-      this.formEditData.patchValue({
-        editTitle: option,
-        // editCategory: selection.category // Assuming there's a category property in selection
-      });
-    }
-  }
-
 
 }

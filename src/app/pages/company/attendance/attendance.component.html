@@ -41,7 +41,7 @@
                 <button type="button" class="btn-close" (click)="closeEventModal()"></button>
             </div>
             <div class="modal-body p-4">
-                <form (ngSubmit)="saveEvent()">
+                <form>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table mb-0"
@@ -95,8 +95,6 @@
             </div>
             <!-- end modal dialog-->
         </ng-template>
-
-        <!-- Edit event modal -->
         <!-- Edit event modal -->
         <ng-template #editmodalShow let-modal>
             <div class="modal-header">
@@ -105,7 +103,7 @@
                     (click)="modal.dismiss('Cross click')"></button>
             </div>
             <div class="modal-body p-4">
-                <form [formGroup]="formEditData" (ngSubmit)="editEventSave()">
+                <form [formGroup]="formEditData">
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table mb-0">

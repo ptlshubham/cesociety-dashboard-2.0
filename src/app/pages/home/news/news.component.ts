@@ -73,6 +73,10 @@ export class NewsComponent implements OnInit {
     else {
       this.newsModel.files = null;
     }
+    this.newsModel.startDate = this.newsModel.startDate || null;
+    this.newsModel.endDate = this.newsModel.endDate || null;
+    debugger
+
     this.newsModel.institute_id = localStorage.getItem('InstituteId');
     this.homeService.saveNewsListData(this.newsModel).subscribe((res: any) => {
       this.toastr.success('News added successfully', 'Success', {

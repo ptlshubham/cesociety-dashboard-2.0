@@ -203,7 +203,9 @@ export class ApiService {
   public static ChackForPasswordURL: string = ApiService.HOST_URL + '/admin/ChackForPassword';
   public static updatePasswordURL: string = ApiService.HOST_URL + '/admin/UpdateCompanyPassword';
   public static getEmployeeDataByIdURL: string = ApiService.HOST_URL + '/admin/getEmployeeDataById/';
+
   public static SaveAttendanceDetailsURL: string = ApiService.HOST_URL + '/admin/SaveAttendanceDetails';
+  public static getAllAttendanceListURL: string = ApiService.HOST_URL + '/admin/GetAllAttendanceList';
 
 
 

@@ -34,8 +34,8 @@ export class OrganizationLoginComponent {
      * Form Validatyion
      */
     this.loginForm = this.formBuilder.group({
-      email: ['admin@gmail.com', [Validators.required, Validators.email]],
-      password: ['123456', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
     document.body.setAttribute('data-layout', 'vertical');
   }
