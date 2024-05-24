@@ -3,7 +3,7 @@ import { CompanyService } from 'src/app/core/services/company.service';
 import { ChartType } from './dashboard.model';
 
 import { TokensService } from 'src/app/core/services/tokens.service';
-import { donutChart, barChart, investedOverview } from './data';
+import { donutChart, investedOverview } from './data';
 
 
 @Component({
@@ -28,6 +28,8 @@ export class CompanyDashboardComponent {
   completedData: any = [];
   cancelData: any = [];
   staffModel: any = {};
+  employeeDataList: any = []
+  comapanyRole: any = localStorage.getItem('Role');
   Tokens: ChartType = {
     chart: {
       width: 227,
@@ -139,6 +141,7 @@ export class CompanyDashboardComponent {
   getStaffDetails() {
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.employeeList = res;
+
     })
   }
   getClientsDetails() {
@@ -162,16 +165,29 @@ export class CompanyDashboardComponent {
   }
   GetEmployeeBar() {
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
-      res.forEach((employee: any) => {
-        this.barChart.categories.push(employee.name);
+
+      this.employeeDataList = res;
+      debugger
+      this.barChart.xaxis.categories = [];
+      this.employeeDataList.forEach((employee: any) => {
+        this.barChart.xaxis.categories.push(employee.name);
       });
+
+
     });
   }
+
   getAllEmployeeDetails() {
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.employeeList = res;
       debugger
       this.staffModel.role = localStorage.getItem('Role')
+    })
+  }
+
+  getAllClientDetails(id: any) {
+    this.companyService.getClientDetailsById(id).subscribe((res: any) => {
+      this.clientlist = res;
     })
   }
 

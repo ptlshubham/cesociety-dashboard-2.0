@@ -4,25 +4,26 @@
 
 <!-- calendar -->
 <div class="row">
-    <div class="col-3">
+    <div class="col-lg-3">
         <div class="card mb-lg-0">
-            <div class="card-body align-items-center">
-                <div class="card-body">
-                    <h3 class="text-center font-weight-bold ">Employee List</h3>
-                    <hr>
-                    <div class="table-responsive">
-                        <table class="table mb-0">
-                            <thead class="table-light">
-                            </thead>
-                            <tbody>
-                                <tr *ngFor=" let s of employeeList;let i=index">
-                                    <td class="text-center">{{i+1}} </td>
-
-                                    <td class="text-center">{{s.name}} </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="card-body">
+                <h3 class="text-center font-weight-bold">Employee List</h3>
+                <hr>
+                <div class="table-responsive scrollable-table">
+                    <table class="table table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th class="text-center">Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let s of employeeList; let i = index">
+                                <td class="text-center">{{ i + 1 }}</td>
+                                <td class="text-center">{{ s.name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

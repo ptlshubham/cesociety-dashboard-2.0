@@ -35,19 +35,19 @@ const donutChart: ChartType = {
         },
     ],
 };
-const barChart: ChartType = {
-    chart: { height: 350, type: "bar", toolbar: { show: !1 } },
-    plotOptions: { bar: { horizontal: !0 } },
-    dataLabels: { enabled: !1 },
-    series: [{ data: [380, 430, 450, 475, 550, 584, 780, 1100, 1220, 1365] }],
-    colors: ['#2ab57d'],
-    grid: { borderColor: "#f1f1f1" },
-    xaxis: {
-        categories: [
+// const barChart: ChartType = {
+//     chart: { height: 350, type: "bar", toolbar: { show: !1 } },
+//     plotOptions: { bar: { horizontal: !0 } },
+//     dataLabels: { enabled: !1 },
+//     series: [{ data: [380, 430, 450, 475, 550, 584, 780, 1100, 1220, 1365] }],
+//     colors: ['#2ab57d'],
+//     grid: { borderColor: "#f1f1f1" },
+//     xaxis: {
+//         categories: [
 
-        ],
-    },
-};
+//         ],
+//     },
+// };
 const investedOverview: ChartType = {
     chart: {
         height: 270,
@@ -97,4 +97,4 @@ const investedOverview: ChartType = {
     labels: ['Series A'],
 };
 
-export { walletOverview, donutChart, barChart, investedOverview };
+export { walletOverview, donutChart, investedOverview };

@@ -61,7 +61,12 @@ export class RequestTokensComponent {
   statusChange: any = []
   isEditToken: boolean = false;
   @ViewChild('content') modalShow !: TemplateRef<any>;
-
+  selectedDate: string = ''; // Define a property to hold the selected date
+  searchQuery: string = ''; // Existing property for search query
+  staffDataTable: any[] = []; // Your data
+  filterEmployeeList: any[] = [];
+  originalTokenData: any[] = [];
+  comapanyRole: any = localStorage.getItem('Role');
   constructor(private modalService: NgbModal,
     public formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
@@ -387,7 +392,8 @@ export class RequestTokensComponent {
       }
     });
   }
-  getAllToken() {
+  getAllToken(selectedDate?: string) {
+    debugger
     this.tokensService.getAllTokenData().subscribe((res: any) => {
 
       res.forEach((element: any, index: number) => {
@@ -398,6 +404,13 @@ export class RequestTokensComponent {
           })
         }
       });
+
+      if (selectedDate) {
+        res = res.filter((token: any) => {
+          const formattedBackendDate = token.createddate.split(' ')[0];
+          return formattedBackendDate === selectedDate;
+        });
+      }
       this.pendingData = res.filter((token: any) => token.status === 'Pending');
       this.processingData = res.filter((token: any) => token.status === 'Processing');
       this.reviewData = res.filter((token: any) => token.status === 'Review');
@@ -407,6 +420,7 @@ export class RequestTokensComponent {
       this.cesLabelData = res.filter((token: any) => token.label === 'CES');
       this.urgentLabelData = res.filter((token: any) => token.label === 'Urgent');
       this.tokenData = res;
+
       this.emailData = this.tokenData;
       this.totalRecords = this.tokenData.length;
       for (let i = 0; i < this.tokenData.length; i++) {
@@ -441,6 +455,7 @@ export class RequestTokensComponent {
       this.totalRecords = this.tokenData.length;
       for (let i = 0; i < this.tokenData.length; i++) {
         this.tokenData[i].index = i + 1;
+
       }
     })
   }
@@ -590,9 +605,7 @@ export class RequestTokensComponent {
     });
   }
 
-  /***
-   * Delete Mail
-   */
+
   deleteMail() {
     const found = this.emailData.some(r => this.emailIds.indexOf(r.id) >= 0);
     if (found) {
@@ -605,14 +618,7 @@ export class RequestTokensComponent {
     this.emailIds = [];
   }
 
-  /***
-   * send mail select multiple mail
-   */
 
-
-  /**
-   * Handle on page click event
-   */
   onPageChange(page: any): void {
     this.startIndex = (page - 1) * this.pageSize + 1;
     this.endIndex = (page - 1) * this.pageSize + this.pageSize;
@@ -639,4 +645,36 @@ export class RequestTokensComponent {
       this.staffModel.role = localStorage.getItem('Role')
     })
   }
+
+  filterTokenDate() {
+    debugger;
+    if (this.selectedDate) {
+      const selectedDateFormatted = this.selectedDate;
+      this.getAllToken(selectedDateFormatted);
+      const filteredToken = this.tokenData.filter((token: any) => {
+        const tokenDateStr = token.createddate;
+        if (!tokenDateStr) {
+          return true;
+        }
+        const formattedBackendDate = tokenDateStr.split(' ')[0];
+        return formattedBackendDate === selectedDateFormatted;
+      });
+      console.log('Filtered Token:', filteredToken);
+      this.tokenData = filteredToken;
+      this.tokenData.forEach((item: any, index: number) => {
+        item.index = index + 1;
+      });
+      this.getAllToken();
+    }
+  }
+
+
+
+
+  extractDateFromDateStr(dateStr: string): string | null {
+    // Assuming the dateStr is in 'YYYY-MM-DD' format. Adjust if necessary.
+    const date = new Date(dateStr);
+    return isNaN(date.getTime()) ? null : dateStr;
+  }
 }
+

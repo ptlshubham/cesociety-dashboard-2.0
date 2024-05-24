@@ -57,14 +57,13 @@ export class CompanyService {
     getEmployeeDataById(id: any) {
         return this.http.get(ApiService.getEmployeeDataByIdURL + id);
     }
-
-
-
     SaveAttendanceDetails(data: any): Observable<any> {
         return this.http.post(ApiService.SaveAttendanceDetailsURL, data);
     }
     getAttandanceData(): Observable<any> {
         return this.http.get(ApiService.getAllAttendanceListURL);
     }
-    
+    getClientDetailsById(id: any) {
+        return this.http.get(ApiService.GetClientDetailsByIdURL + id);
+    }
 }

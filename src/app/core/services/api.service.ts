@@ -206,6 +206,8 @@ export class ApiService {
 
   public static SaveAttendanceDetailsURL: string = ApiService.HOST_URL + '/admin/SaveAttendanceDetails';
   public static getAllAttendanceListURL: string = ApiService.HOST_URL + '/admin/GetAllAttendanceList';
+  public static GetClientDetailsByIdURL: string = ApiService.HOST_URL + '/admin/getClientDetailsById/';
+
 
 
 
