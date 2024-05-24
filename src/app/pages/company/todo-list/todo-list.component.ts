@@ -5,20 +5,22 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import { CalendarOptions, EventApi, EventClickArg } from '@fullcalendar/core';
+import { CalendarOptions, EventApi, EventClickArg, EventContentArg } from '@fullcalendar/core';
 
 import Swal from 'sweetalert2';
 import { category, calendarEvents, createEventId } from './data';
+import { CompanyService } from 'src/app/core/services/company.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
-  styleUrl: './todo-list.component.scss'
+  styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent implements OnInit {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
-  calendarEvents!: any[];
+  calendarEvents: any[] = [];
   editEvent: any;
   formEditData!: UntypedFormGroup;
   newEventDate: any;
@@ -28,29 +30,38 @@ export class TodoListComponent implements OnInit {
   formData!: UntypedFormGroup;
   @ViewChild('editmodalShow') editmodalShow!: TemplateRef<any>;
   @ViewChild('modalShow') modalShow !: TemplateRef<any>;
-
-  constructor(private modalService: NgbModal, private formBuilder: UntypedFormBuilder) {
-
+  todoList: any = [];
+  todoModel: any = {};
+  editModel: any = {};
+  constructor(
+    private modalService: NgbModal,
+    private formBuilder: UntypedFormBuilder,
+    private companyService: CompanyService,
+    public toastr: ToastrService,
+  ) {
     this.setupDraggableEvents();
   }
 
   ngOnInit(): void {
     this._fetchData();
-    // VAlidation
+    // Validation
     this.formData = this.formBuilder.group({
       title: ['', [Validators.required]],
       category: ['', [Validators.required]],
+      description: [''],
+
     });
 
-    //Edit Data Get
+    // Edit Data Get
     this.formEditData = this.formBuilder.group({
       editTitle: ['', [Validators.required]],
       editCategory: [],
+      editDescription: [''],
     });
   }
 
   /***
-   * Calender Set
+   * Calendar Set
    */
   calendarOptions: CalendarOptions = {
     plugins: [
@@ -59,6 +70,7 @@ export class TodoListComponent implements OnInit {
       timeGridPlugin,
       listPlugin,
     ],
+    eventContent: this.customizeEventContent.bind(this),
     headerToolbar: {
       left: 'dayGridMonth,dayGridWeek,dayGridDay',
       center: 'title',
@@ -66,7 +78,7 @@ export class TodoListComponent implements OnInit {
     },
     initialView: "dayGridMonth",
     themeSystem: "bootstrap",
-    initialEvents: calendarEvents,
+    initialEvents: this.calendarEvents, // Initially empty
     weekends: true,
     editable: true,
     selectable: true,
@@ -75,11 +87,16 @@ export class TodoListComponent implements OnInit {
     select: this.openModal.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
-
     droppable: true, // Allows things to be dropped onto the calendar
-    drop: this.handleEventReceive.bind(this)
+    // drop: this.handleEventReceive.bind(this)
   };
   currentEvents: EventApi[] = [];
+
+  customizeEventContent(eventInfo: EventContentArg) {
+    const eventEl = document.createElement('div');
+    eventEl.innerHTML = `<div>${eventInfo.event.title}</div>`;
+    return { domNodes: [eventEl] };
+  }
 
   /**
    * Event add modal
@@ -93,7 +110,7 @@ export class TodoListComponent implements OnInit {
    * Fetches the data
    */
   private _fetchData() {
-    //BreadCrumb 
+    // BreadCrumb 
     this.breadCrumbItems = [
       { label: 'Apps' },
       { label: 'Calendar', active: true }];
@@ -101,9 +118,7 @@ export class TodoListComponent implements OnInit {
     // Event category
     this.category = category;
 
-    // Calender Event Data
-    this.calendarEvents = calendarEvents;
-
+    this.getAllTodoListDetails();
     // form submit
     this.submitted = false;
   }
@@ -112,16 +127,19 @@ export class TodoListComponent implements OnInit {
    * Event click modal show
    */
   handleEventClick(clickInfo: EventClickArg) {
+    debugger
     this.editEvent = clickInfo.event;
     this.formEditData = this.formBuilder.group({
       editTitle: clickInfo.event.title,
       editCategory: clickInfo.event.classNames[0],
+      editDescription: clickInfo.event.extendedProps.description,
+
     });
     this.modalService.open(this.editmodalShow, { centered: true });
   }
 
   /**
-   * Events bind in calander
+   * Events bind in calendar
    * @param events events
    */
   handleEvents(events: EventApi[]) {
@@ -166,26 +184,44 @@ export class TodoListComponent implements OnInit {
     if (this.formData.valid) {
       const title = this.formData.get('title')!.value;
       const className = this.formData.get('category')!.value;
-      const calendarApi = this.newEventDate.view.calendar;
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: this.newEventDate.startStr,
-        end: this.newEventDate.endStr,
-        allDay: this.newEventDate.allDay,
-        className: className + ' ' + 'text-white'
-      });
-      console.log('titl', calendarApi);
+      const description = this.formData.get('description')!.value;
 
+
+      this.todoModel.empid = localStorage.getItem('Eid');
+      this.todoModel.title = title;
+      this.todoModel.category = className + ' ' + 'text-white';
+      this.todoModel.date = this.newEventDate.startStr;
+      this.todoModel.description = description;
+
+      this.companyService.SaveTodoDetails(this.todoModel).subscribe((res: any) => {
+        this.todoList = res;
+        this.getAllTodoListDetails();
+        this.toastr.success('Todo Details Successfully Added.', 'Submitted', { timeOut: 3000 });
+        this.closeEventModal();
+      });
 
       this.position();
-      this.formData = this.formBuilder.group({
-        title: '',
-        category: '',
-      });
+      this.formData.reset();
       this.modalService.dismissAll();
     }
     this.submitted = true;
+  }
+
+  getAllTodoListDetails() {
+    this.companyService.getTodoListDataById(localStorage.getItem('Eid')).subscribe((res: any) => {
+      this.todoList = res;
+      if (res && res.length > 0) {
+        this.calendarEvents = res.map((element: any) => ({
+          id: element.id,
+          title: element.title,
+          description: element.description,
+          start: new Date(element.date),
+          className: element.category,
+          allDay: false
+        }));
+        this.calendarOptions.events = [...this.calendarEvents]; // update events in calendarOptions
+      }
+    });
   }
 
   /**
@@ -194,25 +230,24 @@ export class TodoListComponent implements OnInit {
   editEventSave() {
     const editTitle = this.formEditData.get('editTitle')!.value;
     const editCategory = this.formEditData.get('editCategory')!.value;
-
-    const editId = this.calendarEvents.findIndex(
-      (x) => x.id + '' === this.editEvent.id + ''
-    );
-
+    const editDescription = this.formEditData.get('editDescription')!.value;
+    debugger
     this.editEvent.setProp('title', editTitle);
     this.editEvent.setProp('classNames', editCategory);
-
-    this.calendarEvents[editId] = {
-      ...this.editEvent,
-      title: editTitle,
-      id: this.editEvent.id,
-      classNames: editCategory,
-    };
-    this.position();
-    this.formEditData = this.formBuilder.group({
-      editTitle: '',
-      editCategory: '',
+    this.editEvent.setProp('description', editDescription);
+    this.editModel.id = this.editEvent.id;
+    this.editModel.title = editTitle;
+    this.editModel.category = editCategory;
+    this.editModel.description = editDescription;
+    debugger
+    this.companyService.updateTodoListDataById(this.editModel).subscribe((res: any) => {
+      this.todoList = res;
+      this.getAllTodoListDetails();
+      this.toastr.success('Todo Details Successfully Updated.', 'Updated', { timeOut: 3000 });
+      this.closeEventModal();
     });
+    this.position();
+    this.formEditData.reset();
     this.modalService.dismissAll();
   }
 
@@ -241,10 +276,14 @@ export class TodoListComponent implements OnInit {
    */
   deleteEventData() {
     this.editEvent.remove();
+    this.companyService.removeTodoListDataById(this.editEvent._def.publicId).subscribe((res: any) => {
+      this.todoList = res;
+      this.getAllTodoListDetails();
+    });
     this.modalService.dismissAll();
   }
+
   setupDraggableEvents() {
-    debugger
     const containerEl = document.getElementById('external-events');
     if (containerEl) {
       const draggableEl = containerEl.querySelectorAll('.external-event');
@@ -262,18 +301,13 @@ export class TodoListComponent implements OnInit {
     }
   }
 
-  handleEventReceive(event: any) {
-    debugger
-    const eventData = event.draggedEl.getAttribute('data-event');
-    event.event.setProp('title', eventData);
-  }
+  // handleEventReceive(event: any) {
+  //   const eventData = event.draggedEl.getAttribute('data-event');
+  //   event.event.setProp('title', eventData);
+  // }
 
-  dragStart(event: DragEvent) {
-    const target = event.target as HTMLDivElement;
-    const eventData = target.getAttribute('data-event');
-    if (eventData) {
-      event.dataTransfer?.setData('text/plain', eventData);
-    }
-  }
-
+  // handleEventReceive(event: any) {
+  //   const eventData = event.draggedEl.getAttribute('data-event');
+  //   event.event.setProp('title', eventData);
+  // }
 }

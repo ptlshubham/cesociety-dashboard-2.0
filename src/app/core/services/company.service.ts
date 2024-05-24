@@ -66,4 +66,20 @@ export class CompanyService {
     getClientDetailsById(id: any) {
         return this.http.get(ApiService.GetClientDetailsByIdURL + id);
     }
+
+
+
+    SaveTodoDetails(data: any): Observable<any> {
+        return this.http.post(ApiService.saveTodoListDetailsURL, data);
+    }
+    getTodoListDataById(id: any) {
+        return this.http.get(ApiService.getALLTodoListByIdURL + id);
+    }
+    removeTodoListDataById(id: any) {
+        return this.http.get(ApiService.removeTodoListByIdURL + id);
+    }
+    updateTodoListDataById(data: any) {
+        return this.http.post(ApiService.updateTodoListByIdURL, data);
+    }
+
 }

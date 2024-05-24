@@ -132,11 +132,11 @@ export class EmployeeComponent {
         this.staffData = res;
         this.toastr.success('Staff Details Successfully Saved.', 'Success', { timeOut: 3000, });
         this.staffModel = {};
+        this.getStaffDetails();
         this.validationForm.markAsUntouched();
         this.isOpen = false;
       })
     }
-    this.getStaffDetails();
   }
   getPagintaion() {
     this.paginateData = this.filterEmployeeList.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);

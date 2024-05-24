@@ -209,12 +209,10 @@ export class ApiService {
   public static GetClientDetailsByIdURL: string = ApiService.HOST_URL + '/admin/getClientDetailsById/';
 
 
-
-
-
-
-
-
+  public static saveTodoListDetailsURL: string = ApiService.HOST_URL + '/admin/SaveTodoListDetails';
+  public static getALLTodoListByIdURL: string = ApiService.HOST_URL + '/admin/GetALLTodoListById/';
+  public static removeTodoListByIdURL: string = ApiService.HOST_URL + '/admin/RemoveTodoListById/';
+  public static updateTodoListByIdURL: string = ApiService.HOST_URL + '/admin/UpdateTodoListById';
 
 
   //Cashfree APIS

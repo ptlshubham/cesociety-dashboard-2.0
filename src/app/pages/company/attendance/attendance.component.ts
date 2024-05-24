@@ -6,10 +6,8 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { UntypedFormBuilder, Validators, UntypedFormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import Swal from 'sweetalert2';
 import { CompanyService } from 'src/app/core/services/company.service';
 import { ToastrService } from 'ngx-toastr';
-import { category, createEventId } from './data';
 
 @Component({
   selector: 'app-attendance',
