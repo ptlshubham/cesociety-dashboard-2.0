@@ -188,6 +188,7 @@ export class ApiService {
   public static getAllClientDetailsURL: string = ApiService.HOST_URL + '/admin/GetAllClientDetails';
   public static removeClientDetailsByIdURL: string = ApiService.HOST_URL + '/admin/RemoveClientDetailsById/';
   public static getAssignedEmployeeDetailsURL: string = ApiService.HOST_URL + '/admin/GetAssignedEmployeeDetails/';
+  public static updateClientDetailsByIDURL: string = ApiService.HOST_URL + '/admin/UpdateClientDetailsByID';
 
   public static uploadTokenImageURL: string = ApiService.HOST_URL + '/admin/UploadTokenImage';
   public static uploadTokenMultiImageURL: string = ApiService.HOST_URL + '/admin/UploadTokenMultiImage';
@@ -213,6 +214,15 @@ export class ApiService {
   public static getALLTodoListByIdURL: string = ApiService.HOST_URL + '/admin/GetALLTodoListById/';
   public static removeTodoListByIdURL: string = ApiService.HOST_URL + '/admin/RemoveTodoListById/';
   public static updateTodoListByIdURL: string = ApiService.HOST_URL + '/admin/UpdateTodoListById';
+
+  public static saveSchedulerDetailsURL: string = ApiService.HOST_URL + '/admin/SaveSchedulerDetails';
+  public static getALLSchedulerByIdURL: string = ApiService.HOST_URL + '/admin/GetALLSchedulerById/';
+  public static removeSchedulerByIdURL: string = ApiService.HOST_URL + '/admin/RemoveSchedulerById/';
+  public static updateSchedulerByIdURL: string = ApiService.HOST_URL + '/admin/UpdateSchedulerById';
+  public static updateDailyWorkByIdURL: string = ApiService.HOST_URL + '/admin/UpdateDailyWorkById';
+  public static getALLDailyWorkURL: string = ApiService.HOST_URL + '/admin/GetALLDailyWork';
+
+
 
 
   //Cashfree APIS

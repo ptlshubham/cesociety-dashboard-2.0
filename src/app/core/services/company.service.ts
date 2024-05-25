@@ -25,7 +25,7 @@ export class CompanyService {
         return this.http.get(ApiService.getEmployeeDetailsURL);
     }
     removeEmployeeDetailsById(data: any): Observable<any> {
-        debugger
+
         return this.http.post(ApiService.removeEmployeeDetailsByIdURL, data);
     }
 
@@ -46,12 +46,18 @@ export class CompanyService {
     getAssignedEmpDetailsById(id: any) {
         return this.http.get(ApiService.getAssignedEmployeeDetailsURL + id);
     }
+    updateClientData(data: any) {
+
+        return this.http.post(ApiService.updateClientDetailsByIDURL, data);
+    }
+
+
     ChackForPassword(data: any) {
-        debugger
+
         return this.http.post(ApiService.ChackForPasswordURL, data);
     }
     updatePassword(admin: any): Observable<any> {
-        debugger
+
         return this.http.post<any>(ApiService.updatePasswordURL, admin);
     }
     getEmployeeDataById(id: any) {
@@ -80,6 +86,28 @@ export class CompanyService {
     }
     updateTodoListDataById(data: any) {
         return this.http.post(ApiService.updateTodoListByIdURL, data);
+    }
+
+
+    SaveSchedulerDetails(data: any): Observable<any> {
+        return this.http.post(ApiService.saveSchedulerDetailsURL, data);
+    }
+    getAllSchedulerList(id: any) {
+        return this.http.get(ApiService.getALLSchedulerByIdURL + id);
+    }
+    removeSchedulerDataById(id: any) {
+        return this.http.get(ApiService.removeSchedulerByIdURL + id);
+    }
+    updateSchedulerById(data: any) {
+        return this.http.post(ApiService.updateSchedulerByIdURL, data);
+    }
+
+
+    updateDailyById(data: any) {
+        return this.http.post(ApiService.updateDailyWorkByIdURL, data);
+    }
+    getAllDailyList(): Observable<any> {
+        return this.http.get(ApiService.getALLDailyWorkURL);
     }
 
 }

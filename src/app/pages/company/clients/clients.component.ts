@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { EventApi, CalendarOptions, EventClickArg } from '@fullcalendar/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
   styleUrl: './clients.component.scss'
 })
 export class ClientsComponent {
+
   multiDefaultOption = 'Adam';
   medialist: any = [
     { name: 'IG' },
@@ -29,23 +30,27 @@ export class ClientsComponent {
   selectedmedialist: any;
   submitted = false;
   clientData: any = []
-  staffModel: any = {};
   clientModel: any = {};
   category!: any[];
   isOpen: boolean = false;
   isUpdate: boolean = false;
-  editFile: boolean = true;
-  removeUpload: boolean = false;
+
   searchQuery: string = '';
   designerlist: any = [];
   managerlist: any = []
   clientsData: any = [];
   hasclientdata: boolean = false;
-  imageUrl: any = "assets/images/file-upload-image.jpg";
-  employeeList: any = [];
 
+  @ViewChild('fileInput') el!: ElementRef;
+  imageUrl: any = "assets/images/file-upload-image.jpg";
+  editFile: boolean = true;
+  removeUpload: boolean = false;
   cardImageBase64: any;
   clientlogo: any = null;
+  isDesignerChange: boolean = false;
+  isManagerChange: boolean = false;
+  employeeList: any = [];
+
 
   validationForm!: FormGroup;
   page = 1;
@@ -59,7 +64,7 @@ export class ClientsComponent {
 
   formData!: UntypedFormGroup;
   filterClientList: any = [];
-
+  selectedClientData: any = {};
 
   constructor(
     public formBuilder: UntypedFormBuilder,
@@ -130,6 +135,18 @@ export class ClientsComponent {
 
   }
   get f() { return this.validationForm.controls }
+
+  handleMediaChange(event: any) {
+    this.formatSelectedMedia(this.clientModel.media);
+    this.selectedMediaList(event);
+  }
+  designerChange(event: any) {
+    this.isDesignerChange = true;
+  }
+  managerChange(event: any) {
+    this.isManagerChange = true;
+  }
+
   formatSelectedMedia(mediaArray: any[]): string {
     const formattedMedia = mediaArray.map(media => media.name).join(', ');
     this.clientModel.selectedmedia = formattedMedia;
@@ -254,14 +271,12 @@ export class ClientsComponent {
 
   }
   openUpdateClients(data: any) {
-    const mediaString = data.media;
-    this.clientModel.media = data.mediaArray;
-    if (mediaString) {
-      const mediaArray = mediaString.split(',').map((item: any) => ({ name: item.trim() }));
-      this.clientModel.media = this.medialist.filter((media: any) =>
-        mediaArray.some((m: any) => m.name === media.name)
-      );
-    }
+    const mediaArray = data.media.split(',').map((mediaType: string) => mediaType.trim());
+
+    // Map the media types to their corresponding objects in the medialist
+    this.clientModel.media = mediaArray.map((mediaType: string) => {
+      return this.medialist.find((media: any) => media.name === mediaType);
+    });
 
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.designerlist = res.filter((employee: any) => employee.role === 'Designer');
@@ -273,11 +288,54 @@ export class ClientsComponent {
       this.clientModel.designers = assignedDesignerList;
       this.clientModel.managers = assignedManagerList;
     })
+
     this.imageUrl = 'http://localhost:9000' + data.logo;
     this.clientModel.profile = data.logo;
     this.clientModel = data;
     this.isOpen = true;
     this.isUpdate = true;
+    this.isDesignerChange = false;
+    this.isManagerChange = false;
+  }
+  updateClientDetails() {
+    if (this.clientlogo != null || undefined) {
+      this.clientModel.profile = this.clientlogo;
+    }
+    if (this.isDesignerChange) {
+      var updatedDesigners: any = [];
+      this.clientModel.designers.forEach((element: any) => {
+        if (this.clientModel.designers.length) {
+          updatedDesigners.push({ empid: element.id });
+        }
+        this.clientModel.updatedDesigners = updatedDesigners;
+      });
+    }
+    else {
+      this.clientModel.updatedDesigners = this.clientModel.designers
+    }
+    if (this.isManagerChange) {
+      var updatedManagers: any = [];
+      this.clientModel.managers.forEach((element: any) => {
+        if (this.clientModel.managers.length) {
+          updatedManagers.push({ empid: element.id });
+        }
+        this.clientModel.updatedManagers = updatedManagers;
+
+      });
+    }
+    else {
+      this.clientModel.updatedManagers = this.clientModel.managers
+    }
+
+    // this.clientModel.designers;
+    // this.clientModel.managers
+
+    this.companyService.updateClientData(this.clientModel).subscribe((res: any) => {
+      this.clientData = res;
+      this.toastr.success('Update Staff Details Successfully.', 'Updated', { timeOut: 3000, });
+      this.getClientsDetails();
+      this.isOpen = false;
+    })
   }
   BackToTable() {
     this.isOpen = false;
@@ -295,4 +353,9 @@ export class ClientsComponent {
     );
     this.getPagintaion();
   }
+  extraLarge(exlargeModal: any, data: any) {
+    this.selectedClientData = data;
+    this.modalService.open(exlargeModal, { size: 'xl', windowClass: 'modal-holder', centered: true });
+  }
+
 }

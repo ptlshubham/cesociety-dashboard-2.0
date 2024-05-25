@@ -22,6 +22,7 @@ import { NgbNavLink } from '@ng-bootstrap/ng-bootstrap';
 import { NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { PostingComponent } from './posting/posting.component';
+import { ClientPostSchedulerComponent } from './client-post-scheduler/client-post-scheduler.component';
 @NgModule({
   declarations: [
     EmployeeComponent,
@@ -32,6 +33,7 @@ import { PostingComponent } from './posting/posting.component';
     ProfileComponent,
     AttendanceComponent,
     PostingComponent,
+    ClientPostSchedulerComponent,
   ],
   imports: [
     CommonModule,

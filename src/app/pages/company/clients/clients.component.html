@@ -47,9 +47,7 @@
                                     <div class="multi_default">
                                         <ng-select [items]="medialist" [multiple]="true" bindLabel="name"
                                             [(ngModel)]="clientModel.media" formControlName="media"
-                                            placeholder="Select Media Services"
-                                            (change)="formatSelectedMedia(clientModel.media)"
-                                            (change)="selectedMediaList($event)">
+                                            placeholder="Select Media Services" (change)="handleMediaChange($event)">
                                             <ng-option value="" hidden>Select Media</ng-option>
                                             <ng-option *ngFor="let c of medialist" [value]="c">{{ c.name }}</ng-option>
                                         </ng-select>
@@ -66,7 +64,7 @@
                                     <div class="multi_default">
                                         <ng-select [items]="designerlist" [multiple]="true" bindLabel="name"
                                             [(ngModel)]="clientModel.designers" placeholder="Select designers"
-                                            formControlName="designersrole">
+                                            formControlName="designersrole" (change)="designerChange($event)">
                                             <ng-template ng-optgroup-tmp let-item="item">
                                                 {{item.name || 'Unnamed group'}}
                                             </ng-template>
@@ -86,7 +84,7 @@
                                     <div class="multi_default">
                                         <ng-select [items]="managerlist" [multiple]="true" bindLabel="name"
                                             [(ngModel)]="clientModel.managers" placeholder="Select manager"
-                                            formControlName="manager">
+                                            formControlName="manager" (change)="managerChange($event)">
                                             <ng-template ng-optgroup-tmp let-item="item">
                                                 {{item.name || 'Unnamed group'}}
                                             </ng-template>
@@ -288,8 +286,8 @@
                             <div class="col-lg-1 col-xl-1 col-md-1 col-sm-2 col-xs-12">
                                 <button type="submit" class="btn btn-primary" [disabled]="validationForm.invalid"
                                     (click)="SaveClientDetails()" *ngIf="isUpdate==false">Submit</button>
-                                <button type="submit" class="btn btn-primary" *ngIf="isUpdate==true"
-                                    [disabled]="validationForm.invalid">Update</button>
+                                <button type="submit" class="btn btn-primary" (click)="updateClientDetails()"
+                                    *ngIf="isUpdate==true" [disabled]="validationForm.invalid">Update</button>
                             </div>
                         </div>
                     </div>
@@ -385,7 +383,7 @@
                                             (click)="removeClientsDetails(s.id)">
                                     </span>
                                     <button type="button" class="btn btn-soft-primary waves-effect waves-light"
-                                        ngbTooltip="View calendar" placement="top"><i
+                                        ngbTooltip="View calendar" placement="top" (click)="extraLarge(exlargeModal,s)"><i
                                             class="bx bxs-calendar font-size-16 align-middle"></i></button>
                                     <button type="button" class="btn btn-soft-primary waves-effect waves-light"
                                         (click)="openUpdateClients(s)"><i
@@ -407,6 +405,17 @@
         <!-- end card -->
     </div>
 </div>
+<ng-template #exlargeModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">Scheduler</h5>
+        <button type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss('Close click')">
+        </button>
+    </div>
+    <div class="modal-body">
+       <app-client-post-scheduler [clientdata]="selectedClientData"></app-client-post-scheduler>
+    </div>
+</ng-template>
 
 <!-- <td class="text-end">
     <div class="d-flex justify-content-end gap-1">
