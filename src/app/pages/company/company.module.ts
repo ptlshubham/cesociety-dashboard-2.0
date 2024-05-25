@@ -23,6 +23,9 @@ import { NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { PostingComponent } from './posting/posting.component';
 import { ClientPostSchedulerComponent } from './client-post-scheduler/client-post-scheduler.component';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { FlatpickrModule } from 'angularx-flatpickr';
+
 @NgModule({
   declarations: [
     EmployeeComponent,
@@ -54,7 +57,9 @@ import { ClientPostSchedulerComponent } from './client-post-scheduler/client-pos
     FullCalendarModule,
     NgbNavContent,
     NgbNavLink,
-    NgbNav
+    NgbNav,
+    NgbDatepickerModule,
+    FlatpickrModule.forRoot()
 
 
   ],
