@@ -7,16 +7,16 @@
                 <div class="row">
                     <div class="col-sm order-2 order-sm-1">
                         <div class="d-flex align-items-start mt-3 mt-sm-0">
-                            <div class="flex-shrink-0  ">
-                                <div class="profile-img-wrap  avatar-md me-4">
+                            <div class="flex-shrink-0">
+                                <div class="profile-img-wrap avatar-md me-4">
                                     <img class="inline-block" src="http://localhost:9000{{ staffModel.profile_image }}"
                                         alt="user">
                                     <div class="fileupload btn">
-                                        <span class="btn-text ">edit</span>
-                                        <input class="upload" type="file">
+                                        <span class="btn-text">Edit</span>
+                                        <input class="upload" type="file" [(ngModel)]="staffModel.profile_image"
+                                            (change)="uploadFile($event)">
                                     </div>
                                 </div>
-
                             </div>
 
                             <div class="flex-grow-1">

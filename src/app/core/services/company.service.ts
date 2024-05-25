@@ -81,5 +81,8 @@ export class CompanyService {
     updateTodoListDataById(data: any) {
         return this.http.post(ApiService.updateTodoListByIdURL, data);
     }
+    UpdateEmployeeLogo(admin: any): Observable<any> {
+        return this.http.post<any>(ApiService.UpdateEmployeeLogoURL, admin);
+    }
 
 }

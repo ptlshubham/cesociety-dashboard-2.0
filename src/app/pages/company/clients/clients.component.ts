@@ -10,6 +10,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { category, calendarEvents, createEventId } from './data';
 import Swal from 'sweetalert2';
+import { Howl } from 'howler';
 @Component({
   selector: 'app-clients',
   templateUrl: './clients.component.html',
@@ -56,16 +57,20 @@ export class ClientsComponent {
   assignedDesignerList: any = [];
   assignedManagerList: any = [];
   breadCrumbItems!: Array<{}>;
+  comapanyRole: any = localStorage.getItem('Role');
 
   formData!: UntypedFormGroup;
   filterClientList: any = [];
-
+  sound: any = new Howl({
+    src: ['assets/audio/notification.mp3']
+  });
 
   constructor(
     public formBuilder: UntypedFormBuilder,
     private companyService: CompanyService,
     public toastr: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+
   ) { }
   ngOnInit(): void {
     this._fetchData();
@@ -209,6 +214,7 @@ export class ClientsComponent {
           this.companyService.getAssignedEmpDetailsById(element.id).subscribe((data: any) => {
             res[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
             res[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
+
           })
         }
       });
@@ -294,5 +300,8 @@ export class ClientsComponent {
       (client.name).toLowerCase().includes(this.searchQuery.toLowerCase())
     );
     this.getPagintaion();
+  }
+  playSound() {
+    this.sound.play();
   }
 }

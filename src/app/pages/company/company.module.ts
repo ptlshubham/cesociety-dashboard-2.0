@@ -22,6 +22,9 @@ import { NgbNavLink } from '@ng-bootstrap/ng-bootstrap';
 import { NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { PostingComponent } from './posting/posting.component';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { FlatpickrModule } from 'angularx-flatpickr';
+
 @NgModule({
   declarations: [
     EmployeeComponent,
@@ -52,7 +55,9 @@ import { PostingComponent } from './posting/posting.component';
     FullCalendarModule,
     NgbNavContent,
     NgbNavLink,
-    NgbNav
+    NgbNav,
+    NgbDatepickerModule,
+    FlatpickrModule.forRoot()
 
 
   ],

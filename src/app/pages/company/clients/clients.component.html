@@ -333,7 +333,7 @@
                                 <th class="text-center">Story</th>
                                 <th class="text-center">Extra</th>
                                 <th class="text-center">Media</th>
-                                <th class="text-end">Action</th>
+                                <th class="text-end" *ngIf="comapanyRole!=='Designer'">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -378,7 +378,7 @@
                                 <!-- <td>
                                     <span class="badge bg-primary me-1" *ngFor="let m of s.mediaArray">{{ m }}</span>
                                 </td> -->
-                                <td class="d-flex justify-content-end gap-1">
+                                <td class="d-flex justify-content-end gap-1" *ngIf="comapanyRole!=='Designer'">
                                     <span class="form-check form-switch form-switch-md mb-3 align-items-center"
                                         dir="ltr">
                                         <input type="checkbox" class="form-check-input"
@@ -389,6 +389,9 @@
                                             class="bx bxs-calendar font-size-16 align-middle"></i></button>
                                     <button type="button" class="btn btn-soft-primary waves-effect waves-light"
                                         (click)="openUpdateClients(s)"><i
+                                            class="bx bx-edit font-size-16 align-middle"></i></button>
+                                    <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                        (click)="playSound()"><i
                                             class="bx bx-edit font-size-16 align-middle"></i></button>
                                 </td>
                             </tr>

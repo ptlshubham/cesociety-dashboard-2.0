@@ -125,6 +125,7 @@ export class ProfileComponent {
     })
   }
   uploadFile(event: any) {
+
     let reader = new FileReader(); // HTML5 FileReader API
     let file = event.target.files[0];
     const img = new Image();
@@ -141,10 +142,11 @@ export class ProfileComponent {
             formdata.append('file', file);
             this.companyService.saveEmployeeProfileImages(formdata).subscribe((response) => {
               this.staffProfileImage = response;
+              debugger
               this.updatelogo()
               this.toastr.success('Image Uploaded Successfully', 'Uploaded', { timeOut: 3000, });
               this.editFile = false;
-              this.removeUpload = true;
+              this.removeUpload = false;
 
             })
           }
@@ -158,7 +160,14 @@ export class ProfileComponent {
 
   }
   updatelogo() {
-    this.companyService.saveEmployeeProfileImages(this.staffModel).subscribe((req) => {
+    const employeeId = localStorage.getItem('Eid');
+    let data = {
+      id: employeeId,
+      image: this.staffProfileImage
+    }
+    this.companyService.UpdateEmployeeLogo(data).subscribe((req) => {
+      this.staffProfileImage = req;
+      this.getStaffDetails();
       this.toastr.success('Logo updated successfully', 'Updated', { timeOut: 3000 });
     });
   }

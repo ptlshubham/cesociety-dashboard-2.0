@@ -1,5 +1,6 @@
 <app-request-tokens *ngIf="staffModel.role === 'Designer'"></app-request-tokens>
-<div class="row" *ngIf="staffModel.role === 'companyAdmin'|| staffModel.role ==='Manager'">
+<div class="row"
+    *ngIf="staffModel.role === 'companyAdmin'|| staffModel.role ==='Manager' || staffModel.role ==='SubAdmin'">
     <div class="col-xl-3 col-md-6">
         <a routerLink="/company/employee">
             <div class="card card-h-100">
@@ -188,7 +189,7 @@
     </div>
 
 </div>
-<div class="row" *ngIf="staffModel.role === 'companyAdmin'">
+<div class="row" *ngIf="staffModel.role === 'companyAdmin'  || staffModel.role ==='SubAdmin'">
     <div class="col-xl-6 col-md-6">
         <div class="card">
             <!-- card body -->

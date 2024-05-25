@@ -46,6 +46,7 @@ export class RequestTokensComponent {
   assignedEmpData: any = [];
   createdby: any;
   tokenData: any = [];
+  tempTokenData: any = [];
   isMailOpen: boolean = false;
   openTokenData: any = {};
   activeTab: string = 'allTokens';
@@ -61,17 +62,27 @@ export class RequestTokensComponent {
   statusChange: any = []
   isEditToken: boolean = false;
   @ViewChild('content') modalShow !: TemplateRef<any>;
-  selectedDate: string = ''; // Define a property to hold the selected date
+  selectedDate: any = null; // Define a property to hold the selected date
   searchQuery: string = ''; // Existing property for search query
   staffDataTable: any[] = []; // Your data
   filterEmployeeList: any[] = [];
   originalTokenData: any[] = [];
+  filteredTokenData: any[] = [];
+  maxDate: Date = new Date();
+  selectedDateRange: { from: Date, to: Date } | null = null; // Define the type of selectedDateRange
+  selectedStartDate: Date | null = null;
+  selectedEndDate: Date | null = null;
+
   comapanyRole: any = localStorage.getItem('Role');
   constructor(private modalService: NgbModal,
     public formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
     public tokensService: TokensService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+
+
+
+
   ) {
     this.getClientsDetails();
   }
@@ -202,6 +213,7 @@ export class RequestTokensComponent {
       };
     };
   }
+
   removeUploadedImage() {
     let data = {
       img: this.tokenImage
@@ -246,7 +258,8 @@ export class RequestTokensComponent {
         this.toastr.success('Token Details Successfully Saved.', 'Success', { timeOut: 3000, });
         this.tokenModel = {};
         this.validationForm.markAsUntouched();
-        // this.BackToTable()
+        this.modalService.dismissAll();
+        this.getAllToken();
       })
     }
   }
@@ -260,6 +273,7 @@ export class RequestTokensComponent {
         this.getAllToken();
 
       }
+
       else if (this.activeTab == 'pendingTokens') {
         this.emailData = this.pendingData;
         this.totalRecords = this.emailData.length;
@@ -392,36 +406,51 @@ export class RequestTokensComponent {
       }
     });
   }
-  getAllToken(selectedDate?: string) {
-    debugger
+  getAllToken() {
     this.tokensService.getAllTokenData().subscribe((res: any) => {
+      if (this.selectedDate != null) {
+        this.tempTokenData = [];
+        const selectedDateObj = new Date(this.selectedDate);
+        const selectedDateOnly = new Date(selectedDateObj.getFullYear(), selectedDateObj.getMonth(), selectedDateObj.getDate());
+        debugger
+        res.forEach((element: any) => {
+          const dbDateObj = new Date(element.createddate); // Assuming 'date' is the property in your response containing the date string
+          const dbDateOnly = new Date(dbDateObj.getFullYear(), dbDateObj.getMonth(), dbDateObj.getDate());
+          debugger
+          if (
+            selectedDateOnly.getTime() === dbDateOnly.getTime() &&
+            selectedDateOnly.toDateString() === dbDateOnly.toDateString()
+          ) {
+            this.tempTokenData.push(element);
+          }
+        });
+      } else {
+        this.tempTokenData = res;
+      }
 
-      res.forEach((element: any, index: number) => {
-        if (res.length > 0) {
+
+      debugger
+      this.tempTokenData.forEach((element: any, index: number) => {
+        if (this.tempTokenData.length > 0) {
           this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
-            res[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
-            res[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
+            this.tempTokenData[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
+            this.tempTokenData[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
           })
         }
       });
+      this.pendingData = this.tempTokenData.filter((token: any) => token.status === 'Pending');
+      this.processingData = this.tempTokenData.filter((token: any) => token.status === 'Processing');
+      this.reviewData = this.tempTokenData.filter((token: any) => token.status === 'Review');
+      this.changesData = this.tempTokenData.filter((token: any) => token.status === 'Changes');
+      this.completedData = this.tempTokenData.filter((token: any) => token.status === 'Completed');
+      this.cancelData = this.tempTokenData.filter((token: any) => token.status === 'Cancel');
+      this.cesLabelData = this.tempTokenData.filter((token: any) => token.label === 'CES');
+      this.urgentLabelData = this.tempTokenData.filter((token: any) => token.label === 'Urgent');
+      this.tokenData = this.tempTokenData;
 
-      if (selectedDate) {
-        res = res.filter((token: any) => {
-          const formattedBackendDate = token.createddate.split(' ')[0];
-          return formattedBackendDate === selectedDate;
-        });
-      }
-      this.pendingData = res.filter((token: any) => token.status === 'Pending');
-      this.processingData = res.filter((token: any) => token.status === 'Processing');
-      this.reviewData = res.filter((token: any) => token.status === 'Review');
-      this.changesData = res.filter((token: any) => token.status === 'Changes');
-      this.completedData = res.filter((token: any) => token.status === 'Completed');
-      this.cancelData = res.filter((token: any) => token.status === 'Cancel');
-      this.cesLabelData = res.filter((token: any) => token.label === 'CES');
-      this.urgentLabelData = res.filter((token: any) => token.label === 'Urgent');
-      this.tokenData = res;
 
       this.emailData = this.tokenData;
+
       this.totalRecords = this.tokenData.length;
       for (let i = 0; i < this.tokenData.length; i++) {
         this.tokenData[i].index = i + 1;
@@ -645,31 +674,78 @@ export class RequestTokensComponent {
       this.staffModel.role = localStorage.getItem('Role')
     })
   }
-
   filterTokenDate() {
-    debugger;
-    if (this.selectedDate) {
-      const selectedDateFormatted = this.selectedDate;
-      this.getAllToken(selectedDateFormatted);
-      const filteredToken = this.tokenData.filter((token: any) => {
-        const tokenDateStr = token.createddate;
-        if (!tokenDateStr) {
-          return true;
-        }
-        const formattedBackendDate = tokenDateStr.split(' ')[0];
-        return formattedBackendDate === selectedDateFormatted;
-      });
-      console.log('Filtered Token:', filteredToken);
-      this.tokenData = filteredToken;
-      this.tokenData.forEach((item: any, index: number) => {
-        item.index = index + 1;
-      });
-      this.getAllToken();
-    }
+    debugger
+    this.getAllToken();
+
+    // if (this.selectedDate) {
+
+    //   const selectedDate = new Date(this.selectedDate);
+    //   selectedDate.setHours(0, 0, 0, 0); // Normalize selected date to start of the day
+
+    //   console.log('Selected Date:', selectedDate);
+
+    //   this.filteredTokenData = this.tokenData.filter((token: any) => {
+    //     if (!token.createddate) {
+    //       console.log('Skipping token with missing created date:', token);
+    //       return false; // Skip tokens with no created date
+    //     }
+
+    //     const createdDate = new Date(token.createddate);
+    //     createdDate.setHours(0, 0, 0, 0); // Normalize created date to start of the day
+
+    //     console.log('Created Date:', createdDate, 'Matches:', createdDate.getTime() === selectedDate.getTime());
+
+    //     return selectedDate.getTime() === createdDate.getTime(); // Compare selectedDate with createdDate
+    //   });
+
+    //   console.log('Filtered Token Data:', this.filteredTokenData);
+    // } else {
+    //   this.filteredTokenData = this.tokenData; // Show all data if no date is selected
+    // }
   }
 
 
 
+
+
+
+  deleteToken() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#34c38f',
+      cancelButtonColor: '#f46a6a',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(result => {
+      if (result.value) {
+        this.deleteMail();
+        Swal.fire('Deleted!', 'Mail has been deleted.', 'success');
+      }
+    });
+  }
+  applySearchFilter() {
+    debugger
+    const searchQuery = this.searchQuery.toLowerCase();
+    this.tempTokenData = this.tempTokenData.filter((token: any) =>
+      token.assignedEmployees.some((employee: any) =>
+        employee.name.toLowerCase().includes(searchQuery)
+      )
+    );
+  }
+
+  changeStatusByIdAndDelete(id: any, status: string) {
+    // Call the method to change status
+    this.changeStatusById(id, status);
+    // Call the method to delete token
+    this.deleteToken();
+  }
+
+  selectedDateRangeData() {
+
+  }
 
   extractDateFromDateStr(dateStr: string): string | null {
     // Assuming the dateStr is in 'YYYY-MM-DD' format. Adjust if necessary.

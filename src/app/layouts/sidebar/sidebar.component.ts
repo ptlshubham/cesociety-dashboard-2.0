@@ -44,6 +44,9 @@ export class SidebarComponent implements OnInit {
     else if (localStorage.getItem('Role') == 'companyAdmin') {
       this.menuItems = comapnyAdmin;
     }
+    else if (localStorage.getItem('Role') == 'SubAdmin') {
+      this.menuItems = comapnyAdmin;
+    }
     else if (localStorage.getItem('Role') == 'Designer' || localStorage.getItem('Role') == 'Manager') {
       this.menuItems = Employee;
     }

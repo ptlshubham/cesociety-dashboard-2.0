@@ -217,6 +217,7 @@ export class ApiService {
 
   //Cashfree APIS
   public static createCashfreeOrderURL: string = ApiService.HOST_URL + '/cashfree/createCashfreeOrder';
+  public static UpdateEmployeeLogoURL: string = ApiService.HOST_URL + '/admin/UpdateEmployeeLogo';
 
 
 
