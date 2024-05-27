@@ -72,16 +72,14 @@ export class RequestTokensComponent {
   selectedDateRange: { from: Date, to: Date } | null = null; // Define the type of selectedDateRange
   selectedStartDate: Date | null = null;
   selectedEndDate: Date | null = null;
-
+  clientModel: any = []
+  dailyWorkData: any = []
   comapanyRole: any = localStorage.getItem('Role');
   constructor(private modalService: NgbModal,
     public formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
     public tokensService: TokensService,
     private companyService: CompanyService,
-
-
-
 
   ) {
     this.getClientsDetails();
@@ -264,6 +262,17 @@ export class RequestTokensComponent {
     }
   }
 
+  filterTodayTokens(tokens: any) {
+    debugger
+    const today = new Date();
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Only date parts
+
+    return tokens.filter((token: any) => {
+      const tokenDate = new Date(token.createddate);
+      const tokenDateOnly = new Date(tokenDate.getFullYear(), tokenDate.getMonth(), tokenDate.getDate()); // Only date parts
+      return tokenDateOnly.getTime() === todayOnly.getTime();
+    });
+  }
   setActiveTab(tab: string): void {
     this.emailData = [];
     this.activeTab = tab;
@@ -273,7 +282,13 @@ export class RequestTokensComponent {
         this.getAllToken();
 
       }
-
+      else if (this.activeTab == 'DailyWork') {
+        this.emailData = this.filterTodayTokens(this.dailyWorkData);
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
       else if (this.activeTab == 'pendingTokens') {
         this.emailData = this.pendingData;
         this.totalRecords = this.emailData.length;
@@ -334,6 +349,13 @@ export class RequestTokensComponent {
     else {
       if (this.activeTab == 'allTokens') {
         this.getTokenByEmployee();
+      }
+      else if (this.activeTab == 'DailyWork') {
+        this.emailData = this.filterTodayTokens(this.dailyWorkData);
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
       }
       else if (this.activeTab == 'pendingTokens') {
         this.emailData = this.pendingData;
@@ -438,6 +460,8 @@ export class RequestTokensComponent {
           })
         }
       });
+      this.updateFilteredData();
+      this.applyDateRangeFilter();
       this.pendingData = this.tempTokenData.filter((token: any) => token.status === 'Pending');
       this.processingData = this.tempTokenData.filter((token: any) => token.status === 'Processing');
       this.reviewData = this.tempTokenData.filter((token: any) => token.status === 'Review');
@@ -448,7 +472,7 @@ export class RequestTokensComponent {
       this.urgentLabelData = this.tempTokenData.filter((token: any) => token.label === 'Urgent');
       this.tokenData = this.tempTokenData;
 
-
+      this.dailyWorkData = this.filterTodayTokens(this.tempTokenData);
       this.emailData = this.tokenData;
 
       this.totalRecords = this.tokenData.length;
@@ -461,14 +485,34 @@ export class RequestTokensComponent {
 
   getTokenByEmployee() {
     this.tokensService.getTokenByEmpIdData(localStorage.getItem('Eid')).subscribe((res: any) => {
-      res.forEach((element: any, index: number) => {
-        if (res.length > 0) {
-          this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
-            res[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
-            res[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
-          })
-        }
+      // Initialize tokenData
+      this.tokenData = res;
+
+      // Filter tokens by selectedDate if provided
+      if (this.selectedDate != null) {
+        const selectedDateObj = new Date(this.selectedDate);
+        const selectedDateOnly = new Date(selectedDateObj.getFullYear(), selectedDateObj.getMonth(), selectedDateObj.getDate());
+
+        this.tokenData = res.filter((element: any) => {
+          const dbDateObj = new Date(element.createddate);
+          const dbDateOnly = new Date(dbDateObj.getFullYear(), dbDateObj.getMonth(), dbDateObj.getDate());
+          return selectedDateOnly.getTime() === dbDateOnly.getTime();
+        });
+      }
+
+      // Fetch assigned employees for each token
+      this.tokenData.forEach((element: any, index: number) => {
+        this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
+          element.assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
+          element.assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
+        });
       });
+
+      // Update and filter data
+      this.updateFilteredData();
+      this.applyDateRangeFilter();
+
+
       this.pendingData = res.filter((token: any) => token.status === 'Pending');
       this.processingData = res.filter((token: any) => token.status === 'Processing');
       this.reviewData = res.filter((token: any) => token.status === 'Review');
@@ -477,14 +521,12 @@ export class RequestTokensComponent {
       this.cancelData = res.filter((token: any) => token.status === 'Cancel');
       this.cesLabelData = res.filter((token: any) => token.label === 'CES');
       this.urgentLabelData = res.filter((token: any) => token.label === 'Urgent');
-
-
       this.tokenData = res;
+      this.dailyWorkData = this.filterTodayTokens(this.tokenData);
       this.emailData = this.tokenData;
       this.totalRecords = this.tokenData.length;
       for (let i = 0; i < this.tokenData.length; i++) {
         this.tokenData[i].index = i + 1;
-
       }
     })
   }
@@ -513,10 +555,8 @@ export class RequestTokensComponent {
 
       });
     })
-
     this.isMailOpen = true;
     this.openTokenData = data;
-
   }
 
   backToToken() {
@@ -726,15 +766,7 @@ export class RequestTokensComponent {
       }
     });
   }
-  applySearchFilter() {
-    debugger
-    const searchQuery = this.searchQuery.toLowerCase();
-    this.tempTokenData = this.tempTokenData.filter((token: any) =>
-      token.assignedEmployees.some((employee: any) =>
-        employee.name.toLowerCase().includes(searchQuery)
-      )
-    );
-  }
+
 
   changeStatusByIdAndDelete(id: any, status: string) {
     // Call the method to change status
@@ -743,14 +775,76 @@ export class RequestTokensComponent {
     this.deleteToken();
   }
 
-  selectedDateRangeData() {
 
+  formatSelectedMedia(mediaArray: any[]): string {
+    const formattedMedia = mediaArray.map(media => media.name).join(', ');
+    this.clientModel.selectedmedia = formattedMedia;
+    return formattedMedia;
   }
-
   extractDateFromDateStr(dateStr: string): string | null {
     // Assuming the dateStr is in 'YYYY-MM-DD' format. Adjust if necessary.
     const date = new Date(dateStr);
     return isNaN(date.getTime()) ? null : dateStr;
   }
+  applySearchFilter() {
+    const query = this.searchQuery.toLowerCase();
+    this.tokenData = this.tempTokenData.filter((token: any) => {
+      const designerMatch = token.assignedDesigners.some((designer: any) => designer.name.toLowerCase().includes(query));
+      const managerMatch = token.assignedManagers.some((manager: any) => manager.name.toLowerCase().includes(query));
+      return designerMatch || managerMatch;
+    });
+
+    // Update other data views based on the filtered tokenData
+    this.updateFilteredData();
+  }
+
+  updateFilteredData() {
+    this.pendingData = this.tokenData.filter((token: any) => token.status === 'Pending');
+    this.processingData = this.tokenData.filter((token: any) => token.status === 'Processing');
+    this.reviewData = this.tokenData.filter((token: any) => token.status === 'Review');
+    this.changesData = this.tokenData.filter((token: any) => token.status === 'Changes');
+    this.completedData = this.tokenData.filter((token: any) => token.status === 'Completed');
+    this.cancelData = this.tokenData.filter((token: any) => token.status === 'Cancel');
+    this.cesLabelData = this.tokenData.filter((token: any) => token.label === 'CES');
+    this.urgentLabelData = this.tokenData.filter((token: any) => token.label === 'Urgent');
+
+    this.dailyWorkData = this.filterTodayTokens(this.tokenData);
+    this.emailData = this.tokenData;
+
+    this.totalRecords = this.tokenData.length;
+    for (let i = 0; i < this.tokenData.length; i++) {
+      this.tokenData[i].index = i + 1;
+    }
+  }
+  selectedDateRangeData() {
+    if (this.selectedDateRange && typeof this.selectedDateRange.from === 'object' && typeof this.selectedDateRange.to === 'object') {
+      const startDate = new Date(this.selectedDateRange.from);
+      const endDate = new Date(this.selectedDateRange.to);
+
+      if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+        this.selectedStartDate = startDate;
+        this.selectedEndDate = endDate;
+        this.applyDateRangeFilter();
+      } else {
+        console.error('Invalid date format in selectedDateRange');
+      }
+    } else {
+      console.error('Invalid selectedDateRange format');
+    }
+  }
+
+  applyDateRangeFilter() {
+    if (this.selectedStartDate && this.selectedEndDate) {
+      this.tokenData = this.tempTokenData.filter((token: any) => {
+        const tokenDate = new Date(token.createddate);
+        return tokenDate >= this.selectedStartDate! && tokenDate <= this.selectedEndDate!;
+      });
+    } else {
+      this.tokenData = this.tempTokenData;
+    }
+
+    this.updateFilteredData();
+  }
+
 }
 

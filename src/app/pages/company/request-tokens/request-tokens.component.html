@@ -13,7 +13,7 @@
             <div class="mail-list mt-4">
                 <a href="javascript:void(0);" [class.active]="activeTab === 'DailyWork'"
                     (click)="setActiveTab('DailyWork')"><i class="mdi mdi-email-outline me-2"></i>Daily Work List<span
-                        class="ms-1 float-end">{{tokenData.length}}</span></a>
+                        class="ms-1 float-end">{{dailyWorkData.length}}</span></a>
                 <a href="javascript:void(0);" [class.active]="activeTab === 'allTokens'"
                     (click)="setActiveTab('allTokens')"><i class="mdi mdi-email-outline me-2"></i>All Tokens<span
                         class="ms-1 float-end">{{tokenData.length}}</span></a>
@@ -94,10 +94,10 @@
                                     [(ngModel)]="searchQuery" (input)="applySearchFilter()">
                             </div>
                         </div>
-                        <div>
-
+                        <div class="form-group">
                             <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true"
-                                [convertModelValue]="true" mode="range" placeholder="Select Date Range">
+                                [convertModelValue]="true" mode="range" placeholder="Select a date range"
+                                [(ngModel)]="selectedDateRange" (ngModelChange)="selectedDateRangeData()">
                         </div>
                     </div>
 
@@ -137,6 +137,23 @@
                                         class="badge bg-info me-2" *ngIf="e.label=='CES'">CES</span>
                                     {{e.title}}
                                 </a>
+                                <td class="text-center managername">
+                                    <span class="badge bg-primary me-1" *ngFor="let m of e.assignedManagers">{{ m.name
+                                        }}</span>
+                                </td>
+                                <td class="text-center designername "
+                                    *ngIf="e.assignedDesigners && e.assignedDesigners.length > 0">
+                                    <span *ngFor="let d of e.assignedDesigners; let i = index">
+                                        <span *ngIf="i < 1" class="badge bg-primary me-1"
+                                            [ngbTooltip]="formatSelectedMedia(e.assignedDesigners)">{{ d.name
+                                            }}</span>
+                                        <span *ngIf="i === 1 && e.assignedDesigners.length > 1"
+                                            class="badge bg-secondary me-1"
+                                            [ngbTooltip]="formatSelectedMedia(e.assignedDesigners)">{{
+                                            e.assignedDesigners.length - 1 }}+more</span>
+                                        <!-- <span *ngIf="i > 1" class="d-none" [ngbTooltip]="d.name"></span> -->
+                                    </span>
+                                </td>
                                 <div class="date">{{e.createddate | date: 'dd/MM/yyyy'}}</div>
                             </div>
                         </div>
