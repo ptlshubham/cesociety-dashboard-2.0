@@ -30,7 +30,6 @@ export class ClientsComponent {
   ];
   selectedmedialist: any;
   submitted = false;
-  clientData: any = []
   clientModel: any = {};
   category!: any[];
   isOpen: boolean = false;
@@ -70,7 +69,7 @@ export class ClientsComponent {
   sound: any = new Howl({
     src: ['assets/audio/notification.mp3']
   });
-
+  roleWiseData: any = [];
   constructor(
     public formBuilder: UntypedFormBuilder,
     private companyService: CompanyService,
@@ -215,7 +214,7 @@ export class ClientsComponent {
     } else {
       this.clientModel.profile = this.clientlogo;
       this.companyService.SaveClientDetails(this.clientModel).subscribe((res: any) => {
-        this.clientData = res;
+        this.clientsData = res;
         this.toastr.success('Client Details Successfully Saved.', 'Success', { timeOut: 3000, });
         this.clientModel = {};
         this.validationForm.markAsUntouched();
@@ -225,30 +224,107 @@ export class ClientsComponent {
   }
   getClientsDetails() {
     this.companyService.getAllClientDetailsData().subscribe((res: any) => {
-      res.forEach((element: any, index: number) => {
-        if (res.length > 0) {
-          const mediaArray = element.media.split(',').map((item: any) => item.trim());
-          res[index].mediaArray = mediaArray;
-          this.companyService.getAssignedEmpDetailsById(element.id).subscribe((data: any) => {
-            res[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
-            res[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
+      let pendingRequests = res.length;
 
-          })
-        }
+      if (pendingRequests === 0) {
+        this.clientsData = res;
+        this.getEmployeeWiseData();
+        return;
+      }
+
+      res.forEach((element: any, index: number) => {
+        const mediaArray = element.media.split(',').map((item: any) => item.trim());
+        res[index].mediaArray = mediaArray;
+
+        this.companyService.getAssignedEmpDetailsById(element.id).subscribe((data: any) => {
+          res[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
+          res[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
+          pendingRequests--;
+
+          if (pendingRequests === 0) {
+            this.clientsData = res;
+            this.getEmployeeWiseData();
+          }
+        });
       });
-      this.clientsData = res;
+    });
+  }
+
+  getEmployeeWiseData() {
+    var eid = Number(localStorage.getItem('Eid')); // Convert eid to a number
+    this.roleWiseData = []; // Initialize or clear the roleWiseData array
+    if (this.comapanyRole === 'Designer') {
+      this.clientsData.forEach((element: any) => {
+        element.assignedDesigners.forEach((designer: any) => {
+          if (designer.empid === eid) {
+            this.roleWiseData.push(element);
+          }
+        });
+      });
+      for (let i = 0; i < this.roleWiseData.length; i++) {
+        this.roleWiseData[i].index = i + 1;
+      }
+      this.collectionSize = this.roleWiseData.length;
+      this.filterClientList = [...this.roleWiseData];
+    }
+    else if (this.comapanyRole === 'Manager') {
+      this.clientsData.forEach((element: any) => {
+        element.assignedManagers.forEach((manager: any) => {
+          if (manager.empid === eid) {
+            this.roleWiseData.push(element);
+          }
+        });
+      });
+      for (let i = 0; i < this.roleWiseData.length; i++) {
+        this.roleWiseData[i].index = i + 1;
+      }
+      this.collectionSize = this.roleWiseData.length;
+      this.filterClientList = [...this.roleWiseData];
+    }
+    else if (this.comapanyRole === 'SubAdmin') {
+      this.clientsData.forEach((element: any) => {
+        element.assignedManagers.forEach((manager: any) => {
+          if (manager.empid === eid) {
+            this.roleWiseData.push(element);
+          }
+        });
+      });
+      for (let i = 0; i < this.roleWiseData.length; i++) {
+        this.roleWiseData[i].index = i + 1;
+      }
+      this.collectionSize = this.roleWiseData.length;
+      this.filterClientList = [...this.roleWiseData];
+    }
+    else {
       for (let i = 0; i < this.clientsData.length; i++) {
         this.clientsData[i].index = i + 1;
       }
       this.collectionSize = this.clientsData.length;
       this.filterClientList = [...this.clientsData];
-
-
-      this.getPagintaion();
-    })
+    }
+    this.getPagintaion();
   }
+
+  applySearchFilter() {
+    debugger
+    this.page = 1; // Reset the page when the search query changes
+    if (this.comapanyRole === 'Designer') {
+      this.filterClientList = this.roleWiseData.filter((client: any) =>
+        client.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    } else {
+      this.filterClientList = this.clientsData.filter((client: any) =>
+        client.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+    this.getPagintaion();
+  }
+
+
   getPagintaion() {
     this.paginateData = this.filterClientList.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+    this.getEmployeeWiseData();
+
   }
   removeClientsDetails(id: any) {
     Swal.fire({
@@ -338,7 +414,7 @@ export class ClientsComponent {
     // this.clientModel.managers
 
     this.companyService.updateClientData(this.clientModel).subscribe((res: any) => {
-      this.clientData = res;
+      this.clientsData = res;
       this.toastr.success('Update Staff Details Successfully.', 'Updated', { timeOut: 3000, });
       this.getClientsDetails();
       this.isOpen = false;
@@ -353,13 +429,7 @@ export class ClientsComponent {
   openClientCalander(largeDataModal: any) {
     this.modalService.open(largeDataModal, { size: 'lg', windowClass: 'modal-holder', centered: true });
   }
-  applySearchFilter() {
-    this.page = 1; // Reset the page when the search query changes
-    this.filterClientList = this.clientsData.filter((client: any) =>
-      (client.name).toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
-    this.getPagintaion();
-  }
+
   extraLarge(exlargeModal: any, data: any) {
     this.selectedClientData = data;
     this.modalService.open(exlargeModal, { size: 'xl', windowClass: 'modal-holder', centered: true });

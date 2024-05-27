@@ -301,14 +301,11 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <div class="d-flex justify-content-between">
-                    <h5 class="card-title">Client Details List</h5>
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                        <div class="form-group">
-
-                            <input type="text" class="form-control" id="fname" placeholder="Search Client Name"
-                                [(ngModel)]="searchQuery" (input)="applySearchFilter()">
-                        </div>
+                <h5 class="card-title">Client Details List</h5>
+                <div class="d-flex justify-content-end gap-2">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="fname" placeholder="Search Client Name"
+                            [(ngModel)]="searchQuery" (input)="applySearchFilter()">
                     </div>
                     <button type="button" class="btn btn-primary waves-effect btn-label waves-light"
                         (click)="openAddClients()"><i class="bx bx-user-plus label-icon"></i>
@@ -383,7 +380,8 @@
                                             (click)="removeClientsDetails(s.id)">
                                     </span>
                                     <button type="button" class="btn btn-soft-primary waves-effect waves-light"
-                                        ngbTooltip="View calendar" placement="top" (click)="extraLarge(exlargeModal,s)"><i
+                                        ngbTooltip="View calendar" placement="top"
+                                        (click)="extraLarge(exlargeModal,s)"><i
                                             class="bx bxs-calendar font-size-16 align-middle"></i></button>
                                     <button type="button" class="btn btn-soft-primary waves-effect waves-light"
                                         (click)="openUpdateClients(s)"><i
@@ -411,12 +409,11 @@
 <ng-template #exlargeModal let-modal>
     <div class="modal-header">
         <h5 class="modal-title mt-0">Scheduler</h5>
-        <button type="button" class="btn-close" aria-label="Close"
-            (click)="modal.dismiss('Close click')">
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Close click')">
         </button>
     </div>
     <div class="modal-body">
-       <app-client-post-scheduler [clientdata]="selectedClientData"></app-client-post-scheduler>
+        <app-client-post-scheduler [clientdata]="selectedClientData"></app-client-post-scheduler>
     </div>
 </ng-template>
 
