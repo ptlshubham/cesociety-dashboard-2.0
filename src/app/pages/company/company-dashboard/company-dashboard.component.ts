@@ -3,7 +3,6 @@ import { CompanyService } from 'src/app/core/services/company.service';
 import { ChartType } from './dashboard.model';
 
 import { TokensService } from 'src/app/core/services/tokens.service';
-import { donutChart, investedOverview } from './data';
 
 
 @Component({
@@ -21,14 +20,20 @@ export class CompanyDashboardComponent {
     duration: 2,
     // decimalPlaces: 2,
   };
+  tokendata: any = []
   pendingData: any = [];
+  pendingDatatotal: any = []
+  processingDatatotal: any = []
   processingData: any = [];
+  completedDatatotal: any = []
   reviewData: any = [];
+  temparra: any = []
   changesData: any = [];
   completedData: any = [];
   cancelData: any = [];
   staffModel: any = {};
   employeeDataList: any = []
+  SelectedClient = this.tokendata.clientname;
   comapanyRole: any = localStorage.getItem('Role');
   Tokens: ChartType = {
     chart: {
@@ -44,39 +49,6 @@ export class CompanyDashboardComponent {
     series: [],
     labels: [],
   };
-  donutChart: ChartType = {
-    chart: { height: 320, type: "donut" },
-    series: [44, 55, 41, 17, 15],
-    labels: ["Series 1", "Series 2", "Series 3", "Series 4", "Series 5"],
-    colors: ["#2ab57d", "#5156be", "#fd625e", "#4ba6ef", "#ffbf53"],
-    legend: {
-      show: !0,
-      position: "bottom",
-      horizontalAlign: "center",
-      verticalAlign: "middle",
-      floating: !1,
-      fontSize: "14px",
-      offsetX: 0,
-    },
-    responsive: [
-      {
-        breakpoint: 600,
-        options: { chart: { height: 240 }, legend: { show: !1 } },
-      },
-    ],
-  }
-  barChart: ChartType = {
-    chart: { height: 350, type: "bar", toolbar: { show: !1 } },
-    plotOptions: { bar: { horizontal: !0 } },
-    dataLabels: { enabled: !1 },
-    series: [{ data: [380, 430, 450, 475, 550, 584, 780, 1100, 1220, 1365] }],
-    colors: ['#2ab57d'],
-    grid: { borderColor: "#f1f1f1" },
-    xaxis: {
-      categories: [],
-    },
-  };
-
   investedOverview: ChartType = {
     chart: {
       height: 270,
@@ -126,6 +98,40 @@ export class CompanyDashboardComponent {
     series: [80],
     labels: ['Series A'],
   };
+  donutChart: ChartType = {
+    chart: { height: 320, type: "donut" },
+    series: [44, 55, 41, 17, 15],
+    labels: ["Series 1", "Series 2", "Series 3", "Series 4", "Series 5"],
+    colors: ["#2ab57d", "#5156be", "#fd625e", "#4ba6ef", "#ffbf53"],
+    legend: {
+      show: !0,
+      position: "bottom",
+      horizontalAlign: "center",
+      verticalAlign: "middle",
+      floating: !1,
+      fontSize: "14px",
+      offsetX: 0,
+    },
+    responsive: [
+      {
+        breakpoint: 600,
+        options: { chart: { height: 240 }, legend: { show: !1 } },
+      },
+    ],
+  }
+  barChart: ChartType = {
+    chart: { height: 350, type: "bar", toolbar: { show: !1 } },
+    plotOptions: { bar: { horizontal: !0 } },
+    dataLabels: { enabled: !1 },
+    series: [{ data: [380, 430, 450, 475, 550, 584, 780, 1100, 1220, 1365, 345, 345, 34, 45] }],
+    colors: ['#2ab57d'],
+    grid: { borderColor: "#f1f1f1" },
+    xaxis: {
+      categories: [],
+    },
+  };
+
+
   constructor(
     private companyService: CompanyService,
     public tokensService: TokensService,
@@ -133,48 +139,69 @@ export class CompanyDashboardComponent {
 
   }
   ngOnInit(): void {
+    this.getAllTokens();
+    this.getBarDetails();
     this.getAllEmployeeDetails();
-    this.getAllToken();
-    this.DashBoardTotals();
-    this.GetEmployeeBar();
-  }
-  getStaffDetails() {
-    this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
-      this.employeeList = res;
 
-    })
+    this.getClientsDetails()
+    this.getAllTokenCompanyStatus()
   }
+
   getClientsDetails() {
     this.companyService.getAllClientDetailsData().subscribe((res: any) => {
       this.clientlist = res;
     })
   }
-  DashBoardTotals() {
-    this.getStaffDetails();
-    this.getClientsDetails();
+  getBarDetails() {
+    this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
+      this.employeeList = res;
+      // Filter employees with role "designer" and map their names to categories array
+      this.barChart.xaxis.categories = this.employeeList
+        .filter((employee: any) => employee.role === 'Designer')
+        .map((employee: any) => employee.name);
+    });
   }
-  getAllToken() {
+
+
+  getAllTokens() {
+    debugger
     this.tokensService.getAllTokenData().subscribe((res: any) => {
-      this.pendingData = res.filter((token: any) => token.status === 'Pending');
-      this.processingData = res.filter((token: any) => token.status === 'Processing');
-      this.completedData = res.filter((token: any) => token.status === 'Completed');
-      this.Tokens.series.push(this.pendingData.length, this.processingData.length, this.completedData.length);
+      this.temparra = res;
+      this.pendingDatatotal = res.filter((token: any) => token.status === 'Pending');
+      this.processingDatatotal = res.filter((token: any) => token.status === 'Processing');
+      this.completedDatatotal = res.filter((token: any) => token.status === 'Completed');
+      this.Tokens.series.push(this.pendingDatatotal.length, this.processingDatatotal.length, this.completedDatatotal.length);
       this.Tokens.labels.push('Pending', 'Processing', 'Completed');
       debugger;
     });
   }
-  GetEmployeeBar() {
-    this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
 
-      this.employeeDataList = res;
-      debugger
-      this.barChart.xaxis.categories = [];
-      this.employeeDataList.forEach((employee: any) => {
-        this.barChart.xaxis.categories.push(employee.name);
+  getAllTokenCompanyStatus() {
+    debugger;
+    if (this.SelectedClient) {
+      this.tokensService.getAllTokenData().subscribe((res: any) => {
+        // Filter token data based on selected client
+        this.tokendata = res.filter((token: any) => token.clientid === this.SelectedClient.id);
+
+        // Filter data for different statuses
+        this.pendingData = this.tokendata.filter((token: any) => token.status === 'Pending');
+        this.completedData = this.tokendata.filter((token: any) => token.status === 'Completed');
+
+        // Calculate total tokens
+        const totalTokens = this.tokendata.length;
+
+        // Calculate completion percentage
+        const completionPercentage = (this.completedData.length / totalTokens) * 100;
+
+        // Update chart data
+        this.investedOverview.series = [
+          this.pendingData.length,
+          this.tokendata.length - this.pendingData.length - this.completedData.length,
+          completionPercentage
+        ];
+        this.investedOverview.labels = ['Pending', 'Processing', 'Completed'];
       });
-
-
-    });
+    }
   }
 
   getAllEmployeeDetails() {

@@ -50,7 +50,7 @@ export class ClientsComponent {
   isDesignerChange: boolean = false;
   isManagerChange: boolean = false;
   employeeList: any = [];
-
+  clientlist: any = []
 
   validationForm!: FormGroup;
   page = 1;
@@ -308,7 +308,7 @@ export class ClientsComponent {
   applySearchFilter() {
     debugger
     this.page = 1; // Reset the page when the search query changes
-    if (this.comapanyRole === 'Designer') {
+    if (this.comapanyRole === 'Designer') { // Fix typo here
       this.filterClientList = this.roleWiseData.filter((client: any) =>
         client.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
@@ -437,5 +437,10 @@ export class ClientsComponent {
 
   playSound() {
     this.sound.play();
+  }
+  getAllClientDetails(id: any) {
+    this.companyService.getClientDetailsById(id).subscribe((res: any) => {
+      this.clientlist = res;
+    })
   }
 }
