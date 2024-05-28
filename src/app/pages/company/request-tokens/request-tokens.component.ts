@@ -7,6 +7,7 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TokensService } from 'src/app/core/services/tokens.service';
 import { CompanyService } from 'src/app/core/services/company.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-request-tokens',
@@ -52,6 +53,7 @@ export class RequestTokensComponent {
   activeTab: string = 'allTokens';
   role: any;
   pendingData: any = [];
+  dailyWorkData: any = [];
   processingData: any = [];
   reviewData: any = [];
   changesData: any = [];
@@ -74,6 +76,11 @@ export class RequestTokensComponent {
   selectedEndDate: Date | null = null;
   clientModel: any = []
   comapanyRole: any = localStorage.getItem('Role');
+  isDailyOpen: boolean = false;
+  searchClient: string = '';
+  selectedWorkDateRange: { from: Date, to: Date } | null = null;
+  eid: any;
+
   constructor(private modalService: NgbModal,
     public formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
@@ -88,18 +95,14 @@ export class RequestTokensComponent {
     this.val++;
     this.createdby = localStorage.getItem('Name');
     this.role = localStorage.getItem('Role');
+    this.eid = localStorage.getItem('Eid');
     this.isMailOpen = false;
     this.setActiveTab('allTokens');
     this.breadCrumbItems = [
       { label: 'Home' },
       { label: 'Generate Tokens', active: true }
     ];
-    if (this.role != 'Designer') {
-      this.getAllToken();
-    }
-    else {
-      this.getTokenByEmployee();
-    }
+    this.privatefecth();
     this.validationForm = this.formBuilder.group({
       client: ['', [Validators.required]],
       manager: ['', [Validators.required]],
@@ -113,7 +116,15 @@ export class RequestTokensComponent {
   }
   get f() { return this.validationForm.controls; }
 
-
+  privatefecth() {
+    if (this.role != 'Designer') {
+      this.getAllToken();
+    }
+    else {
+      this.getTokenByEmployee();
+    }
+    this.getAllDailyWork();
+  }
   getClientsDetails() {
     this.companyService.getAllClientDetailsData().subscribe((res: any) => {
       this.clientList = res;
@@ -252,17 +263,17 @@ export class RequestTokensComponent {
       this.tokenModel.createdby = this.createdby;
       this.tokensService.SaveTokendetails(this.tokenModel).subscribe((res: any) => {
         this.tokenData = res;
+        this.privatefecth();
         this.toastr.success('Token Details Successfully Saved.', 'Success', { timeOut: 3000, });
         this.tokenModel = {};
         this.validationForm.markAsUntouched();
         this.modalService.dismissAll();
-        this.getAllToken();
       })
     }
   }
 
   filterTodayTokens(tokens: any) {
-    debugger
+
     const today = new Date();
     const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Only date parts
 
@@ -275,15 +286,27 @@ export class RequestTokensComponent {
   setActiveTab(tab: string): void {
     this.emailData = [];
     this.activeTab = tab;
-
+    this.isMailOpen = false;
+    if (this.activeTab == 'dailyWork') {
+      this.isDailyOpen = true;
+    }
+    else {
+      this.isDailyOpen = false;
+    }
     if (this.role != 'Designer') {
       if (this.activeTab == 'allTokens') {
-        this.getAllToken();
-
+        this.privatefecth();
       }
-
+      else if (this.activeTab == 'dailyWork') {
+        this.emailData = this.dailyWorkData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
       else if (this.activeTab == 'pendingTokens') {
         this.emailData = this.pendingData;
+
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
           this.emailData[i].index = i + 1;
@@ -343,11 +366,11 @@ export class RequestTokensComponent {
       if (this.activeTab == 'allTokens') {
         this.getTokenByEmployee();
       }
-      else if (this.activeTab == 'DailyWork') {
-        debugger
-        this.dailyworkList
-        for (let i = 0; i < this.dailyworkList.length; i++) {
-          this.dailyworkList[i].index = i + 1;
+      else if (this.activeTab == 'dailyWork') {
+        this.emailData = this.dailyWorkData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
         }
       }
 
@@ -429,11 +452,11 @@ export class RequestTokensComponent {
         this.tempTokenData = [];
         const selectedDateObj = new Date(this.selectedDate);
         const selectedDateOnly = new Date(selectedDateObj.getFullYear(), selectedDateObj.getMonth(), selectedDateObj.getDate());
-        debugger
+
         res.forEach((element: any) => {
           const dbDateObj = new Date(element.createddate); // Assuming 'date' is the property in your response containing the date string
           const dbDateOnly = new Date(dbDateObj.getFullYear(), dbDateObj.getMonth(), dbDateObj.getDate());
-          debugger
+
           if (
             selectedDateOnly.getTime() === dbDateOnly.getTime() &&
             selectedDateOnly.toDateString() === dbDateOnly.toDateString()
@@ -445,11 +468,9 @@ export class RequestTokensComponent {
         this.tempTokenData = res;
       }
 
-
-      debugger
       this.tempTokenData.forEach((element: any, index: number) => {
         if (this.tempTokenData.length > 0) {
-          this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
+          this.tokensService.getAssignedTokenEmp(element.id).subscribe((data: any) => {
             this.tempTokenData[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
             this.tempTokenData[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
           })
@@ -479,8 +500,8 @@ export class RequestTokensComponent {
   }
 
   getTokenByEmployee() {
-    debugger
-    this.tokensService.getTokenByEmpIdData(localStorage.getItem('Eid')).subscribe((res: any) => {
+
+    this.tokensService.getTokenByEmpIdData(this.eid).subscribe((res: any) => {
       // Initialize tokenData
       this.tokenData = res;
 
@@ -498,7 +519,7 @@ export class RequestTokensComponent {
 
       // Fetch assigned employees for each token
       this.tokenData.forEach((element: any, index: number) => {
-        this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
+        this.tokensService.getAssignedTokenEmp(element.id).subscribe((data: any) => {
           element.assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
           element.assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
         });
@@ -532,15 +553,19 @@ export class RequestTokensComponent {
     })
   }
   openTokenEmailDetails(data: any) {
-    debugger
     this.isEditToken = false;
     this.multiTokenImgData = [];
     if (data.unread == true) {
-      this.tokensService.updateMarkAsRead(data.id).subscribe((res: any) => {
-        this.getAllToken();
-
-
-      })
+      if (this.isDailyOpen) {
+        this.tokensService.updateDailyMarkAsRead(data.id).subscribe((res: any) => {
+          this.privatefecth();
+        })
+      }
+      else {
+        this.tokensService.updateMarkAsRead(data.id).subscribe((res: any) => {
+          this.privatefecth();
+        })
+      }
     }
     this.getMultiTokenImages(data.id);
     this.companyService.getAllClientDetailsData().subscribe((res: any) => {
@@ -588,6 +613,7 @@ export class RequestTokensComponent {
     return filename;
   }
   selectMail(event: any, id: any) {
+
     if (event.target.checked) {
       let req = {
         id: id,
@@ -609,6 +635,7 @@ export class RequestTokensComponent {
         this.isEditToken = false;
       }
     }
+
   }
   editTokenDetails() {
     this.designerList = [];
@@ -701,18 +728,18 @@ export class RequestTokensComponent {
     this.tokensService.updateTokenStatus(data).subscribe((res: any) => {
       this.openTokenData.status = res;
       this.openTokenEmailDetails(data);
-      this.getAllToken();
+      this.privatefecth();
     });
   }
   getStaffDetails() {
-    debugger
-    this.companyService.getEmployeeDataById(localStorage.getItem('Eid')).subscribe((data: any) => {
+
+    this.companyService.getEmployeeDataById(this.eid).subscribe((data: any) => {
       this.staffModel.role = localStorage.getItem('Role')
     })
   }
   filterTokenDate() {
-    debugger
-    this.getAllToken();
+
+    this.privatefecth();
 
     // if (this.selectedDate) {
 
@@ -838,16 +865,64 @@ export class RequestTokensComponent {
     } else {
       this.tokenData = this.tempTokenData;
     }
-
     this.updateFilteredData();
   }
 
   getAllDailyWork() {
+    this.dailyWorkData = [];
     this.companyService.getAllDailyList().subscribe((data: any) => {
-      this.dailyworkList = data
-      this.staffModel.employeeId = localStorage.getItem('Eid')
+      if (this.comapanyRole == 'Designer')
+        data.forEach((element: any) => {
+          if (element.designerid == this.eid) {
+            this.dailyWorkData.push(element);
+          }
+        });
+      else {
+        this.dailyWorkData = data;
+      }
+    });
+  }
+  changeStatusMail(event: Event, id: number): void {
+    debugger
+    const isChecked = (event.target as HTMLInputElement).checked;
+    let data = {
+      id: id,
+      iscompleted: isChecked
+    }
+    this.companyService.updateDailyById(data).subscribe((res: any) => {
+      this.getAllDailyWork();
     })
+
   }
 
+  applySearchFilterOnClient() {
+    const query = this.searchClient.toLowerCase();
+    this.tokenData = this.tempTokenData.filter((token: any) => {
+      const designerMatch = token.assignedDesigners.some((designer: any) => designer.name.toLowerCase().includes(query));
+      const managerMatch = token.assignedManagers.some((manager: any) => manager.name.toLowerCase().includes(query));
+      const clientNameMatch = token.clientname.toLowerCase().includes(query);
+      return designerMatch || managerMatch || clientNameMatch;
+    });
+
+    // Update other data views based on the filtered tokenData
+    this.updateFilteredData();
+  }
+  selectedDateRangeWorkData() {
+    if (this.selectedWorkDateRange && typeof this.selectedWorkDateRange.from === 'object' && typeof this.selectedWorkDateRange.to === 'object') {
+      const startDate = new Date(this.selectedWorkDateRange.from);
+      const endDate = new Date(this.selectedWorkDateRange.to);
+
+      if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+        this.selectedStartDate = startDate;
+        this.selectedEndDate = endDate;
+        this.applyDateRangeFilter();
+        this.selectedWorkDateRange = null;
+      } else {
+        console.error('Invalid date format in selectedDateRange');
+      }
+    } else {
+      console.error('Invalid selectedDateRange format');
+    }
+  }
 }
 

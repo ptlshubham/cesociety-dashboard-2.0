@@ -48,4 +48,8 @@ export class TokensService {
     getAssignedTokenEmp(id: any){
         return this.httpClient.get(ApiService.getAssignedEmpTokenByIdURL + id);
     }
+
+    updateDailyMarkAsRead(id: any) {
+        return this.httpClient.get(ApiService.updateDailyWorkUnreadStatusURL + id);
+    }
 }

@@ -11,9 +11,9 @@
                 Generate Token
             </button>
             <div class="mail-list mt-4">
-                <a href="javascript:void(0);" [class.active]="activeTab === 'DailyWork'"
-                    (click)="setActiveTab('DailyWork')"><i class="mdi mdi-email-outline me-2"></i>Daily Work List<span
-                        class="ms-1 float-end"></span></a>
+                <a href="javascript:void(0);" [class.active]="activeTab === 'dailyWork'"
+                    (click)="setActiveTab('dailyWork')"><i class="mdi mdi-email-outline me-2"></i>Daily Work List<span
+                        class="ms-1 float-end">{{dailyWorkData.length}}</span></a>
                 <a href="javascript:void(0);" [class.active]="activeTab === 'allTokens'"
                     (click)="setActiveTab('allTokens')"><i class="mdi mdi-email-outline me-2"></i>All Tokens<span
                         class="ms-1 float-end">{{tokenData.length}}</span></a>
@@ -69,7 +69,20 @@
         <!-- Right Sidebar -->
         <div class="email-rightbar mb-3" *ngIf="!isMailOpen">
             <div class="card">
-                <div class="row">
+                <div class="row p-3" *ngIf="isDailyOpen">
+                    <div class="d-flex justify-content-end gap-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control " id="fname" placeholder="Search Client Name"
+                                [(ngModel)]="searchClient" (input)="applySearchFilterOnClient()">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true"
+                                [convertModelValue]="true" mode="range" placeholder="Select a date range"
+                                [(ngModel)]="selectedWorkDateRange" (ngModelChange)="selectedDateRangeWorkData()">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="!isDailyOpen">
                     <div class="btn-toolbar p-3" role="toolbar">
                         <div class="btn-group me-2 mb-2 mb-sm-0">
                             <button type="button" class="btn btn-primary waves-light waves-effect"
@@ -115,9 +128,15 @@
                     <li class="unread" [ngClass]=" { 'unread' : e.unread==true }">
                         <div>
                             <div class="col-mail col-mail-1">
-                                <div class="checkbox-wrapper-mail">
+                                <div class="checkbox-wrapper-mail" *ngIf="!isDailyOpen">
                                     <input type="checkbox" id="chk-{{ $index}}" (change)="selectMail($event,e.id)" />
                                     <label for="chk-{{ $index}}"></label>
+                                </div>
+                                <div class="checkbox-wrapper-mail" *ngIf="isDailyOpen">
+                                    <input type="checkbox" [(ngModel)]="e.iscompleted"
+                                        (change)="changeStatusMail($event, e.id)" id="chk-{{ $index }}"
+                                        [checked]="e.iscompleted" />
+                                    <label for="chk-{{ $index }}"></label>
                                 </div>
                                 <div (click)="openTokenEmailDetails(e)">
                                     <a class="title">{{e.clientname}}</a>
@@ -144,12 +163,18 @@
                                         class="badge bg-info me-2" *ngIf="e.label=='CES'">CES</span>
                                     {{e.title}}
                                 </a>
-                                <td class="text-center managername">
+                                <td class="text-center managername" *ngIf="isDailyOpen">
+                                    <span class="badge bg-primary me-1">{{ e.managername}}</span>
+                                </td>
+                                <td class="text-center designername" *ngIf="isDailyOpen">
+                                    <span class="badge bg-primary me-1">{{ e.designername}}</span>
+                                </td>
+                                <td class="text-center managername" *ngIf="!isDailyOpen">
                                     <span class="badge bg-primary me-1" *ngFor="let m of e.assignedManagers">{{ m.name
                                         }}</span>
                                 </td>
-                                <td class="text-center designername "
-                                    *ngIf="e.assignedDesigners && e.assignedDesigners.length > 0">
+                                <td class="text-center designername"
+                                    *ngIf="!isDailyOpen && e.assignedDesigners && e.assignedDesigners.length > 0">
                                     <span *ngFor="let d of e.assignedDesigners; let i = index">
                                         <span *ngIf="i < 1" class="badge bg-primary me-1"
                                             [ngbTooltip]="formatSelectedMedia(e.assignedDesigners)">{{ d.name
@@ -161,7 +186,10 @@
                                         <!-- <span *ngIf="i > 1" class="d-none" [ngbTooltip]="d.name"></span> -->
                                     </span>
                                 </td>
-                                <div class="date">{{e.createddate | date: 'dd/MM/yyyy'}}</div>
+                                <div class="date" *ngIf="!isDailyOpen">{{e.createddate | date: 'dd/MM/yyyy'}}</div>
+                                <div class="date1" *ngIf="isDailyOpen">{{e.completeddate | date: 'dd/MM/yyyy, h:mm a'}}</div>
+                                <div class="date" *ngIf="isDailyOpen">{{e.date | date: 'dd/MM/yyyy'}}</div>
+
                             </div>
                         </div>
                     </li>}
@@ -190,7 +218,7 @@
                         <button type="button" class="btn btn-danger waves-light waves-effect" (click)="backToToken()"><i
                                 class="fa fa-arrow-left"></i></button>
                     </div>
-                    <div class="btn-group me-2 mb-2 mb-sm-0">
+                    <div class="btn-group me-2 mb-2 mb-sm-0" *ngIf="!isDailyOpen">
                         <button type="button" class="btn btn-primary waves-light waves-effect me-2"
                             [ngClass]="{'btn-success':  openTokenData.status == 'Pending'}"
                             (click)="changeStatusById(openTokenData.id,'Pending')" ngbTooltip="Token Pending "><i
@@ -201,7 +229,7 @@
                                 class="mdi mdi-spin mdi-loading "></i></button>
                         <button type="button" class="btn btn-primary waves-light waves-effect me-2"
                             [ngClass]="{'btn-success':  openTokenData.status == 'Changes'}"
-                            (click)="changeStatusById(openTokenData.id,'Changes')" ngbTooltip="Token Chnages"><i
+                            (click)="changeStatusById(openTokenData.id,'Changes')" ngbTooltip="Token Changes"><i
                                 class="mdi mdi-swap-horizontal-circle-outline"></i></button>
                         <button type="button" class="btn btn-primary waves-light waves-effect me-2"
                             *ngIf="comapanyRole !== 'Designer'"
@@ -269,11 +297,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <a href="javascript: void(0);" class="btn btn-secondary waves-effect mt-4"><i
-                            class="mdi mdi-reply me-1"></i> Reply</a>
                 </div>
-
             </div>
         </div>
     </div>

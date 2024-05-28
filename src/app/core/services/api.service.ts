@@ -221,6 +221,8 @@ export class ApiService {
   public static updateSchedulerByIdURL: string = ApiService.HOST_URL + '/admin/UpdateSchedulerById';
   public static updateDailyWorkByIdURL: string = ApiService.HOST_URL + '/admin/UpdateDailyWorkById';
   public static getALLDailyWorkURL: string = ApiService.HOST_URL + '/admin/GetALLDailyWork';
+  public static updateDailyWorkUnreadStatusURL: string = ApiService.HOST_URL + '/admin/UpdateDailyWorkUnreadStatus/';
+
 
 
 
