@@ -782,19 +782,18 @@ export class RequestTokensComponent {
     const date = new Date(dateStr);
     return isNaN(date.getTime()) ? null : dateStr;
   }
-  applySearchFilter() {
+  applySearchClient() {
     const query = this.searchQuery.toLowerCase();
-    this.tokenData = this.tempTokenData.filter((token: any) => {
+    this.tokenData = this.tokenData.filter((token: any) => {
+      const clientNameMatch = token.clientname.toLowerCase().includes(query);
       const designerMatch = token.assignedDesigners.some((designer: any) => designer.name.toLowerCase().includes(query));
       const managerMatch = token.assignedManagers.some((manager: any) => manager.name.toLowerCase().includes(query));
-      const clientNameMatch = token.clientname.toLowerCase().includes(query);
-      return designerMatch || managerMatch || clientNameMatch;
+      return clientNameMatch || designerMatch || managerMatch
     });
 
     // Update other data views based on the filtered tokenData
     this.updateFilteredData();
   }
-
 
   updateFilteredData() {
     this.pendingData = this.tokenData.filter((token: any) => token.status === 'Pending');
