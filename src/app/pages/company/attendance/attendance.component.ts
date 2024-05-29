@@ -142,6 +142,7 @@ export class AttendanceComponent implements OnInit {
   getAllEmployeeDetails() {
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.employeeList = res;
+      this.employeeList = res.filter((employee: any) => employee.role !== 'companyAdmin');
       this.staffModel.role = localStorage.getItem('Role');
     });
   }

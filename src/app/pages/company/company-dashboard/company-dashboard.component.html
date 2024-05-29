@@ -181,18 +181,15 @@
                         <div class="col-6">
                             <span class="text-muted mb-3 lh-1 d-block text-truncate">Daily Work</span>
                             <h4 class="mb-2">
-                                <span [countUp]="totalPendingDailyWork" class="counter-value" [options]="option"></span>
+                                <span [countUp]="dailyWorkLength" class="counter-value" [options]="option"></span>
                             </h4>
-                            <span class="badge bg-success-subtle text-success">{{dailyWorkLength}}</span>
+                            <span class="badge bg-danger-subtle text-danger mx-1">{{totalPendingDailyWork}}</span>
+                            <span class="badge bg-success-subtle text-success">{{totalComplatedDailyWork}}</span>
                             <span class="ms-1 text-muted font-size-13">Total Work</span>
                         </div>
                         <div class="col-6 text-center">
                             <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
                         </div>
-                    </div>
-                    <div class="text-nowrap">
-                        <span class="badge text-muted font-size-13"><i class="fa fa-arrow-right" aria-hidden="true"></i>
-                            View More</span>
                     </div>
                 </div>
             </div>
