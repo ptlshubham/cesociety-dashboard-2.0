@@ -133,7 +133,7 @@ export class ClientPostSchedulerComponent implements OnInit {
     this.formEditData = this.formBuilder.group({
       editTitle: clickInfo.event.title,
       editDescription: clickInfo.event.extendedProps.description,
-      editDesigner:clickInfo.event.extendedProps.designerid,
+      editDesigner: clickInfo.event.extendedProps.designerid,
     });
     this.modalService.open(this.editmodalShow, { centered: true });
   }
@@ -238,14 +238,11 @@ export class ClientPostSchedulerComponent implements OnInit {
     const editTitle = this.formEditData.get('editTitle')!.value;
     const editDescription = this.formEditData.get('editDescription')!.value;
     const editDesigner = this.formEditData.get('editDesigner')!.value;
-
-    debugger
     this.editEvent.setProp('title', editTitle);
     this.editEvent.setProp('description', editDescription);
     this.editModel.id = this.editEvent.id;
     this.editModel.title = editTitle;
     this.editModel.description = editDescription;
-    debugger
     this.companyService.updateSchedulerById(this.editModel).subscribe((res: any) => {
       this.scheduleList = res;
       this.getAllTodoListDetails();

@@ -96,5 +96,14 @@ const investedOverview: ChartType = {
     series: [80],
     labels: ['Series A'],
 };
+const TodoList = [
+    {
+        icon: 'mdi mdi-currency-btc',
+        avatar_icon: 'mdi-bitcoin',
+        title: 'Keryar',
+        content: 'Welcome to Keryar IT Solution At  Keryar IT Solution, we strive to streamline business operations with cutting-edge technology solutions. Our internal portal provides a comprehensive suite of tools designed to enhance productivity and ensure seamless management of daily tasks for our team. Our Key Features:Token Generation: Simplify and secure access to various company resources with our efficient token generation system.Scheduling: Manage your appointments and meetings effortlessly using our intuitive scheduling tool. Keep track of all client information in one central location, ensuring you have up-to-date details at your fingertips.Attendance: Monitor and manage employee attendance with ease, ensuring accurate and timely tracking of work hours.Meet Our CEO: Rumit Vaghela'
+    },
 
-export { walletOverview, donutChart, investedOverview };
+];
+
+export { walletOverview, donutChart, investedOverview, TodoList };

@@ -10,7 +10,7 @@ import { RequestTokensComponent } from './request-tokens/request-tokens.componen
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { SharedModule } from 'src/app/shared/shared.module';
-
+import { CarouselModule } from 'ngx-owl-carousel-o';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { ClientsComponent } from './clients/clients.component';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -25,6 +25,7 @@ import { PostingComponent } from './posting/posting.component';
 import { ClientPostSchedulerComponent } from './client-post-scheduler/client-post-scheduler.component';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FlatpickrModule } from 'angularx-flatpickr';
+
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { FlatpickrModule } from 'angularx-flatpickr';
     NgbNavContent,
     NgbNavLink,
     NgbNav,
+    CarouselModule,
     NgbDatepickerModule,
     FlatpickrModule.forRoot()
 

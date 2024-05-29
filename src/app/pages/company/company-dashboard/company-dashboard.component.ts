@@ -3,6 +3,10 @@ import { CompanyService } from 'src/app/core/services/company.service';
 import { ChartType } from './dashboard.model';
 
 import { TokensService } from 'src/app/core/services/tokens.service';
+import { forkJoin } from 'rxjs';
+
+import { OwlOptions } from 'ngx-owl-carousel-o';
+import { TodoList } from './data';
 
 
 @Component({
@@ -32,7 +36,43 @@ export class CompanyDashboardComponent {
   completedData: any = [];
   cancelData: any = [];
   staffModel: any = {};
-  employeeDataList: any = []
+  employeeDataList: any = [];
+  dailyWorkData: any = [];
+  pendingStories: number = 0;
+  completedStories: number = 0;
+  pendingPosts: number = 0;
+  completedPosts: number = 0;
+  pendingReels: number = 0;
+  completedReels: number = 0;
+  extraPending: number = 0;
+  extraComplated: number = 0;
+  totalPending: number = 0;
+  totalCompleted: number = 0;
+  pendingExtraToken: any = 0;
+  complatedExtraToken: any = 0;
+  tokenDataForClient: any = []
+  dailyWorkLength: number = 0;
+  CESTotal: number = 0
+  totalPendingDailyWork: number = 0;
+  TodoList: any;
+  CancelToken: any = 0
+
+  eid: any;
+  title!: string;
+
+  timelineCarousel: OwlOptions = {
+    items: 1,
+    loop: false,
+    margin: 0,
+    nav: false,
+    navText: ["", ""],
+    dots: true,
+    responsive: {
+      680: {
+        items: 4
+      },
+    }
+  }
   SelectedClient = this.tokendata.clientname;
   comapanyRole: any = localStorage.getItem('Role');
   Tokens: ChartType = {
@@ -68,7 +108,7 @@ export class CompanyDashboardComponent {
             fontSize: '18px',
             color: undefined,
             formatter: function (val: any) {
-              return val + "%";
+              return Math.floor(val) + "%";
             }
           }
         }
@@ -82,55 +122,41 @@ export class CompanyDashboardComponent {
         type: "horizontal",
         gradientToColors: ['#34c38f'],
         shadeIntensity: 0.15,
-        inverseColors: !1,
+        inverseColors: false,
         opacityFrom: 1,
         opacityTo: 1,
         stops: [20, 60],
       },
     },
-
     stroke: {
       dashArray: 4,
     },
     legend: {
       show: false
     },
-    series: [80],
-    labels: ['Series A'],
+    series: [100],
+    labels: ['Pending', 'Completed'],
   };
-  donutChart: ChartType = {
-    chart: { height: 320, type: "donut" },
-    series: [44, 55, 41, 17, 15],
-    labels: ["Series 1", "Series 2", "Series 3", "Series 4", "Series 5"],
-    colors: ["#2ab57d", "#5156be", "#fd625e", "#4ba6ef", "#ffbf53"],
-    legend: {
-      show: !0,
-      position: "bottom",
-      horizontalAlign: "center",
-      verticalAlign: "middle",
-      floating: !1,
-      fontSize: "14px",
-      offsetX: 0,
-    },
-    responsive: [
-      {
-        breakpoint: 600,
-        options: { chart: { height: 240 }, legend: { show: !1 } },
-      },
-    ],
-  }
+
+
   barChart: ChartType = {
     chart: { height: 350, type: "bar", toolbar: { show: !1 } },
     plotOptions: { bar: { horizontal: !0 } },
     dataLabels: { enabled: !1 },
-    series: [{ data: [380, 430, 450, 475, 550, 584, 780, 1100, 1220, 1365, 345, 345, 34, 45] }],
-    colors: ['#2ab57d'],
+    series: [],
+    colors: ['#ff4c52', '#2ab57d'],
     grid: { borderColor: "#f1f1f1" },
     xaxis: {
       categories: [],
     },
   };
 
+
+
+  private fetchData() {
+    this.TodoList = TodoList;
+
+  }
 
   constructor(
     private companyService: CompanyService,
@@ -140,11 +166,13 @@ export class CompanyDashboardComponent {
   }
   ngOnInit(): void {
     this.getAllTokens();
+    this.fetchData()
     this.getBarDetails();
     this.getAllEmployeeDetails();
-
+    this.getAllDailyWork();
     this.getClientsDetails()
-    this.getAllTokenCompanyStatus()
+    this.getAllTokenCompanyStatus();
+
   }
 
   getClientsDetails() {
@@ -152,62 +180,164 @@ export class CompanyDashboardComponent {
       this.clientlist = res;
     })
   }
+
+
   getBarDetails() {
-    this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
-      this.employeeList = res;
-      // Filter employees with role "designer" and map their names to categories array
-      this.barChart.xaxis.categories = this.employeeList
+    // Fetch employee details and daily work data
+    forkJoin(
+      this.companyService.getAllEmployeeDetailsData(),
+      this.companyService.getAllDailyList()
+    ).subscribe(([employeeRes, dailyWorkRes]: [any, any]) => {
+      this.employeeList = employeeRes;
+
+      // Filter employees with role "Designer" and map their IDs to an array
+      const designerIds = this.employeeList
         .filter((employee: any) => employee.role === 'Designer')
-        .map((employee: any) => employee.name);
+        .map((employee: any) => employee.id);
+
+      // Initialize counts for total and completed works
+      const designerDailyWorkCounts: { [key: string]: number } = {};
+      const designerCompletedWorkCounts: { [key: string]: number } = {};
+
+      dailyWorkRes.forEach((work: any) => {
+        if (designerIds.includes(work.designerid)) {
+          if (!designerDailyWorkCounts[work.designerid]) {
+            designerDailyWorkCounts[work.designerid] = 0;
+            designerCompletedWorkCounts[work.designerid] = 0;
+          }
+          designerDailyWorkCounts[work.designerid]++;
+
+          if (work.iscompleted) {
+            designerCompletedWorkCounts[work.designerid]++;
+          }
+        }
+      });
+
+      // Prepare series data based on designer daily work counts
+      this.barChart.series = [
+        { name: 'Total Work', data: designerIds.map((id: string) => designerDailyWorkCounts[id] || 0) },
+        { name: 'Completed Work', data: designerIds.map((id: string) => designerCompletedWorkCounts[id] || 0) }
+      ];
+
+      // Update x-axis categories with designer names
+      this.barChart.xaxis.categories = designerIds.map((id: string) => {
+        const designer = this.employeeList.find((employee: any) => employee.id === id);
+        return designer ? designer.name : ''; // Assuming name field is present in employee object
+      });
+    });
+  }
+  changeStatusMail(event: Event, id: number): void {
+    ;
+    const isChecked = (event.target as HTMLInputElement).checked;
+    let data = {
+      id: id,
+      iscompleted: isChecked
+    };
+    this.companyService.updateDailyById(data).subscribe((res: any) => {
+      this.getBarDetails();
+    });
+  }
+  getAllDailyWork() {
+    this.companyService.getAllDailyList().subscribe((data: any) => {
+      // Store all daily work data
+      this.dailyWorkData = data;
+
+      // Calculate the length of all daily work data
+      this.dailyWorkLength = this.dailyWorkData.length;
+
+      // Filter and count pending stories, posts, and reels
+      const pendingStories = this.dailyWorkData.filter((item: any) => item.title === 'Story' && !item.iscompleted).length;
+      const pendingPosts = this.dailyWorkData.filter((item: any) => item.title === 'Post' && !item.iscompleted).length;
+      const pendingReels = this.dailyWorkData.filter((item: any) => item.title === 'Reel' && !item.iscompleted).length;
+
+      // Calculate the total number of pending tasks
+      this.totalPendingDailyWork = pendingStories + pendingPosts + pendingReels;
+
+      // Optionally, log or process the totalPendingDailyWork as needed
+      console.log(`Total Pending Daily Work: ${this.totalPendingDailyWork}`);
+
+      // Continue with any additional logic, such as updating UI components
+      this.getBarDetails();
     });
   }
 
 
+
+
+
   getAllTokens() {
-    debugger
     this.tokensService.getAllTokenData().subscribe((res: any) => {
       this.temparra = res;
       this.pendingDatatotal = res.filter((token: any) => token.status === 'Pending');
       this.processingDatatotal = res.filter((token: any) => token.status === 'Processing');
       this.completedDatatotal = res.filter((token: any) => token.status === 'Completed');
-      this.Tokens.series.push(this.pendingDatatotal.length, this.processingDatatotal.length, this.completedDatatotal.length);
+
+      this.CancelToken = res.filter((token: any) => token.status === 'Cancel');
+      this.Tokens.series.push(this.pendingDatatotal.length, this.processingDatatotal.length, this.completedDatatotal.length, this.CancelToken.length);
       this.Tokens.labels.push('Pending', 'Processing', 'Completed');
-      debugger;
     });
   }
 
   getAllTokenCompanyStatus() {
-    debugger;
     if (this.SelectedClient) {
       this.tokensService.getAllTokenData().subscribe((res: any) => {
         // Filter token data based on selected client
         this.tokendata = res.filter((token: any) => token.clientid === this.SelectedClient.id);
 
-        // Filter data for different statuses
-        this.pendingData = this.tokendata.filter((token: any) => token.status === 'Pending');
-        this.completedData = this.tokendata.filter((token: any) => token.status === 'Completed');
-
-        // Calculate total tokens
-        const totalTokens = this.tokendata.length;
-
-        // Calculate completion percentage
-        const completionPercentage = (this.completedData.length / totalTokens) * 100;
-
-        // Update chart data
-        this.investedOverview.series = [
-          this.pendingData.length,
-          this.tokendata.length - this.pendingData.length - this.completedData.length,
-          completionPercentage
-        ];
-        this.investedOverview.labels = ['Pending', 'Processing', 'Completed'];
+        // Fetch daily work data and aggregate the required counts based on selected client
+        this.getAllDailyWorks(this.SelectedClient.id);
       });
     }
   }
 
+  getAllDailyWorks(clientId: number) {
+    this.dailyWorkData = [];
+    this.companyService.getAllDailyList().subscribe((data: any) => {
+      // Filter daily work data based on selected client
+
+      this.dailyWorkData = data.filter((element: any) => element.clientid === clientId);
+
+      if (this.comapanyRole == 'Designer') {
+        this.dailyWorkData = this.dailyWorkData.filter((element: any) => element.designerid == this.eid);
+      }
+
+      // Filter and count pending and completed stories, posts, reels, and extras
+      this.pendingStories = this.dailyWorkData.filter((item: any) => item.title === 'Story' && !item.iscompleted).length;
+      this.completedStories = this.dailyWorkData.filter((item: any) => item.title === 'Story' && item.iscompleted).length;
+
+      this.pendingPosts = this.dailyWorkData.filter((item: any) => item.title === 'Post' && !item.iscompleted).length;
+      this.completedPosts = this.dailyWorkData.filter((item: any) => item.title === 'Post' && item.iscompleted).length;
+
+      this.pendingReels = this.dailyWorkData.filter((item: any) => item.title === 'Reel' && !item.iscompleted).length;
+      this.completedReels = this.dailyWorkData.filter((item: any) => item.title === 'Reel' && item.iscompleted).length;
+
+      // Aggregate total counts
+      this.totalPending = this.pendingStories + this.pendingPosts + this.pendingReels
+      this.totalCompleted = this.completedStories + this.completedPosts + this.completedReels
+
+      const totalTasks = this.totalPending + this.totalCompleted;
+
+      // Calculate completion percentage
+      const completionPercentage = totalTasks > 0 ? Math.floor((this.totalCompleted / totalTasks) * 100) : 0;
+
+      // Update the investedOverview series with the completion percentage for the individual client
+      this.investedOverview.series = [completionPercentage];
+      this.getAllToken(clientId);
+    });
+  }
+
+
+  getAllToken(clientId: number) {
+    this.tokensService.getAllTokenData().subscribe((res: any) => {
+      this.tokenDataForClient = res.filter((token: any) => token.clientid === clientId);
+
+      this.pendingExtraToken = this.tokenDataForClient.filter((token: any) => token.status === 'Pending').length;
+      this.complatedExtraToken = this.tokenDataForClient.filter((token: any) => token.status === 'Completed').length;
+    });
+  }
   getAllEmployeeDetails() {
     this.companyService.getAllEmployeeDetailsData().subscribe((res: any) => {
       this.employeeList = res;
-      debugger
       this.staffModel.role = localStorage.getItem('Role')
     })
   }
@@ -217,5 +347,8 @@ export class CompanyDashboardComponent {
       this.clientlist = res;
     })
   }
+
+
+
 
 }
