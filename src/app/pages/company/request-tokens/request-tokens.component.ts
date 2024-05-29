@@ -29,7 +29,6 @@ export class RequestTokensComponent {
   tokenImage: any;
   tokenMultiImage: any = [];
   multiTokenImgData: any = [];
-  staffModel: any = {}
   breadCrumbItems!: Array<{}>;
   public Editor = ClassicEditor;
   emailData!: Array<any>;
@@ -55,8 +54,6 @@ export class RequestTokensComponent {
   pendingData: any = [];
   dailyWorkData: any = [];
   processingData: any = [];
-  reviewData: any = [];
-  changesData: any = [];
   completedData: any = [];
   cancelData: any = [];
   cesLabelData: any = [];
@@ -77,10 +74,11 @@ export class RequestTokensComponent {
   clientModel: any = []
   comapanyRole: any = localStorage.getItem('Role');
   isDailyOpen: boolean = false;
-  searchClient: string = '';
+  searchClient: any = null;
   selectedWorkDateRange: { from: Date, to: Date } | null = null;
   eid: any;
-
+  empEmail: any;
+  filteredDailyWorkData: any = [];
   constructor(private modalService: NgbModal,
     public formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
@@ -102,6 +100,7 @@ export class RequestTokensComponent {
       { label: 'Home' },
       { label: 'Generate Tokens', active: true }
     ];
+    this.getStaffDetails();
     this.privatefecth();
     this.validationForm = this.formBuilder.group({
       client: ['', [Validators.required]],
@@ -110,7 +109,7 @@ export class RequestTokensComponent {
       label: [''],
       deliverydate: ['', [Validators.required]],
       title: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      description: [''],
 
     });
   }
@@ -119,11 +118,13 @@ export class RequestTokensComponent {
   privatefecth() {
     if (this.role != 'Designer') {
       this.getAllToken();
+      this.getAllDailyWork();
     }
     else {
+      this.getAllDailyWork();
       this.getTokenByEmployee();
+
     }
-    this.getAllDailyWork();
   }
   getClientsDetails() {
     this.companyService.getAllClientDetailsData().subscribe((res: any) => {
@@ -252,7 +253,7 @@ export class RequestTokensComponent {
 
   }
   SaveTokendetails() {
-
+    debugger
     this.submitted = true;
     if (this.validationForm.invalid) {
       return;
@@ -261,9 +262,13 @@ export class RequestTokensComponent {
       this.tokenModel.tokenMultiImage = this.tokenMultiImage;
       this.tokenModel.status = 'Pending';
       this.tokenModel.createdby = this.createdby;
+      this.tokenModel.email = this.empEmail;
+      if (this.tokenModel.description == undefined) {
+        this.tokenModel.description = null;
+      }
       this.tokensService.SaveTokendetails(this.tokenModel).subscribe((res: any) => {
         this.tokenData = res;
-        this.privatefecth();
+        // this.setActiveTab('allTokens');
         this.toastr.success('Token Details Successfully Saved.', 'Success', { timeOut: 3000, });
         this.tokenModel = {};
         this.validationForm.markAsUntouched();
@@ -296,8 +301,12 @@ export class RequestTokensComponent {
     if (this.role != 'Designer') {
       if (this.activeTab == 'allTokens') {
         this.privatefecth();
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
       }
       else if (this.activeTab == 'dailyWork') {
+        debugger
+        this.getAllDailyWork();
         this.emailData = this.dailyWorkData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
@@ -305,6 +314,8 @@ export class RequestTokensComponent {
         }
       }
       else if (this.activeTab == 'pendingTokens') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.emailData = this.pendingData;
 
         this.totalRecords = this.emailData.length;
@@ -313,27 +324,17 @@ export class RequestTokensComponent {
         }
       }
       else if (this.activeTab == 'processingTokens') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.emailData = this.processingData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
           this.emailData[i].index = i + 1;
         }
       }
-      else if (this.activeTab == 'reviewTokens') {
-        this.emailData = this.reviewData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'changesTokens') {
-        this.emailData = this.changesData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
       else if (this.activeTab == 'completedTokens') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.emailData = this.completedData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
@@ -341,6 +342,8 @@ export class RequestTokensComponent {
         }
       }
       else if (this.activeTab == 'cancelTokens') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.emailData = this.cancelData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
@@ -348,6 +351,8 @@ export class RequestTokensComponent {
         }
       }
       else if (this.activeTab == 'CES') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.emailData = this.cesLabelData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
@@ -355,6 +360,8 @@ export class RequestTokensComponent {
         }
       }
       else if (this.activeTab == 'Urgent') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.emailData = this.urgentLabelData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
@@ -364,9 +371,12 @@ export class RequestTokensComponent {
     }
     else {
       if (this.activeTab == 'allTokens') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.getTokenByEmployee();
       }
       else if (this.activeTab == 'dailyWork') {
+        this.getAllDailyWork();
         this.emailData = this.dailyWorkData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
@@ -375,6 +385,8 @@ export class RequestTokensComponent {
       }
 
       else if (this.activeTab == 'pendingTokens') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.emailData = this.pendingData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
@@ -382,27 +394,17 @@ export class RequestTokensComponent {
         }
       }
       else if (this.activeTab == 'processingTokens') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.emailData = this.processingData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
           this.emailData[i].index = i + 1;
         }
       }
-      else if (this.activeTab == 'reviewTokens') {
-        this.emailData = this.reviewData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'changesTokens') {
-        this.emailData = this.changesData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
       else if (this.activeTab == 'completedTokens') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.emailData = this.completedData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
@@ -410,6 +412,8 @@ export class RequestTokensComponent {
         }
       }
       else if (this.activeTab == 'cancelTokens') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.emailData = this.cancelData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
@@ -417,6 +421,8 @@ export class RequestTokensComponent {
         }
       }
       else if (this.activeTab == 'CES') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.emailData = this.cesLabelData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
@@ -424,6 +430,8 @@ export class RequestTokensComponent {
         }
       }
       else if (this.activeTab == 'Urgent') {
+        this.searchClient = null;
+        this.selectedWorkDateRange = null;
         this.emailData = this.urgentLabelData;
         this.totalRecords = this.emailData.length;
         for (let i = 0; i < this.emailData.length; i++) {
@@ -480,8 +488,6 @@ export class RequestTokensComponent {
       this.applyDateRangeFilter();
       this.pendingData = this.tempTokenData.filter((token: any) => token.status === 'Pending');
       this.processingData = this.tempTokenData.filter((token: any) => token.status === 'Processing');
-      this.reviewData = this.tempTokenData.filter((token: any) => token.status === 'Review');
-      this.changesData = this.tempTokenData.filter((token: any) => token.status === 'Changes');
       this.completedData = this.tempTokenData.filter((token: any) => token.status === 'Completed');
       this.cancelData = this.tempTokenData.filter((token: any) => token.status === 'Cancel');
       this.cesLabelData = this.tempTokenData.filter((token: any) => token.label === 'CES');
@@ -532,8 +538,6 @@ export class RequestTokensComponent {
 
       this.pendingData = res.filter((token: any) => token.status === 'Pending');
       this.processingData = res.filter((token: any) => token.status === 'Processing');
-      this.reviewData = res.filter((token: any) => token.status === 'Review');
-      this.changesData = res.filter((token: any) => token.status === 'Changes');
       this.completedData = res.filter((token: any) => token.status === 'Completed');
       this.cancelData = res.filter((token: any) => token.status === 'Cancel');
       this.cesLabelData = res.filter((token: any) => token.label === 'CES');
@@ -732,46 +736,10 @@ export class RequestTokensComponent {
     });
   }
   getStaffDetails() {
-
     this.companyService.getEmployeeDataById(this.eid).subscribe((data: any) => {
-      this.staffModel.role = localStorage.getItem('Role')
+      this.empEmail = data[0].email;
     })
   }
-  filterTokenDate() {
-
-    this.privatefecth();
-
-    // if (this.selectedDate) {
-
-    //   const selectedDate = new Date(this.selectedDate);
-    //   selectedDate.setHours(0, 0, 0, 0); // Normalize selected date to start of the day
-
-    //   console.log('Selected Date:', selectedDate);
-
-    //   this.filteredTokenData = this.tokenData.filter((token: any) => {
-    //     if (!token.createddate) {
-    //       console.log('Skipping token with missing created date:', token);
-    //       return false; // Skip tokens with no created date
-    //     }
-
-    //     const createdDate = new Date(token.createddate);
-    //     createdDate.setHours(0, 0, 0, 0); // Normalize created date to start of the day
-
-    //     console.log('Created Date:', createdDate, 'Matches:', createdDate.getTime() === selectedDate.getTime());
-
-    //     return selectedDate.getTime() === createdDate.getTime(); // Compare selectedDate with createdDate
-    //   });
-
-    //   console.log('Filtered Token Data:', this.filteredTokenData);
-    // } else {
-    //   this.filteredTokenData = this.tokenData; // Show all data if no date is selected
-    // }
-  }
-
-
-
-
-
 
   deleteToken() {
     Swal.fire({
@@ -825,8 +793,6 @@ export class RequestTokensComponent {
   updateFilteredData() {
     this.pendingData = this.tokenData.filter((token: any) => token.status === 'Pending');
     this.processingData = this.tokenData.filter((token: any) => token.status === 'Processing');
-    this.reviewData = this.tokenData.filter((token: any) => token.status === 'Review');
-    this.changesData = this.tokenData.filter((token: any) => token.status === 'Changes');
     this.completedData = this.tokenData.filter((token: any) => token.status === 'Completed');
     this.cancelData = this.tokenData.filter((token: any) => token.status === 'Cancel');
     this.cesLabelData = this.tokenData.filter((token: any) => token.label === 'CES');
@@ -868,60 +834,106 @@ export class RequestTokensComponent {
   }
 
   getAllDailyWork() {
-    this.dailyWorkData = [];
+
     this.companyService.getAllDailyList().subscribe((data: any) => {
-      if (this.comapanyRole == 'Designer')
-        data.forEach((element: any) => {
-          if (element.designerid == this.eid) {
-            this.dailyWorkData.push(element);
-          }
+      let filteredData = data;
+
+      if (this.comapanyRole == 'Designer') {
+        filteredData = filteredData.filter((element: any) => element.designerid == this.eid);
+      }
+
+      if (this.searchClient) {
+        debugger
+        filteredData = filteredData.filter((element: any) =>
+          element.clientname.toLowerCase().includes(this.searchClient.toLowerCase())
+        );
+      }
+
+      if (this.selectedWorkDateRange) {
+        debugger
+        const { from, to } = this.selectedWorkDateRange;
+        filteredData = filteredData.filter((element: any) => {
+          const date = new Date(element.date);
+          return date >= from && date <= to;
         });
-      else {
-        this.dailyWorkData = data;
+      }
+
+      this.filteredDailyWorkData = filteredData;
+      this.dailyWorkData = filteredData;
+      if (this.searchClient != null || this.selectedWorkDateRange != null) {
+        this.setActiveTab('dailyWork');
       }
     });
-  }
-  changeStatusMail(event: Event, id: number): void {
-    debugger
-    const isChecked = (event.target as HTMLInputElement).checked;
-    let data = {
-      id: id,
-      iscompleted: isChecked
-    }
-    this.companyService.updateDailyById(data).subscribe((res: any) => {
-      this.getAllDailyWork();
-    })
-
   }
 
   applySearchFilterOnClient() {
-    const query = this.searchClient.toLowerCase();
-    this.tokenData = this.tempTokenData.filter((token: any) => {
-      const designerMatch = token.assignedDesigners.some((designer: any) => designer.name.toLowerCase().includes(query));
-      const managerMatch = token.assignedManagers.some((manager: any) => manager.name.toLowerCase().includes(query));
-      const clientNameMatch = token.clientname.toLowerCase().includes(query);
-      return designerMatch || managerMatch || clientNameMatch;
-    });
-
-    // Update other data views based on the filtered tokenData
-    this.updateFilteredData();
+    this.getAllDailyWork();
   }
+
   selectedDateRangeWorkData() {
-    if (this.selectedWorkDateRange && typeof this.selectedWorkDateRange.from === 'object' && typeof this.selectedWorkDateRange.to === 'object') {
-      const startDate = new Date(this.selectedWorkDateRange.from);
-      const endDate = new Date(this.selectedWorkDateRange.to);
-
-      if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
-        this.selectedStartDate = startDate;
-        this.selectedEndDate = endDate;
-        this.applyDateRangeFilter();
-        this.selectedWorkDateRange = null;
-      } else {
-        console.error('Invalid date format in selectedDateRange');
-      }
-    } else {
-      console.error('Invalid selectedDateRange format');
-    }
+    this.getAllDailyWork();
   }
+
+  isValidDate(dateString: string): boolean {
+    // Check if the date string is valid
+    return !isNaN(Date.parse(dateString));
+  }
+
+  changeStatusMail(event: Event, id: number): void {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    if (isChecked == false) {
+      let data = {
+        id: id,
+        iscompleted: isChecked,
+      }
+      this.companyService.updateDailyById(data).subscribe((res: any) => {
+        debugger
+        if (res == 'success') {
+          this.companyService.getAllDailyList().subscribe((data: any) => {
+            if (this.comapanyRole == 'Designer') {
+              data.forEach((element: any) => {
+                if (element.designerid == this.eid) {
+                  this.dailyWorkData.push(element);
+                }
+              });
+            }
+            else {
+              this.dailyWorkData = data;
+            }
+            this.setActiveTab('dailyWork');
+
+          });
+        }
+      })
+    }
+    else {
+      let data = {
+        id: id,
+        iscompleted: isChecked,
+      }
+      debugger
+      this.companyService.updateDailyById(data).subscribe((res: any) => {
+        if (res == 'success') {
+          this.dailyWorkData = [];
+          this.companyService.getAllDailyList().subscribe((data: any) => {
+            if (this.comapanyRole == 'Designer') {
+              data.forEach((element: any) => {
+                if (element.designerid == this.eid) {
+                  this.dailyWorkData.push(element);
+                }
+              });
+              this.setActiveTab('dailyWork');
+            }
+            else {
+              this.dailyWorkData = data;
+              this.setActiveTab('dailyWork');
+            }
+          });
+        }
+      })
+    }
+
+  }
+
 }
 
