@@ -117,6 +117,7 @@ export class RequestTokensComponent {
 
   privatefecth() {
     if (this.role != 'Designer') {
+      debugger
       this.getAllToken();
       this.getAllDailyWork();
     }
@@ -267,8 +268,8 @@ export class RequestTokensComponent {
         this.tokenModel.description = null;
       }
       this.tokensService.SaveTokendetails(this.tokenModel).subscribe((res: any) => {
-        this.tokenData = res;
-        // this.setActiveTab('allTokens');
+        // this.tokenData = res;
+        this.setActiveTab('allTokens');
         this.toastr.success('Token Details Successfully Saved.', 'Success', { timeOut: 3000, });
         this.tokenModel = {};
         this.validationForm.markAsUntouched();
@@ -292,155 +293,86 @@ export class RequestTokensComponent {
     this.emailData = [];
     this.activeTab = tab;
     this.isMailOpen = false;
-    if (this.activeTab == 'dailyWork') {
-      this.isDailyOpen = true;
-    }
-    else {
-      this.isDailyOpen = false;
-    }
+
     if (this.role != 'Designer') {
-      if (this.activeTab == 'allTokens') {
-        this.privatefecth();
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
+      switch (this.activeTab) {
+        case 'allTokens':
+          this.privatefecth();
+          this.resetSearchAndDateRange();
+          break;
+        case 'dailyWork':
+          this.getAllDailyWork();
+          this.emailData = this.dailyWorkData;
+          break;
+        case 'pendingTokens':
+          this.emailData = this.pendingData;
+          break;
+        case 'processingTokens':
+          this.emailData = this.processingData;
+          break;
+        case 'completedTokens':
+          this.emailData = this.completedData;
+          break;
+        case 'cancelTokens':
+          this.emailData = this.cancelData;
+          break;
+        case 'CES':
+          this.emailData = this.cesLabelData;
+          break;
+        case 'Urgent':
+          this.emailData = this.urgentLabelData;
+          break;
+        default:
+          break;
       }
-      else if (this.activeTab == 'dailyWork') {
-        debugger
-        this.getAllDailyWork();
-        this.emailData = this.dailyWorkData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'pendingTokens') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.emailData = this.pendingData;
-
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'processingTokens') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.emailData = this.processingData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'completedTokens') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.emailData = this.completedData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'cancelTokens') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.emailData = this.cancelData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'CES') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.emailData = this.cesLabelData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'Urgent') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.emailData = this.urgentLabelData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-    }
-    else {
-      if (this.activeTab == 'allTokens') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.getTokenByEmployee();
-      }
-      else if (this.activeTab == 'dailyWork') {
-        this.getAllDailyWork();
-        this.emailData = this.dailyWorkData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-
-      else if (this.activeTab == 'pendingTokens') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.emailData = this.pendingData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'processingTokens') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.emailData = this.processingData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'completedTokens') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.emailData = this.completedData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'cancelTokens') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.emailData = this.cancelData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'CES') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.emailData = this.cesLabelData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
-      }
-      else if (this.activeTab == 'Urgent') {
-        this.searchClient = null;
-        this.selectedWorkDateRange = null;
-        this.emailData = this.urgentLabelData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+    } else {
+      switch (this.activeTab) {
+        case 'allTokens':
+          this.resetSearchAndDateRange();
+          this.getTokenByEmployee();
+          break;
+        case 'dailyWork':
+          this.getAllDailyWork();
+          this.emailData = this.dailyWorkData;
+          break;
+        case 'pendingTokens':
+          this.emailData = this.pendingData;
+          break;
+        case 'processingTokens':
+          this.emailData = this.processingData;
+          break;
+        case 'completedTokens':
+          this.emailData = this.completedData;
+          break;
+        case 'cancelTokens':
+          this.emailData = this.cancelData;
+          break;
+        case 'CES':
+          this.emailData = this.cesLabelData;
+          break;
+        case 'Urgent':
+          this.emailData = this.urgentLabelData;
+          break;
+        default:
+          break;
       }
     }
 
+    this.totalRecords = this.emailData.length;
+    this.setIndexForEmailData();
   }
+
+  private resetSearchAndDateRange(): void {
+    this.searchClient = null;
+    this.selectedWorkDateRange = null;
+  }
+
+  private setIndexForEmailData(): void {
+    for (let i = 0; i < this.emailData.length; i++) {
+      this.emailData[i].index = i + 1;
+    }
+  }
+
   openClientWiseList(id: any) {
     this.emailData = [];
     this.tokenData.forEach((element: any) => {
@@ -455,6 +387,7 @@ export class RequestTokensComponent {
   }
   getAllToken() {
     this.tokensService.getAllTokenData().subscribe((res: any) => {
+      debugger
 
       if (this.selectedDate != null) {
         this.tempTokenData = [];
@@ -493,7 +426,6 @@ export class RequestTokensComponent {
       this.cesLabelData = this.tempTokenData.filter((token: any) => token.label === 'CES');
       this.urgentLabelData = this.tempTokenData.filter((token: any) => token.label === 'Urgent');
       this.tokenData = this.tempTokenData;
-
 
       this.emailData = this.tokenData;
 
