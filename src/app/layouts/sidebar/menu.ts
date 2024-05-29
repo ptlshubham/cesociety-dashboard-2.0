@@ -431,3 +431,43 @@ export const Employee: MenuItem[] = [
     }
 
 ];
+
+export const Manger: MenuItem[] = [
+    {
+        id: 1,
+        label: 'MENUITEMS.MENU.TEXT',
+        isTitle: true,
+    },
+    {
+        id: 2,
+        label: 'MENUITEMS.DASHBOARDS.TEXT',
+        icon: 'mdi mdi-desktop-mac-dashboard',
+        link: '/',
+    },
+    {
+        id: 3,
+        label: 'Generate Tokens',
+        icon: 'mdi mdi-clipboard-list-outline',
+        link: '/company/request-tokens',
+    },
+    {
+        id: 4,
+        label: 'Client List',
+        icon: 'mdi mdi-account-multiple-outline',
+        link: '/company/clients',
+    },
+
+    {
+        id: 5,
+        label: 'Todo-List',
+        icon: 'mdi mdi-clipboard-list-outline',
+        link: '/company/todo-list',
+    },
+    {
+        id: 6,
+        label: 'Posting',
+        icon: 'mdi mdi-clipboard-list-outline',
+        link: '/company/posting',
+    }
+
+];
