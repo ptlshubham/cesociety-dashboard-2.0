@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
   onSelectionChange(event: any) {
     const selectedIndex = event.target.selectedIndex;
     const selectedId = this.collegeList[selectedIndex - 1].id; // Subtract 1 because the first option is the placeholder
-    debugger
+    
     this.institute = selectedId;
   }
   

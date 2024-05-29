@@ -306,7 +306,7 @@ export class ClientsComponent {
   }
 
   applySearchFilter() {
-    debugger
+    
     this.page = 1; // Reset the page when the search query changes
     if (this.comapanyRole === 'Designer') { // Fix typo here
       this.filterClientList = this.roleWiseData.filter((client: any) =>

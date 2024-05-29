@@ -86,7 +86,7 @@ export class ProfileComponent {
     this.router.navigate(['/account/keryar-login']);
   }
   getStaffDetails() {
-    debugger
+    
     this.companyService.getEmployeeDataById(localStorage.getItem('Eid')).subscribe((data: any) => {
       this.staffModel = data[0];
       this.staffModel.name = localStorage.getItem('Name')
@@ -111,7 +111,7 @@ export class ProfileComponent {
       id: localStorage.getItem('Eid'),
       password: this.passwordValue
     }
-    debugger
+    
     this.companyService.ChackForPassword(data).subscribe((data: any) => {
       if (data.error == "Invalid credentials") {
         this.valid = false;
@@ -142,7 +142,7 @@ export class ProfileComponent {
             formdata.append('file', file);
             this.companyService.saveEmployeeProfileImages(formdata).subscribe((response) => {
               this.staffProfileImage = response;
-              debugger
+              
               this.updatelogo()
               this.toastr.success('Image Uploaded Successfully', 'Uploaded', { timeOut: 3000, });
               this.editFile = false;

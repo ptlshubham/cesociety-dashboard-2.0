@@ -50,7 +50,7 @@ export class ClientPostSchedulerComponent implements OnInit {
 
   ngOnInit(): void {
     this.clientdata
-    debugger
+    
     this._fetchData();
     // Validation
     this.formData = this.formBuilder.group({
@@ -128,7 +128,7 @@ export class ClientPostSchedulerComponent implements OnInit {
    * Event click modal show
    */
   handleEventClick(clickInfo: EventClickArg) {
-    debugger
+    
     this.editEvent = clickInfo.event;
     this.formEditData = this.formBuilder.group({
       editTitle: clickInfo.event.title,
@@ -192,7 +192,7 @@ export class ClientPostSchedulerComponent implements OnInit {
       this.schedulerModel.date = this.newEventDate.startStr;
       this.schedulerModel.title = title;
       this.schedulerModel.description = description;
-      debugger
+      
       this.companyService.SaveSchedulerDetails(this.schedulerModel).subscribe((res: any) => {
         this.scheduleList = res;
         this.getAllTodoListDetails();
@@ -270,7 +270,7 @@ export class ClientPostSchedulerComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.deleteEventData();
-        debugger
+        
         Swal.fire('Deleted!', 'Event has been deleted.', 'success');
       }
     });

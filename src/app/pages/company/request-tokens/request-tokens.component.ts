@@ -117,7 +117,7 @@ export class RequestTokensComponent {
 
   privatefecth() {
     if (this.role != 'Designer') {
-      debugger
+      
       this.getAllToken();
       this.getAllDailyWork();
     }
@@ -254,7 +254,7 @@ export class RequestTokensComponent {
 
   }
   SaveTokendetails() {
-    debugger
+    
     this.submitted = true;
     if (this.validationForm.invalid) {
       return;
@@ -387,7 +387,7 @@ export class RequestTokensComponent {
   }
   getAllToken() {
     this.tokensService.getAllTokenData().subscribe((res: any) => {
-      debugger
+      
 
       if (this.selectedDate != null) {
         this.tempTokenData = [];
@@ -775,14 +775,14 @@ export class RequestTokensComponent {
       }
 
       if (this.searchClient) {
-        debugger
+        
         filteredData = filteredData.filter((element: any) =>
           element.clientname.toLowerCase().includes(this.searchClient.toLowerCase())
         );
       }
 
       if (this.selectedWorkDateRange) {
-        debugger
+        
         const { from, to } = this.selectedWorkDateRange;
         filteredData = filteredData.filter((element: any) => {
           const date = new Date(element.date);
@@ -819,7 +819,7 @@ export class RequestTokensComponent {
         iscompleted: isChecked,
       }
       this.companyService.updateDailyById(data).subscribe((res: any) => {
-        debugger
+        
         if (res == 'success') {
           this.companyService.getAllDailyList().subscribe((data: any) => {
             if (this.comapanyRole == 'Designer') {
@@ -843,7 +843,7 @@ export class RequestTokensComponent {
         id: id,
         iscompleted: isChecked,
       }
-      debugger
+      
       this.companyService.updateDailyById(data).subscribe((res: any) => {
         if (res == 'success') {
           this.dailyWorkData = [];

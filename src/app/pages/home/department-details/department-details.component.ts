@@ -18,12 +18,12 @@ export class DepartmentDetailsComponent {
     private homeService: HomeService,
     private activatedRoute: ActivatedRoute
   ) {
-    debugger
+    
 
     this.activatedRoute.params.subscribe(params => {
       this.depId = params['id'];
       this.getdepDataById();
-      debugger
+      
     });
   }
   ngOnInit(): void {

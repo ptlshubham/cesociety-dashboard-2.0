@@ -127,7 +127,7 @@ export class TodoListComponent implements OnInit {
    * Event click modal show
    */
   handleEventClick(clickInfo: EventClickArg) {
-    debugger
+    
     this.editEvent = clickInfo.event;
     this.formEditData = this.formBuilder.group({
       editTitle: clickInfo.event.title,
@@ -232,7 +232,7 @@ export class TodoListComponent implements OnInit {
     const editTitle = this.formEditData.get('editTitle')!.value;
     const editCategory = this.formEditData.get('editCategory')!.value;
     const editDescription = this.formEditData.get('editDescription')!.value;
-    debugger
+    
     this.editEvent.setProp('title', editTitle);
     this.editEvent.setProp('classNames', editCategory);
     this.editEvent.setProp('description', editDescription);
@@ -240,7 +240,7 @@ export class TodoListComponent implements OnInit {
     this.editModel.title = editTitle;
     this.editModel.category = editCategory;
     this.editModel.description = editDescription;
-    debugger
+    
     this.companyService.updateTodoListDataById(this.editModel).subscribe((res: any) => {
       this.todoList = res;
       this.getAllTodoListDetails();

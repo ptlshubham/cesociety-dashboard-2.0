@@ -122,7 +122,7 @@ export class AttendanceComponent implements OnInit {
     this.attendanceList.forEach((element: any) => {
       const formattedElementDate = formatDate(element.date);
       if (formattedElementDate === formattedSelectedDate) {
-        debugger
+        
         this.tempAttandance.push(element);
       }
     });
@@ -173,7 +173,7 @@ export class AttendanceComponent implements OnInit {
           });
         });
         this.calendarOptions.events = [...this.calendarEvents]; // update events in calendarOptions
-        debugger
+        
       }
     });
   }
