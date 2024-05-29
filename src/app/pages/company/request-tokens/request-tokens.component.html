@@ -23,13 +23,6 @@
                 <a href="javascript:void(0);" [class.active]="activeTab === 'processingTokens'"
                     (click)="setActiveTab('processingTokens')"><i class="mdi mdi-spin mdi-loading me-2"></i>Processing
                     Tokens<span class="ms-1 float-end">{{processingData.length}}</span></a>
-                <a href="javascript:void(0);" [class.active]="activeTab === 'reviewTokens'"
-                    (click)="setActiveTab('reviewTokens')"><i class="mdi mdi-message-draw  me-2"></i>Review Tokens<span
-                        class="ms-1 float-end">{{reviewData.length}}</span></a>
-                <a href="javascript:void(0);" [class.active]="activeTab === 'changesTokens'"
-                    (click)="setActiveTab('changesTokens')"><i
-                        class="mdi mdi-swap-horizontal-circle-outline me-2"></i>Changes
-                    Tokens<span class="ms-1 float-end">{{changesData.length}}</span></a>
                 <a href="javascript:void(0);" [class.active]="activeTab === 'completedTokens'"
                     (click)="setActiveTab('completedTokens')"><i class="mdi mdi-check-all me-2"></i>Completed
                     Tokens<span class="ms-1 float-end">{{completedData.length}}</span></a>
@@ -72,7 +65,7 @@
                 <div class="row p-3" *ngIf="isDailyOpen">
                     <div class="d-flex justify-content-end gap-2">
                         <div class="form-group">
-                            <input type="text" class="form-control " id="fname" placeholder="Search Client Name"
+                            <input type="text" class="form-control" id="fname" placeholder="Search Client Name"
                                 [(ngModel)]="searchClient" (input)="applySearchFilterOnClient()">
                         </div>
                         <div class="form-group">
@@ -81,9 +74,10 @@
                                 [(ngModel)]="selectedWorkDateRange" (ngModelChange)="selectedDateRangeWorkData()">
                         </div>
                     </div>
+
                 </div>
                 <div class="row" *ngIf="!isDailyOpen">
-                    <div class="btn-toolbar p-3" role="toolbar">
+                    <!-- <div class="btn-toolbar p-3" role="toolbar">
                         <div class="btn-group me-2 mb-2 mb-sm-0">
                             <button type="button" class="btn btn-primary waves-light waves-effect"
                                 [disabled]="!isEditToken" ngbTooltip="Edit Token" placement="top"
@@ -93,19 +87,16 @@
                         </div>
                         <div class="btn-group me-2 mb-2 mb-sm-0">
                             <button type="button" class="btn btn-danger waves-light waves-effect" (click)="confirm()"
-                                *ngIf="staffModel.role !== 'CompanyAdmin'" ngbTooltip="Delete Token" placement="top">
+                                *ngIf="role !== 'CompanyAdmin'" ngbTooltip="Delete Token" placement="top">
                                 <i class="far fa-trash-alt"></i>
                             </button>
                         </div>
-                        <!-- <div class="col-xl-4 col-md-6 mb-3 ">
-                            <input class="form-control me-3" type="date" [(ngModel)]="selectedDate"
-                                (ngModelChange)="filterTokenDate()" id="example-date-input">
-                        </div> -->
-                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <input type="text" class="form-control " id="fname" placeholder="Search Employee Name"
-                                    [(ngModel)]="searchQuery" (input)="applySearchClient()">
-                            </div>
+                      
+                    </div> -->
+                    <div class="d-flex justify-content-end p-3 gap-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control " id="fname" placeholder="Search Employee Name"
+                                [(ngModel)]="searchQuery" (input)="applySearchClient()">
                         </div>
                         <div class="form-group">
                             <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true"
@@ -138,8 +129,6 @@
                                     <span class="star-toggle mdi mdi-spin mdi-loading text-primary"
                                         *ngIf="e.status=='Processing'" ngbTooltip="Token Processing"
                                         placement="top"></span>
-                                    <span class="star-toggle mdi mdi-message-draw text-dark" *ngIf="e.status=='Review'"
-                                        ngbTooltip="Token Review" placement="top"></span>
                                     <span class="star-toggle mdi mdi-swap-horizontal-circle-outline text-warning"
                                         *ngIf="e.status=='Changes'" ngbTooltip="Token Changes" placement="top"></span>
                                     <span class="star-toggle mdi mdi-check-all text-success"
@@ -179,9 +168,15 @@
                                         <!-- <span *ngIf="i > 1" class="d-none" [ngbTooltip]="d.name"></span> -->
                                     </span>
                                 </td>
-                                <div class="date" *ngIf="!isDailyOpen">{{e.createddate | date: 'dd/MM/yyyy'}}</div>
-                                <div class="date1" *ngIf="isDailyOpen">{{e.completeddate | date: 'dd/MM/yyyy, h:mm a'}}</div>
-                                <div class="date" *ngIf="isDailyOpen">{{e.date | date: 'dd/MM/yyyy'}}</div>
+                                <div class="date1" *ngIf="!isDailyOpen  && isValidDate(e.updateddate)">
+                                    {{e.updateddate | date: 'MMM d, h:mm a'}}
+                                </div>
+                                <div class="date" *ngIf="!isDailyOpen">{{e.createddate | date: 'MMM d'}}</div>
+                                <div class="date1" *ngIf="isDailyOpen  && isValidDate(e.completeddate)">
+                                    {{e.completeddate | date: 'MMM d, h:mm a'}}
+                                </div>
+                                <div class="date" *ngIf="isDailyOpen">{{e.date | date:
+                                    'MMM d'}}</div>
 
                             </div>
                         </div>
@@ -213,6 +208,7 @@
                     </div>
                     <div class="btn-group me-2 mb-2 mb-sm-0" *ngIf="!isDailyOpen">
                         <button type="button" class="btn btn-primary waves-light waves-effect me-2"
+                            [disabled]="openTokenData.status!='Pending'"
                             [ngClass]="{'btn-success':  openTokenData.status == 'Pending'}"
                             (click)="changeStatusById(openTokenData.id,'Pending')" ngbTooltip="Token Pending "><i
                                 class="mdi mdi-account-clock"></i></button>
@@ -220,10 +216,6 @@
                             [ngClass]="{'btn-success':  openTokenData.status == 'Processing'}"
                             (click)="changeStatusById(openTokenData.id,'Processing')" ngbTooltip="Token Processing "><i
                                 class="mdi mdi-spin mdi-loading "></i></button>
-                        <button type="button" class="btn btn-primary waves-light waves-effect me-2"
-                            [ngClass]="{'btn-success':  openTokenData.status == 'Changes'}"
-                            (click)="changeStatusById(openTokenData.id,'Changes')" ngbTooltip="Token Changes"><i
-                                class="mdi mdi-swap-horizontal-circle-outline"></i></button>
                         <button type="button" class="btn btn-primary waves-light waves-effect me-2"
                             *ngIf="comapanyRole !== 'Designer'"
                             [ngClass]="{'btn-success':  openTokenData.status == 'Completed'}"
