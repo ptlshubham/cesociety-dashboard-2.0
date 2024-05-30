@@ -251,81 +251,63 @@ export class ClientsComponent {
   }
 
   getEmployeeWiseData() {
-    var eid = Number(localStorage.getItem('Eid')); // Convert eid to a number
+    const eid = Number(localStorage.getItem('Eid')); // Convert eid to a number
     this.roleWiseData = []; // Initialize or clear the roleWiseData array
+
+    // Helper function to filter clients by assigned roles
+    const filterByRole = (roleKey: string) => {
+      this.clientsData.forEach((element: any) => {
+        element[roleKey].forEach((assigned: any) => {
+          if (assigned.empid === eid) {
+            this.roleWiseData.push(element);
+          }
+        });
+      });
+    };
+
+    // Determine the role and filter accordingly
     if (this.comapanyRole === 'Designer') {
-      this.clientsData.forEach((element: any) => {
-        element.assignedDesigners.forEach((designer: any) => {
-          if (designer.empid === eid) {
-            this.roleWiseData.push(element);
-          }
-        });
-      });
-      for (let i = 0; i < this.roleWiseData.length; i++) {
-        this.roleWiseData[i].index = i + 1;
-      }
-      this.collectionSize = this.roleWiseData.length;
-      this.filterClientList = [...this.roleWiseData];
+      filterByRole('assignedDesigners');
+    } else if (this.comapanyRole === 'Manager' || this.comapanyRole === 'SubAdmin') {
+      filterByRole('assignedManagers');
     }
-    else if (this.comapanyRole === 'Manager') {
-      this.clientsData.forEach((element: any) => {
-        element.assignedManagers.forEach((manager: any) => {
-          if (manager.empid === eid) {
-            this.roleWiseData.push(element);
-          }
-        });
-      });
-      for (let i = 0; i < this.roleWiseData.length; i++) {
-        this.roleWiseData[i].index = i + 1;
-      }
-      this.collectionSize = this.roleWiseData.length;
-      this.filterClientList = [...this.roleWiseData];
-    }
-    else if (this.comapanyRole === 'SubAdmin') {
-      this.clientsData.forEach((element: any) => {
-        element.assignedManagers.forEach((manager: any) => {
-          if (manager.empid === eid) {
-            this.roleWiseData.push(element);
-          }
-        });
-      });
-      for (let i = 0; i < this.roleWiseData.length; i++) {
-        this.roleWiseData[i].index = i + 1;
-      }
-      this.collectionSize = this.roleWiseData.length;
-      this.filterClientList = [...this.roleWiseData];
-    }
-    else {
-      for (let i = 0; i < this.clientsData.length; i++) {
-        this.clientsData[i].index = i + 1;
-      }
-      this.collectionSize = this.clientsData.length;
-      this.filterClientList = [...this.clientsData];
-    }
+
+    // Assign index to each element and set collection size
+    const dataToProcess = this.roleWiseData.length ? this.roleWiseData : this.clientsData;
+    dataToProcess.forEach((element: any, index: number) => {
+      element.index = index + 1;
+    });
+
+    this.collectionSize = dataToProcess.length;
+    this.filterClientList = [...dataToProcess];
+
+    // Call pagination function
     this.getPagintaion();
   }
 
   applySearchFilter() {
-    debugger
     this.page = 1; // Reset the page when the search query changes
-    if (this.comapanyRole === 'Designer') { // Fix typo here
-      this.filterClientList = this.roleWiseData.filter((client: any) =>
-        client.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    } else {
-      this.filterClientList = this.clientsData.filter((client: any) =>
-        client.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    }
+
+    // Determine the correct data set to filter
+    const dataToFilter = this.comapanyRole === 'Designer' ? this.roleWiseData : this.clientsData;
+
+    // Apply search filter
+    this.filterClientList = dataToFilter.filter((client: any) =>
+      client.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+
+    );
+
+    // Call pagination function
     this.getPagintaion();
   }
 
-
   getPagintaion() {
-    this.paginateData = this.filterClientList.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-    this.getEmployeeWiseData();
-
+    this.paginateData = this.filterClientList.slice(
+      (this.page - 1) * this.pageSize,
+      (this.page - 1) * this.pageSize + this.pageSize
+    );
   }
+
   removeClientsDetails(id: any) {
     Swal.fire({
       title: 'Are you sure?',
