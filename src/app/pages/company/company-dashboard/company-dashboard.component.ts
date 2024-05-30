@@ -148,7 +148,7 @@ export class CompanyDashboardComponent {
     plotOptions: { bar: { horizontal: !0 } },
     dataLabels: { enabled: !1 },
     series: [],
-    colors: ['#ff4c52', '#2ab57d'],
+    colors: ['#fcbf49', '#2ab57d'],
     grid: { borderColor: "#f1f1f1" },
     xaxis: {
       categories: [],
@@ -186,7 +186,10 @@ export class CompanyDashboardComponent {
   }
 
 
+
+
   getBarDetails() {
+    debugger
     // Fetch employee details and daily work data
     forkJoin(
       this.companyService.getAllEmployeeDetailsData(),
@@ -194,15 +197,17 @@ export class CompanyDashboardComponent {
     ).subscribe(([employeeRes, dailyWorkRes]: [any, any]) => {
       this.employeeList = employeeRes;
 
-      // Filter employees with role "Designer" and map their IDs to an array
-      const designerIds = this.employeeList
+      // Filter employees with role "Designer" and map their IDs and names to an array
+      const designers = this.employeeList
         .filter((employee: any) => employee.role === 'Designer')
-        .map((employee: any) => employee.id);
+        .map((employee: any) => ({ id: employee.id, name: employee.name }));
+
+      const designerIds = designers.map((designer: any) => designer.id);
 
       // Initialize counts for total and completed works
       const designerDailyWorkCounts: { [key: string]: number } = {};
       const designerCompletedWorkCounts: { [key: string]: number } = {};
-
+      debugger
       dailyWorkRes.forEach((work: any) => {
         if (designerIds.includes(work.designerid)) {
           if (!designerDailyWorkCounts[work.designerid]) {
@@ -216,20 +221,25 @@ export class CompanyDashboardComponent {
           }
         }
       });
-
+      debugger
       // Prepare series data based on designer daily work counts
       this.barChart.series = [
-        { name: 'Total Work', data: designerIds.map((id: string) => designerDailyWorkCounts[id] || 0) },
-        { name: 'Completed Work', data: designerIds.map((id: string) => designerCompletedWorkCounts[id] || 0) }
+        {
+          name: 'Total Work',
+          data: designerIds.map((id: string) => designerDailyWorkCounts[id] || 0)
+        },
+        {
+          name: 'Completed Work',
+          data: designerIds.map((id: string) => designerCompletedWorkCounts[id] || 0)
+        }
       ];
-
+      debugger
       // Update x-axis categories with designer names
-      this.barChart.xaxis.categories = designerIds.map((id: string) => {
-        const designer = this.employeeList.find((employee: any) => employee.id === id);
-        return designer ? designer.name : ''; // Assuming name field is present in employee object
-      });
+      this.barChart.xaxis.categories = designers.map((designer: any) => designer.name);
     });
   }
+
+
   changeStatusMail(event: Event, id: number): void {
     ;
     const isChecked = (event.target as HTMLInputElement).checked;

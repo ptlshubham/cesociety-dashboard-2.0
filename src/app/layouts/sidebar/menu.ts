@@ -391,12 +391,12 @@ export const comapnyAdmin: MenuItem[] = [
         icon: 'mdi mdi-clipboard-list-outline',
         link: '/company/attendance',
     },
-    {
-        id: 8,
-        label: 'Posting',
-        icon: 'mdi mdi-clipboard-list-outline',
-        link: '/company/posting',
-    }
+    // {
+    //     id: 8,
+    //     label: 'Posting',
+    //     icon: 'mdi mdi-clipboard-list-outline',
+    //     link: '/company/posting',
+    // }
 ];
 export const Employee: MenuItem[] = [
     {
@@ -423,12 +423,12 @@ export const Employee: MenuItem[] = [
         icon: 'mdi mdi-clipboard-list-outline',
         link: '/company/todo-list',
     },
-    {
-        id: 5,
-        label: 'Posting',
-        icon: 'mdi mdi-clipboard-list-outline',
-        link: '/company/posting',
-    }
+    // {
+    //     id: 5,
+    //     label: 'Posting',
+    //     icon: 'mdi mdi-clipboard-list-outline',
+    //     link: '/company/posting',
+    // }
 
 ];
 
@@ -463,11 +463,11 @@ export const Manger: MenuItem[] = [
         icon: 'mdi mdi-clipboard-list-outline',
         link: '/company/todo-list',
     },
-    {
-        id: 6,
-        label: 'Posting',
-        icon: 'mdi mdi-clipboard-list-outline',
-        link: '/company/posting',
-    }
+    // {
+    //     id: 6,
+    //     label: 'Posting',
+    //     icon: 'mdi mdi-clipboard-list-outline',
+    //     link: '/company/posting',
+    // }
 
 ];

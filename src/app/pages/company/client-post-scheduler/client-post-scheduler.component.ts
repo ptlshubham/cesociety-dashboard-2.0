@@ -149,15 +149,7 @@ export class ClientPostSchedulerComponent implements OnInit {
   /**
    * Close event modal
    */
-  closeEventModal() {
-    this.formData = this.formBuilder.group({
-      title: '',
-      description: '',
-    });
-  }
-  closeSpecificModal(modal: NgbModalRef) {
-    modal.close();
-  }
+
 
   /**
    * Event Data Get
@@ -208,6 +200,16 @@ export class ClientPostSchedulerComponent implements OnInit {
       // this.modalService.dismissAll();
     }
     this.submitted = true;
+  }
+  closeEventModal() {
+    this.formData = this.formBuilder.group({
+      title: '',
+      description: '',
+    });
+
+  }
+  closeSpecificModal(modal: NgbModalRef) {
+    modal.close();
   }
 
   getAllTodoListDetails() {
