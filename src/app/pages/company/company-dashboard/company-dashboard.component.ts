@@ -189,7 +189,7 @@ export class CompanyDashboardComponent {
 
 
   getBarDetails() {
-    debugger
+    
     // Fetch employee details and daily work data
     forkJoin(
       this.companyService.getAllEmployeeDetailsData(),
@@ -207,7 +207,7 @@ export class CompanyDashboardComponent {
       // Initialize counts for total and completed works
       const designerDailyWorkCounts: { [key: string]: number } = {};
       const designerCompletedWorkCounts: { [key: string]: number } = {};
-      debugger
+      
       dailyWorkRes.forEach((work: any) => {
         if (designerIds.includes(work.designerid)) {
           if (!designerDailyWorkCounts[work.designerid]) {
@@ -221,7 +221,7 @@ export class CompanyDashboardComponent {
           }
         }
       });
-      debugger
+      
       // Prepare series data based on designer daily work counts
       this.barChart.series = [
         {
@@ -233,7 +233,7 @@ export class CompanyDashboardComponent {
           data: designerIds.map((id: string) => designerCompletedWorkCounts[id] || 0)
         }
       ];
-      debugger
+      
       // Update x-axis categories with designer names
       this.barChart.xaxis.categories = designers.map((designer: any) => designer.name);
     });

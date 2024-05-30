@@ -302,7 +302,7 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">Client Details List</h5>
-                <div class="d-flex justify-content-end gap-2">
+                <div class="d-flex justify-content-end gap-2" *ngIf="comapanyRole=='companyAdmin'">
                     <div class="form-group">
                         <input type="text" class="form-control" id="fname" placeholder="Search Client Name"
                             [(ngModel)]="searchQuery" (input)="applySearchFilter()">
@@ -311,6 +311,7 @@
                         (click)="openAddClients()"><i class="bx bx-user-plus label-icon"></i>
                         Add New Client</button>
                 </div>
+
             </div>
             <div class="card-body">
                 <div class="table-responsive">

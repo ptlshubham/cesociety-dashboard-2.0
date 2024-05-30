@@ -93,9 +93,9 @@
                         </div>
                       
                     </div> -->
-                    <div class="d-flex justify-content-end p-3 gap-2">
+                    <div class="d-flex justify-content-end p-3 gap-2" *ngIf="role!='Designer'">
                         <div class="form-group">
-                            <input type="text" class="form-control " id="fname" placeholder="Search Employee Name"
+                            <input type="text" class="form-control" id="fname" placeholder="Search Employee Name"
                                 [(ngModel)]="searchQuery" (input)="applySearchClient()">
                         </div>
                         <div class="form-group">
@@ -104,6 +104,20 @@
                                 [(ngModel)]="selectedDateRange" (ngModelChange)="selectedDateRangeData()">
                         </div>
                     </div>
+                    <div class="d-flex justify-content-end p-3 gap-2" *ngIf="role=='Designer'">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="fname" placeholder="Search Employee Name"
+                                [(ngModel)]="searchDesignerQuery" (input)="applySearchDesignerClient()">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true"
+                                [convertModelValue]="true" mode="range" placeholder="Select a date range"
+                                [(ngModel)]="selectedDesignerDateRange"
+                                (ngModelChange)="selectedDesignerDateRangeData()">
+                        </div>
+                    </div>
+
+
 
                 </div>
 
@@ -168,16 +182,20 @@
                                         <!-- <span *ngIf="i > 1" class="d-none" [ngbTooltip]="d.name"></span> -->
                                     </span>
                                 </td>
-                                <div class="date1" *ngIf="!isDailyOpen  && isValidDate(e.updateddate)">
+                                <div class="date1" *ngIf="!isDailyOpen  && isValidDate(e.updateddate)"
+                                    [ngbTooltip]="e.updateddate | date: 'MMM d, y, h:mm:ss a'">
                                     {{e.updateddate | date: 'MMM d, h:mm a'}}
                                 </div>
-                                <div class="date" *ngIf="!isDailyOpen">{{e.createddate | date: 'MMM d'}}</div>
-                                <div class="date1" *ngIf="isDailyOpen  && isValidDate(e.completeddate)">
+                                <div class="date" *ngIf="!isDailyOpen"
+                                    [ngbTooltip]="e.createddate | date: 'MMM d, y, h:mm:ss a'">{{e.createddate | date:
+                                    'MMM d'}}</div>
+                                <div class="date1" *ngIf="isDailyOpen  && isValidDate(e.completeddate)"
+                                    [ngbTooltip]="e.completeddate | date: 'MMM d, y, h:mm:ss a'">
                                     {{e.completeddate | date: 'MMM d, h:mm a'}}
                                 </div>
-                                <div class="date" *ngIf="isDailyOpen">{{e.date | date:
+                                <div class="date" *ngIf="isDailyOpen"
+                                    [ngbTooltip]="e.date | date: 'MMM d, y, h:mm:ss a'">{{e.date | date:
                                     'MMM d'}}</div>
-
                             </div>
                         </div>
                     </li>}

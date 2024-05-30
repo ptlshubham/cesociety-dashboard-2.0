@@ -7,7 +7,6 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TokensService } from 'src/app/core/services/tokens.service';
 import { CompanyService } from 'src/app/core/services/company.service';
-import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-request-tokens',
@@ -63,12 +62,15 @@ export class RequestTokensComponent {
   dailyworkList: any = []
   @ViewChild('content') modalShow !: TemplateRef<any>;
   selectedDate: any = null; // Define a property to hold the selected date
-  searchQuery: string = ''; // Existing property for search query
+  searchQuery: any = null;
+  searchDesignerQuery: any = null;
+
   staffDataTable: any[] = []; // Your data
   filterEmployeeList: any[] = [];
   originalTokenData: any[] = [];
   filteredTokenData: any[] = [];
   selectedDateRange: { from: Date, to: Date } | null = null; // Define the type of selectedDateRange
+  selectedDesignerDateRange: { from: Date, to: Date } | null = null;
   selectedStartDate: Date | null = null;
   selectedEndDate: Date | null = null;
   clientModel: any = []
@@ -117,7 +119,6 @@ export class RequestTokensComponent {
 
   privatefecth() {
     if (this.role != 'Designer') {
-      
       this.getAllToken();
       this.getAllDailyWork();
     }
@@ -293,86 +294,168 @@ export class RequestTokensComponent {
     this.emailData = [];
     this.activeTab = tab;
     this.isMailOpen = false;
-
+    if (this.activeTab == 'dailyWork') {
+      this.isDailyOpen = true;
+    }
+    else {
+      this.isDailyOpen = false;
+    }
     if (this.role != 'Designer') {
-      switch (this.activeTab) {
-        case 'allTokens':
-          this.privatefecth();
-          this.resetSearchAndDateRange();
-          break;
-        case 'dailyWork':
-          this.getAllDailyWork();
-          this.emailData = this.dailyWorkData;
-          break;
-        case 'pendingTokens':
-          this.emailData = this.pendingData;
-          break;
-        case 'processingTokens':
-          this.emailData = this.processingData;
-          break;
-        case 'completedTokens':
-          this.emailData = this.completedData;
-          break;
-        case 'cancelTokens':
-          this.emailData = this.cancelData;
-          break;
-        case 'CES':
-          this.emailData = this.cesLabelData;
-          break;
-        case 'Urgent':
-          this.emailData = this.urgentLabelData;
-          break;
-        default:
-          break;
+      if (this.activeTab == 'allTokens') {
+        this.privatefecth();
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
       }
-    } else {
-      switch (this.activeTab) {
-        case 'allTokens':
-          this.resetSearchAndDateRange();
-          this.getTokenByEmployee();
-          break;
-        case 'dailyWork':
-          this.getAllDailyWork();
-          this.emailData = this.dailyWorkData;
-          break;
-        case 'pendingTokens':
-          this.emailData = this.pendingData;
-          break;
-        case 'processingTokens':
-          this.emailData = this.processingData;
-          break;
-        case 'completedTokens':
-          this.emailData = this.completedData;
-          break;
-        case 'cancelTokens':
-          this.emailData = this.cancelData;
-          break;
-        case 'CES':
-          this.emailData = this.cesLabelData;
-          break;
-        case 'Urgent':
-          this.emailData = this.urgentLabelData;
-          break;
-        default:
-          break;
+      else if (this.activeTab == 'dailyWork') {
+        
+        this.filterResetForTokenAll();
+        this.getAllDailyWork();
+        this.emailData = this.dailyWorkData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'pendingTokens') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.emailData = this.pendingData;
+
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'processingTokens') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.emailData = this.processingData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'completedTokens') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.emailData = this.completedData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'cancelTokens') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.emailData = this.cancelData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'CES') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.emailData = this.cesLabelData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'Urgent') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.emailData = this.urgentLabelData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+    }
+    else {
+      if (this.activeTab == 'allTokens') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.getTokenByEmployee();
+      }
+      else if (this.activeTab == 'dailyWork') {
+        this.getAllDailyWork();
+        this.filterResetForTokenAll();
+        this.emailData = this.dailyWorkData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+
+      else if (this.activeTab == 'pendingTokens') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.emailData = this.pendingData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'processingTokens') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.emailData = this.processingData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'completedTokens') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.emailData = this.completedData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'cancelTokens') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.emailData = this.cancelData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'CES') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.emailData = this.cesLabelData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
+      }
+      else if (this.activeTab == 'Urgent') {
+        this.filterResetForDailyAll();
+        this.filterResetForTokenAll();
+        this.emailData = this.urgentLabelData;
+        this.totalRecords = this.emailData.length;
+        for (let i = 0; i < this.emailData.length; i++) {
+          this.emailData[i].index = i + 1;
+        }
       }
     }
 
-    this.totalRecords = this.emailData.length;
-    this.setIndexForEmailData();
   }
-
-  private resetSearchAndDateRange(): void {
+  filterResetForDailyAll() {
     this.searchClient = null;
     this.selectedWorkDateRange = null;
   }
+  filterResetForTokenAll() {
 
-  private setIndexForEmailData(): void {
-    for (let i = 0; i < this.emailData.length; i++) {
-      this.emailData[i].index = i + 1;
-    }
+    this.searchQuery = null;
+    this.selectedDateRange = null;
+    this.searchDesignerQuery = null;
+    this.selectedDesignerDateRange = null;
   }
-
   openClientWiseList(id: any) {
     this.emailData = [];
     this.tokenData.forEach((element: any) => {
@@ -387,75 +470,74 @@ export class RequestTokensComponent {
   }
   getAllToken() {
     this.tokensService.getAllTokenData().subscribe((res: any) => {
-      
-
-      if (this.selectedDate != null) {
-        this.tempTokenData = [];
-        const selectedDateObj = new Date(this.selectedDate);
-        const selectedDateOnly = new Date(selectedDateObj.getFullYear(), selectedDateObj.getMonth(), selectedDateObj.getDate());
-
-        res.forEach((element: any) => {
-          const dbDateObj = new Date(element.createddate); // Assuming 'date' is the property in your response containing the date string
-          const dbDateOnly = new Date(dbDateObj.getFullYear(), dbDateObj.getMonth(), dbDateObj.getDate());
-
-          if (
-            selectedDateOnly.getTime() === dbDateOnly.getTime() &&
-            selectedDateOnly.toDateString() === dbDateOnly.toDateString()
-          ) {
-            this.tempTokenData.push(element);
-          }
-        });
-      } else {
-        this.tempTokenData = res;
-      }
-
+      this.tempTokenData = res;
       this.tempTokenData.forEach((element: any, index: number) => {
         if (this.tempTokenData.length > 0) {
           this.tokensService.getAssignedTokenEmp(element.id).subscribe((data: any) => {
             this.tempTokenData[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
             this.tempTokenData[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
-          })
+          });
         }
       });
-      this.updateFilteredData();
-      this.applyDateRangeFilter();
-      this.pendingData = this.tempTokenData.filter((token: any) => token.status === 'Pending');
-      this.processingData = this.tempTokenData.filter((token: any) => token.status === 'Processing');
-      this.completedData = this.tempTokenData.filter((token: any) => token.status === 'Completed');
-      this.cancelData = this.tempTokenData.filter((token: any) => token.status === 'Cancel');
-      this.cesLabelData = this.tempTokenData.filter((token: any) => token.label === 'CES');
-      this.urgentLabelData = this.tempTokenData.filter((token: any) => token.label === 'Urgent');
-      this.tokenData = this.tempTokenData;
+      this.filterTokenData();
+    });
+  }
 
-      this.emailData = this.tokenData;
+  filterTokenData() {
+    let filteredData = this.tempTokenData;
 
-      this.totalRecords = this.tokenData.length;
-      for (let i = 0; i < this.tokenData.length; i++) {
-        this.tokenData[i].index = i + 1;
-      }
-    })
+    if (this.searchQuery) {
+      const searchQueryLower = this.searchQuery.toLowerCase();
+      filteredData = filteredData.filter((token: any) => {
+        const clientNameMatches = token.clientname.toLowerCase().includes(searchQueryLower);
 
+        const designerMatches = token.assignedDesigners.some((designer: any) =>
+          this.employeeList.find((emp: any) => emp.id === designer.id && emp.name.toLowerCase().includes(searchQueryLower))
+        );
+        const managerMatches = token.assignedManagers.some((manager: any) =>
+          this.employeeList.find((emp: any) => emp.id === manager.id && emp.name.toLowerCase().includes(searchQueryLower))
+        );
+        return designerMatches || managerMatches || clientNameMatches;
+      });
+    }
+
+    if (this.selectedDateRange) {
+      const { from, to } = this.selectedDateRange;
+      filteredData = filteredData.filter((token: any) => {
+        const tokenDate = new Date(token.createddate); // Adjust 'token.date' to match your date property
+        return tokenDate >= from && tokenDate <= to;
+      });
+    }
+
+    this.tokenData = filteredData;
+    this.updateDerivedData();
+  }
+
+  updateDerivedData() {
+    this.pendingData = this.tokenData.filter((token: any) => token.status === 'Pending');
+    this.processingData = this.tokenData.filter((token: any) => token.status === 'Processing');
+    this.completedData = this.tokenData.filter((token: any) => token.status === 'Completed');
+    this.cancelData = this.tokenData.filter((token: any) => token.status === 'Cancel');
+    this.cesLabelData = this.tokenData.filter((token: any) => token.label === 'CES');
+    this.urgentLabelData = this.tokenData.filter((token: any) => token.label === 'Urgent');
+    this.emailData = this.tokenData;
+    this.totalRecords = this.tokenData.length;
+    this.tokenData.forEach((token: { index: any; }, index: number) => token.index = index + 1);
+  }
+
+  applySearchClient() {
+    this.filterTokenData();
+  }
+
+  selectedDateRangeData() {
+    this.filterTokenData();
   }
 
   getTokenByEmployee() {
-
     this.tokensService.getTokenByEmpIdData(this.eid).subscribe((res: any) => {
-      // Initialize tokenData
+      this.originalTokenData = res;
       this.tokenData = res;
 
-      // Filter tokens by selectedDate if provided
-      if (this.selectedDate != null) {
-        const selectedDateObj = new Date(this.selectedDate);
-        const selectedDateOnly = new Date(selectedDateObj.getFullYear(), selectedDateObj.getMonth(), selectedDateObj.getDate());
-
-        this.tokenData = res.filter((element: any) => {
-          const dbDateObj = new Date(element.createddate);
-          const dbDateOnly = new Date(dbDateObj.getFullYear(), dbDateObj.getMonth(), dbDateObj.getDate());
-          return selectedDateOnly.getTime() === dbDateOnly.getTime();
-        });
-      }
-
-      // Fetch assigned employees for each token
       this.tokenData.forEach((element: any, index: number) => {
         this.tokensService.getAssignedTokenEmp(element.id).subscribe((data: any) => {
           element.assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
@@ -463,25 +545,47 @@ export class RequestTokensComponent {
         });
       });
 
-      // Update and filter data
-      this.updateFilteredData();
-      this.applyDateRangeFilter();
+      this.filterDesignerTokenData();
+    });
+  }
 
+  filterDesignerTokenData() {
+    let filteredData: any[] = this.originalTokenData;
 
-      this.pendingData = res.filter((token: any) => token.status === 'Pending');
-      this.processingData = res.filter((token: any) => token.status === 'Processing');
-      this.completedData = res.filter((token: any) => token.status === 'Completed');
-      this.cancelData = res.filter((token: any) => token.status === 'Cancel');
-      this.cesLabelData = res.filter((token: any) => token.label === 'CES');
-      this.urgentLabelData = res.filter((token: any) => token.label === 'Urgent');
-      this.tokenData = res;
+    if (this.searchDesignerQuery) {
+      const searchQueryLower = this.searchDesignerQuery.toLowerCase();
+      filteredData = filteredData.filter((token: any) => {
+        const clientNameMatches = token.clientname.toLowerCase().includes(searchQueryLower);
 
-      this.emailData = this.tokenData;
-      this.totalRecords = this.tokenData.length;
-      for (let i = 0; i < this.tokenData.length; i++) {
-        this.tokenData[i].index = i + 1;
-      }
-    })
+        const designerMatches = token.assignedDesigners.some((designer: any) =>
+          this.employeeList.find((emp: any) => emp.id === designer.id && emp.name.toLowerCase().includes(searchQueryLower))
+        );
+        const managerMatches = token.assignedManagers.some((manager: any) =>
+          this.employeeList.find((emp: any) => emp.id === manager.id && emp.name.toLowerCase().includes(searchQueryLower))
+        );
+        return designerMatches || managerMatches || clientNameMatches;
+      });
+    }
+
+    if (this.selectedDesignerDateRange) {
+      
+      const { from, to } = this.selectedDesignerDateRange;
+      filteredData = filteredData.filter((token: any) => {
+        const tokenDate = new Date(token.createddate); // Adjust 'token.date' to match your date property
+        return tokenDate >= from && tokenDate <= to;
+      });
+    }
+
+    this.tokenData = filteredData;
+    this.updateDerivedData();
+  }
+
+  applySearchDesignerClient() {
+    this.filterDesignerTokenData();
+  }
+
+  selectedDesignerDateRangeData() {
+    this.filterDesignerTokenData();
   }
   getMultiTokenImages(id: any) {
     this.tokensService.getMultiTokenImageData(id).subscribe((res: any) => {
@@ -709,64 +813,9 @@ export class RequestTokensComponent {
     const date = new Date(dateStr);
     return isNaN(date.getTime()) ? null : dateStr;
   }
-  applySearchClient() {
-    const query = this.searchQuery.toLowerCase();
-    this.tokenData = this.tokenData.filter((token: any) => {
-      const clientNameMatch = token.clientname.toLowerCase().includes(query);
-      const designerMatch = token.assignedDesigners.some((designer: any) => designer.name.toLowerCase().includes(query));
-      const managerMatch = token.assignedManagers.some((manager: any) => manager.name.toLowerCase().includes(query));
-      return clientNameMatch || designerMatch || managerMatch
-    });
-
-    // Update other data views based on the filtered tokenData
-    this.updateFilteredData();
-  }
-
-  updateFilteredData() {
-    this.pendingData = this.tokenData.filter((token: any) => token.status === 'Pending');
-    this.processingData = this.tokenData.filter((token: any) => token.status === 'Processing');
-    this.completedData = this.tokenData.filter((token: any) => token.status === 'Completed');
-    this.cancelData = this.tokenData.filter((token: any) => token.status === 'Cancel');
-    this.cesLabelData = this.tokenData.filter((token: any) => token.label === 'CES');
-    this.urgentLabelData = this.tokenData.filter((token: any) => token.label === 'Urgent');
-    this.emailData = this.tokenData;
-    this.totalRecords = this.tokenData.length;
-    for (let i = 0; i < this.tokenData.length; i++) {
-      this.tokenData[i].index = i + 1;
-    }
-  }
-  selectedDateRangeData() {
-    if (this.selectedDateRange && typeof this.selectedDateRange.from === 'object' && typeof this.selectedDateRange.to === 'object') {
-      const startDate = new Date(this.selectedDateRange.from);
-      const endDate = new Date(this.selectedDateRange.to);
-
-      if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
-        this.selectedStartDate = startDate;
-        this.selectedEndDate = endDate;
-        this.applyDateRangeFilter();
-        this.selectedDateRange = null;
-      } else {
-        console.error('Invalid date format in selectedDateRange');
-      }
-    } else {
-      console.error('Invalid selectedDateRange format');
-    }
-  }
-
-  applyDateRangeFilter() {
-    if (this.selectedStartDate && this.selectedEndDate) {
-      this.tokenData = this.tempTokenData.filter((token: any) => {
-        const tokenDate = new Date(token.createddate);
-        return tokenDate >= this.selectedStartDate! && tokenDate <= this.selectedEndDate!;
-      });
-    } else {
-      this.tokenData = this.tempTokenData;
-    }
-    this.updateFilteredData();
-  }
 
   getAllDailyWork() {
-
+    this.getAllEmployeeDetails();
     this.companyService.getAllDailyList().subscribe((data: any) => {
       let filteredData = data;
 
@@ -775,14 +824,25 @@ export class RequestTokensComponent {
       }
 
       if (this.searchClient) {
-        
-        filteredData = filteredData.filter((element: any) =>
-          element.clientname.toLowerCase().includes(this.searchClient.toLowerCase())
-        );
+
+        const searchClientLower = this.searchClient.toLowerCase();
+        filteredData = filteredData.filter((element: any) => {
+          // Check client name
+          const clientNameMatches = element.clientname.toLowerCase().includes(searchClientLower);
+
+          // Find designer and manager names
+          const designer = this.employeeList.find((emp: any) => emp.id === element.designerid);
+          const manager = this.employeeList.find((emp: any) => emp.id === element.managerid);
+
+          const designerNameMatches = designer ? designer.name.toLowerCase().includes(searchClientLower) : false;
+          const managerNameMatches = manager ? manager.name.toLowerCase().includes(searchClientLower) : false;
+
+          return clientNameMatches || designerNameMatches || managerNameMatches;
+        });
       }
 
       if (this.selectedWorkDateRange) {
-        
+
         const { from, to } = this.selectedWorkDateRange;
         filteredData = filteredData.filter((element: any) => {
           const date = new Date(element.date);
@@ -819,7 +879,7 @@ export class RequestTokensComponent {
         iscompleted: isChecked,
       }
       this.companyService.updateDailyById(data).subscribe((res: any) => {
-        
+
         if (res == 'success') {
           this.companyService.getAllDailyList().subscribe((data: any) => {
             if (this.comapanyRole == 'Designer') {
@@ -843,7 +903,7 @@ export class RequestTokensComponent {
         id: id,
         iscompleted: isChecked,
       }
-      
+
       this.companyService.updateDailyById(data).subscribe((res: any) => {
         if (res == 'success') {
           this.dailyWorkData = [];

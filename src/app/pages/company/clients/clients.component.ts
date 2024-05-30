@@ -286,19 +286,23 @@ export class ClientsComponent {
   }
 
   applySearchFilter() {
-    debugger
-    this.page = 1; // Reset the page when the search query changes
+    let filteredData = this.clientsData;
 
-    // Determine the correct data set to filter
-    const dataToFilter = this.comapanyRole === 'Designer' ? this.roleWiseData : this.clientsData;
+    if (this.searchQuery) {
+      const searchQueryLower = this.searchQuery.toLowerCase();
+      filteredData = filteredData.filter((client: any) => {
+        const clientNameMatches = client.name.toLowerCase().includes(searchQueryLower);
+        const designerMatches = client.assignedDesigners.some((designer: any) =>
+          designer.name.toLowerCase().includes(searchQueryLower)
+        );
+        const managerMatches = client.assignedManagers.some((manager: any) =>
+          manager.name.toLowerCase().includes(searchQueryLower)
+        );
+        return clientNameMatches || designerMatches || managerMatches;
+      });
+    }
 
-    // Apply search filter
-    this.filterClientList = dataToFilter.filter((client: any) =>
-      client.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-
-    );
-
-    // Call pagination function
+    this.filterClientList = filteredData;
     this.getPagintaion();
   }
 
