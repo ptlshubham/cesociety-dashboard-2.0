@@ -139,7 +139,7 @@ export class TopbarComponent implements OnInit {
           this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
             res[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
             res[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
-            debugger
+            
           })
         }
       });

@@ -286,6 +286,7 @@ export class ClientsComponent {
   }
 
   applySearchFilter() {
+    debugger
     this.page = 1; // Reset the page when the search query changes
 
     // Determine the correct data set to filter

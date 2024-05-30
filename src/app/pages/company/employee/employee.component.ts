@@ -183,7 +183,7 @@ export class EmployeeComponent {
     if (this.staffProfileImage != null || undefined) {
       this.staffModel.profile = this.staffProfileImage;
     }
-    debugger
+    
     this.companyService.updaetEmployeeDetails(this.staffModel).subscribe((res: any) => {
       this.staffData = res;
       this.toastr.success('Update Staff Details Successfully.', 'Updated', { timeOut: 3000, });

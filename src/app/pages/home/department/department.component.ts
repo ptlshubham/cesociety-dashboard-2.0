@@ -121,7 +121,7 @@ export class DepartmentComponent implements OnInit {
     })
     this.depImages = null;
     this.imageUrl = 'assets/images/file-upload-image.jpg';
-    debugger
+    
   }
 
   uploadMultiFile(event: any, ind: any) {
@@ -178,7 +178,7 @@ export class DepartmentComponent implements OnInit {
       this.departmentModel.institute_id = localStorage.getItem('InstituteId');
       this.departmentModel.depImage = this.depImages;
       this.departmentModel.depMulti = this.depMulti;
-      debugger
+      
       this.homeService.saveDepartmentListData(this.departmentModel).subscribe((res: any) => {
         this.toastr.success('Department added Successfully', 'success', {
           timeOut: 3000,
@@ -209,7 +209,7 @@ export class DepartmentComponent implements OnInit {
   }
   editDepartmentDetails(data: any) {
     this.departmentModel = data;
-    debugger
+    
     this.getDepMultiImages(data.id);
     this.imageUrl = 'http://localhost:9000' + data.depimage
     this.isOpen = true;
@@ -232,13 +232,13 @@ export class DepartmentComponent implements OnInit {
   updateDepartmentDetails() {
 
     if (this.depImages != null || undefined) {
-      debugger
+      
       this.departmentModel.depImage = this.depImages;
     }
     else {
       this.departmentModel.depImage = this.departmentModel.depimage;
     }
-    debugger
+    
     this.homeService.updateDepartmentListData(this.departmentModel).subscribe((res: any) => {
       if (res == 'success') {
         this.toastr.success('Department Updated Successfully', 'success', {

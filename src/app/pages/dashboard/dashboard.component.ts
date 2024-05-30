@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
       { label: 'Dashboard', active: true }
     ];
     this.company = localStorage.getItem('Company');
-    debugger
+    
     /**
      * Fetches the data
      */
