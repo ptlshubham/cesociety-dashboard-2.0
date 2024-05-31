@@ -411,17 +411,16 @@
                                 <th class="text-center ">Date</th>
                             </tr>
                             <tr *ngFor="let s of todoList; let i = index">
-
-                                <td class="text-center"> {{ i + 1 }}</td>
+                                <td class="text-center">{{ i + 1 }}</td>
                                 <td class="text-center">
                                     <div class="d-flex flex-column" [ngClass]="s.category">
                                         <div class="text-center overflow-hidden"><b>{{ s.title }}</b></div>
-                                        <div class="text-center overflow-hidden">{{ s.description }} </div>
+                                        <div class="text-center overflow-hidden">{{ s.description }}</div>
                                     </div>
                                 </td>
-                                <td class="text-center"> {{s.date | date:'dd/MM/yyyy'}}</td>
-
+                                <td class="text-center">{{ s.date | date:'dd/MM/yyyy' }}</td>
                             </tr>
+
                         </tbody>
                     </table>
                 </div>
