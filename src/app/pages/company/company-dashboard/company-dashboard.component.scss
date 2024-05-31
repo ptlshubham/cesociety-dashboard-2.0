@@ -6,3 +6,7 @@
     height: 5rem;
     width: 5rem;
 }
+.scrollable-table {
+    max-height: 360px; /* Adjust the height as needed */
+    overflow-y: auto;
+  }
