@@ -309,7 +309,6 @@
                             <p class="mb-1">Total Daily Work</p>
                             <h4>{{ totalPending + totalCompleted}}</h4>
 
-
                             <div class="row g-0">
                                 <div class="col-6">
                                     <div>
@@ -396,43 +395,36 @@
         </div>
         <!--end card-->
     </div>
-    <div class="col-xl-4">
-        <!-- card -->
-        <div class="card bg-primary text-white shadow-primary card-h-100">
-            <!-- card body -->
-            <div class="card-body p-0">
-                <div id="carouselExampleCaptions" class="carousel slide text-center widget-carousel"
-                    data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <!-- Carousel with caption -->
-                        <owl-carousel-o [options]="timelineCarousel" class="events navs-carousel">
-                            @for (slide of TodoList; track $index) {
-                            <ng-template carouselSlide>
-                                <div class="item event-list">
-                                    <div class="text-center p-4">
-                                        <i class="mdi {{slide.avatar_icon}} widget-box-1-icon"></i>
-                                        <div class="avatar-md m-auto">
-                                            <span
-                                                class="avatar-title rounded-circle bg-light-subtle text-white font-size-24">
-                                                <i class="{{slide.icon}}"></i>
-                                            </span>
-                                        </div>
-                                        <h4 class="mt-3 lh-base fw-normal text-white"><b>{{slide.title}}</b></h4>
-                                        <p class="text-white-50 font-size-13">{{slide.content}}</p>
 
+    <div class="col-lg-4">
+        <div class="card mb-lg-0">
+            <div class="card-body">
+                <h3 class="text-center font-weight-bold">Todo List</h3>
+                <hr>
+                <div class="table-responsive scrollable-table">
+                    <table class="table table-striped mb-0">
+                        <tbody>
+                            <tr>
+                                <th class="text-left">#</th>
+                                <th class="text-left">List</th>
+                                <th class="text-end ">Date</th>
+                            </tr>
+                            <tr *ngFor="let s of todoList; let i = index">
+                                <td class="text-center"> {{ i + 1 }}</td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <div class="text-left overflow-hidden"><b>{{ s.title.slice(0,15) }}</b></div>
+                                        <div class="text-left overflow-hidden">{{ s.description.slice(0, 30) }} </div>
                                     </div>
-                                </div>
-                            </ng-template>}
-                        </owl-carousel-o>
-                        <!-- End carousel -->
-                    </div>
-                    <!-- end carousel-inner -->
+                                </td>
+                                <td class="text-center"> {{s.date | date:'dd/MM/yyyy'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <!-- end carousel -->
             </div>
-            <!-- end card body -->
         </div>
-        <!-- end card -->
     </div>
+
 
 </div>

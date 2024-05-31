@@ -60,7 +60,8 @@ export class CompanyDashboardComponent {
   TodoList: any;
   CancelToken: any = 0;
   totalComplatedDailyWork: number = 0;
-
+  todoList: any = []
+  calendarEvents: any = []
   eid: any;
   title!: string;
 
@@ -174,7 +175,8 @@ export class CompanyDashboardComponent {
     this.getBarDetails();
     this.getAllEmployeeDetails();
     this.getAllDailyWork();
-    this.getClientsDetails()
+    this.getClientsDetails();
+    this.getAllTodoListDetails();
     this.getAllTokenCompanyStatus();
 
   }
@@ -184,12 +186,7 @@ export class CompanyDashboardComponent {
       this.clientlist = res;
     })
   }
-
-
-
-
   getBarDetails() {
-    
     // Fetch employee details and daily work data
     forkJoin(
       this.companyService.getAllEmployeeDetailsData(),
@@ -207,7 +204,7 @@ export class CompanyDashboardComponent {
       // Initialize counts for total and completed works
       const designerDailyWorkCounts: { [key: string]: number } = {};
       const designerCompletedWorkCounts: { [key: string]: number } = {};
-      
+
       dailyWorkRes.forEach((work: any) => {
         if (designerIds.includes(work.designerid)) {
           if (!designerDailyWorkCounts[work.designerid]) {
@@ -221,24 +218,23 @@ export class CompanyDashboardComponent {
           }
         }
       });
-      
+
       // Prepare series data based on designer daily work counts
-      this.barChart.series = [
-        {
-          name: 'Total Work',
-          data: designerIds.map((id: string) => designerDailyWorkCounts[id] || 0)
-        },
-        {
-          name: 'Completed Work',
-          data: designerIds.map((id: string) => designerCompletedWorkCounts[id] || 0)
-        }
-      ];
-      
+      const seriesData = designers.map((designer: any) => ({
+        name: designer.name,
+        data: [
+          designerDailyWorkCounts[designer.id] || 0,
+          designerCompletedWorkCounts[designer.id] || 0
+        ]
+      }));
+
       // Update x-axis categories with designer names
       this.barChart.xaxis.categories = designers.map((designer: any) => designer.name);
+
+      // Update series data
+      this.barChart.series = seriesData;
     });
   }
-
 
   changeStatusMail(event: Event, id: number): void {
     ;
@@ -363,6 +359,13 @@ export class CompanyDashboardComponent {
     this.companyService.getClientDetailsById(id).subscribe((res: any) => {
       this.clientlist = res;
     })
+  }
+
+  getAllTodoListDetails() {
+    debugger
+    this.companyService.getTodoListDataById(localStorage.getItem('Eid')).subscribe((res: any) => {
+      this.todoList = res;
+    });
   }
 
 
