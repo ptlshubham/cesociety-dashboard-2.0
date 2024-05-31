@@ -64,6 +64,19 @@
             <div class="card">
                 <div class="row p-3" *ngIf="isDailyOpen">
                     <div class="d-flex justify-content-end gap-2">
+                        <div class="btn-group me-2 mb-2 mb-sm-0" ngbDropdown>
+                            <button type="button" class="btn btn-primary waves-light waves-effect dropdown-toggle"
+                                data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                                More <i class="mdi mdi-dots-vertical ms-2"></i>
+                            </button>
+                            <div class="dropdown-menu" ngbDropdownMenu>
+                                <a class="dropdown-item" href="javascript:void(0);" (click)="markAsCompleted(true)">Mark
+                                    as Completed</a>
+                                <a class="dropdown-item" href="javascript:void(0);"
+                                    (click)="markAsCompleted(false)">Mark
+                                    as Uncompleted</a>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <input type="text" class="form-control" id="fname" placeholder="Search Client Name"
                                 [(ngModel)]="searchClient" (input)="applySearchFilterOnClient()">
@@ -94,17 +107,6 @@
                       
                     </div> -->
                     <div class="d-flex justify-content-end p-3 gap-2" *ngIf="role!='Designer'">
-                        <div class="btn-group me-2 mb-2 mb-sm-0" ngbDropdown>
-                            <button type="button" class="btn btn-primary waves-light waves-effect dropdown-toggle"
-                                data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
-                                More <i class="mdi mdi-dots-vertical ms-2"></i>
-                            </button>
-                            <div class="dropdown-menu" ngbDropdownMenu>
-                                <a class="dropdown-item" href="javascript:void(0);">Mark as Unread</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Mark as Uncompleted</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Mark as Completed</a>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <input type="text" class="form-control" id="fname" placeholder="Search Employee Name"
                                 [(ngModel)]="searchQuery" (input)="applySearchClient()">

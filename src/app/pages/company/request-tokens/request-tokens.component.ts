@@ -84,6 +84,7 @@ export class RequestTokensComponent {
   eid: any;
   empEmail: any;
   filteredDailyWorkData: any = [];
+  isMarkAsCompleted: any = null;
   constructor(private modalService: NgbModal,
     public formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
@@ -417,6 +418,7 @@ export class RequestTokensComponent {
   filterResetForDailyAll() {
     this.searchClient = null;
     this.selectedWorkDateRange = null;
+    this.isMarkAsCompleted=null;
   }
   filterResetForTokenAll() {
 
@@ -816,10 +818,17 @@ export class RequestTokensComponent {
           return date >= from && date <= to;
         });
       }
-
+      if (this.isMarkAsCompleted == true) {
+        filteredData = filteredData.filter((element: any) => element.iscompleted == this.isMarkAsCompleted);
+        debugger
+      }
+      if (this.isMarkAsCompleted == false) {
+        filteredData = filteredData.filter((element: any) => element.iscompleted == this.isMarkAsCompleted);
+        debugger
+      }
       this.filteredDailyWorkData = filteredData;
       this.dailyWorkData = filteredData;
-      if (this.searchClient != null || this.selectedWorkDateRange != null) {
+      if (this.searchClient != null || this.selectedWorkDateRange != null || this.isMarkAsCompleted != null) {
         this.setActiveTab('dailyWork');
       }
       this.getPagintaion();
@@ -830,7 +839,10 @@ export class RequestTokensComponent {
   applySearchFilterOnClient() {
     this.getAllDailyWork();
   }
-
+  markAsCompleted(data: boolean) {
+    this.isMarkAsCompleted = data;
+    this.getAllDailyWork();
+  }
   selectedDateRangeWorkData() {
     this.getAllDailyWork();
   }
