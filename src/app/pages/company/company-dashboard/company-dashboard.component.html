@@ -12,7 +12,7 @@
                             </h4>
                         </div>
                         <div class="col-6 text-center">
-                            <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                            <img src="assets/images/icon-gif/employee.gif" alt="" class="rounded avatar-lg">
                         </div>
                     </div>
                     <div class="text-nowrap">
@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="col-6 text-center">
-                            <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                            <img src="assets/images/icon-gif/complete.gif" alt="" class="rounded avatar-lg">
                         </div>
                     </div>
                     <div class="text-nowrap">
@@ -55,7 +55,7 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Incomplate Token</span>
+                            <span class="text-muted mb-3 lh-1 d-block text-truncate">InComplete Token</span>
                             <h4 class="mb-3">
                                 <span [countUp]="pendingDatatotal.length" class="counter-value"
                                     [options]="option"></span>
@@ -63,7 +63,7 @@
                         </div>
 
                         <div class="col-6 text-center">
-                            <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                            <img src="assets/images/icon-gif/incomplete.gif" alt="" class="rounded avatar-lg">
                         </div>
                     </div>
                     <div class="text-nowrap">
@@ -87,7 +87,7 @@
                         </div>
 
                         <div class="col-6 text-center">
-                            <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                            <img src="assets/images/icon-gif/client.gif" alt="" class="rounded avatar-lg">
                         </div>
                     </div>
                     <div class="text-nowrap">
@@ -101,19 +101,19 @@
     </div>
     <div class="col-xl-3 col-md-6">
         <div class="card card-h-100">
-            <div class="card-body bg-info  ">
+            <div class="card-body">
                 <div class="row align-items-center">
-                    <div class="col-6 text-white">
-                        <span class="text-white mb-3 lh-1 d-block text-truncate text-white">CES Token
+                    <div class="col-6">
+                        <span class="mb-3 lh-1 d-block text-truncate ">CES Token
                             Complate</span>
-                        <h4 class="mb-3 text-white">
+                        <h4 class="mb-3">
                             <span [countUp]="processingDatatotal.length" class="counter-value"
                                 [options]="option"></span>
                         </h4>
                     </div>
 
                     <div class="col-6 text-center">
-                        <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                        <img src="assets/images/icon-gif/ces-complete.gif" alt="" class="rounded avatar-lg">
                     </div>
                 </div>
                 <div class="text-nowrap">
@@ -125,21 +125,21 @@
     </div>
     <div class="col-xl-3 col-md-6">
         <div class="card card-h-100">
-            <div class="card-body bg-info">
+            <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col-6">
-                        <span class="text-white mb-3 lh-1 d-block text-truncate">CES Incomplete Token</span>
-                        <h4 class="mb-3 text-white">
+                        <span class="mb-3 lh-1 d-block text-truncate">CES Incomplete Token</span>
+                        <h4 class="mb-3">
                             <span [countUp]="0" class="counter-value" [options]="option"></span>
                         </h4>
                     </div>
 
                     <div class="col-6 text-center">
-                        <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                        <img src="assets/images/icon-gif/incomplete-ces.gif" alt="" class="rounded avatar-lg">
                     </div>
                 </div>
                 <div class="text-nowrap">
-                    <span class="badge badge-light font-size-13"><i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    <span class="badge text-muted font-size-13"><i class="fa fa-arrow-right" aria-hidden="true"></i>
                         View More</span>
                 </div>
             </div>
@@ -160,7 +160,7 @@
                         </div>
 
                         <div class="col-6 text-center">
-                            <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                            <img src="assets/images/icon-gif/processing.gif" alt="" class="rounded avatar-lg">
                         </div>
                     </div>
                     <div class="text-nowrap">
@@ -187,7 +187,7 @@
                             <span class="ms-1 text-muted font-size-13">Total Work</span>
                         </div>
                         <div class="col-6 text-center">
-                            <img src="assets/images/Icons/staff.png" alt="" class="rounded avatar-lg">
+                            <img src="assets/images/icon-gif/daily.gif" alt="" class="rounded avatar-lg">
                         </div>
                     </div>
                 </div>
@@ -370,7 +370,7 @@
                                 <div class="col-6">
                                     <div>
                                         <p class="mb-2 text-muted text-uppercase font-size-11"> Extra Complated</p>
-                                        <h5 class="fw-medium">{{complatedExtraToken}}</h5>
+                                        <h5 class="fw-medium">{{CompletedExtraToken}}</h5>
                                     </div>
                                 </div>
 
@@ -398,26 +398,29 @@
 
     <div class="col-lg-4">
         <div class="card mb-lg-0">
+            <div class="card-header">
+                <h4 class="card-title mb-0">Todo List</h4>
+            </div>
             <div class="card-body">
-                <h3 class="text-center font-weight-bold">Todo List</h3>
-                <hr>
                 <div class="table-responsive scrollable-table">
                     <table class="table table-striped mb-0">
                         <tbody>
                             <tr>
-                                <th class="text-left">#</th>
-                                <th class="text-left">List</th>
-                                <th class="text-end ">Date</th>
+                                <th class="text-center">#</th>
+                                <th class="text-center">List</th>
+                                <th class="text-center ">Date</th>
                             </tr>
                             <tr *ngFor="let s of todoList; let i = index">
+
                                 <td class="text-center"> {{ i + 1 }}</td>
-                                <td>
-                                    <div class="d-flex flex-column">
-                                        <div class="text-left overflow-hidden"><b>{{ s.title.slice(0,15) }}</b></div>
-                                        <div class="text-left overflow-hidden">{{ s.description.slice(0, 30) }} </div>
+                                <td class="text-center">
+                                    <div class="d-flex flex-column" [ngClass]="s.category">
+                                        <div class="text-center overflow-hidden"><b>{{ s.title }}</b></div>
+                                        <div class="text-center overflow-hidden">{{ s.description }} </div>
                                     </div>
                                 </td>
                                 <td class="text-center"> {{s.date | date:'dd/MM/yyyy'}}</td>
+
                             </tr>
                         </tbody>
                     </table>

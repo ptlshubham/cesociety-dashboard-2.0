@@ -43,16 +43,16 @@ export class CompanyDashboardComponent {
   pendingPosts: number = 0;
   completedPosts: number = 0;
   pendingReels: number = 0;
-  complatedReel: number = 0;
-  complatedStories: number = 0;
-  complatedPosts: number = 0;
+  CompletedReel: number = 0;
+  CompletedStories: number = 0;
+  CompletedPosts: number = 0;
   completedReels: number = 0;
   extraPending: number = 0;
   extraComplated: number = 0;
   totalPending: number = 0;
   totalCompleted: number = 0;
   pendingExtraToken: any = 0;
-  complatedExtraToken: any = 0;
+  CompletedExtraToken: any = 0;
   tokenDataForClient: any = []
   dailyWorkLength: number = 0;
   CESTotal: number = 0;
@@ -259,11 +259,11 @@ export class CompanyDashboardComponent {
       const pendingStories = this.dailyWorkData.filter((item: any) => item.title === 'Story' && !item.iscompleted).length;
       const pendingPosts = this.dailyWorkData.filter((item: any) => item.title === 'Post' && !item.iscompleted).length;
       const pendingReels = this.dailyWorkData.filter((item: any) => item.title === 'Reel' && !item.iscompleted).length;
-      const complatedStories = this.dailyWorkData.filter((item: any) => item.title === 'Story' && item.iscompleted).length;
-      const complatedPosts = this.dailyWorkData.filter((item: any) => item.title === 'Post' && item.iscompleted).length;
-      const complatedReel = this.dailyWorkData.filter((item: any) => item.title === 'Reel' && item.iscompleted).length;
+      const CompletedStories = this.dailyWorkData.filter((item: any) => item.title === 'Story' && item.iscompleted).length;
+      const CompletedPosts = this.dailyWorkData.filter((item: any) => item.title === 'Post' && item.iscompleted).length;
+      const CompletedReel = this.dailyWorkData.filter((item: any) => item.title === 'Reel' && item.iscompleted).length;
       // Calculate the total number of pending tasks
-      this.totalComplatedDailyWork = complatedStories + complatedPosts + complatedReel;
+      this.totalComplatedDailyWork = CompletedStories + CompletedPosts + CompletedReel;
       this.totalPendingDailyWork = pendingStories + pendingPosts + pendingReels;
 
       // Optionally, log or process the totalPendingDailyWork as needed
@@ -345,7 +345,7 @@ export class CompanyDashboardComponent {
       this.tokenDataForClient = res.filter((token: any) => token.clientid === clientId);
 
       this.pendingExtraToken = this.tokenDataForClient.filter((token: any) => token.status === 'Pending').length;
-      this.complatedExtraToken = this.tokenDataForClient.filter((token: any) => token.status === 'Completed').length;
+      this.CompletedExtraToken = this.tokenDataForClient.filter((token: any) => token.status === 'Completed').length;
     });
   }
   getAllEmployeeDetails() {
@@ -365,6 +365,7 @@ export class CompanyDashboardComponent {
     debugger
     this.companyService.getTodoListDataById(localStorage.getItem('Eid')).subscribe((res: any) => {
       this.todoList = res;
+      debugger
     });
   }
 
