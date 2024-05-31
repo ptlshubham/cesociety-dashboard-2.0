@@ -2,6 +2,19 @@ import { MenuItem } from './menu.model';
 
 export const MENU: MenuItem[] = [
     {
+        id: 31,
+        label: 'Tokens',
+        isTitle: true,
+        role: 'Institute',
+    },
+    {
+        id: 32,
+        label: 'Generate Token',
+        icon: 'mdi mdi-image-edit',
+        link: '/design-token',
+        role: 'Institute',
+    },
+    {
         id: 1,
         label: 'MENUITEMS.MENU.TEXT',
         isTitle: true,
@@ -170,6 +183,19 @@ export const MENU: MenuItem[] = [
 ];
 export const CES: MenuItem[] = [
     {
+        id: 31,
+        label: 'Tokens',
+        isTitle: true,
+        role: 'Institute',
+    },
+    {
+        id: 32,
+        label: 'Generate Token',
+        icon: 'mdi mdi-image-edit',
+        link: '/design-token',
+        role: 'Institute',
+    },
+    {
         id: 1,
         label: 'MENUITEMS.MENU.TEXT',
         isTitle: true,
@@ -285,6 +311,19 @@ export const CES: MenuItem[] = [
 
 ];
 export const superAdmin: MenuItem[] = [
+    {
+        id: 31,
+        label: 'Tokens',
+        isTitle: true,
+        role: 'Institute',
+    },
+    {
+        id: 32,
+        label: 'Generate Token',
+        icon: 'mdi mdi-image-edit',
+        link: '/design-token',
+        role: 'Institute',
+    },
     {
         id: 1,
         label: 'MENUITEMS.MENU.TEXT',

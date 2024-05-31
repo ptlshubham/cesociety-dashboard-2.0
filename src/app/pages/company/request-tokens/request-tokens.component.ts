@@ -2,7 +2,6 @@ import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/c
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
-import { emailData } from './data';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TokensService } from 'src/app/core/services/tokens.service';
@@ -24,19 +23,23 @@ export class RequestTokensComponent {
   removeUpload: boolean = false;
   cardImageBase64: any;
   addMultiImg: any = [];
+
   val: number = 0;
   tokenImage: any;
   tokenMultiImage: any = [];
   multiTokenImgData: any = [];
   breadCrumbItems!: Array<{}>;
   public Editor = ClassicEditor;
+  paginateData!: Array<any>;
   emailData!: Array<any>;
   emailIds: any[] = [];
+
   totalRecords = 0;
   startIndex = 1;
   endIndex = 20;
   page = 1;
   pageSize = 20;
+
   managerList: any = [];
   designerList: any = [];
   clientList: any = [];
@@ -255,7 +258,7 @@ export class RequestTokensComponent {
 
   }
   SaveTokendetails() {
-    
+
     this.submitted = true;
     if (this.validationForm.invalid) {
       return;
@@ -307,69 +310,48 @@ export class RequestTokensComponent {
         this.filterResetForTokenAll();
       }
       else if (this.activeTab == 'dailyWork') {
-        
+
         this.filterResetForTokenAll();
         this.getAllDailyWork();
         this.emailData = this.dailyWorkData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
       else if (this.activeTab == 'pendingTokens') {
         this.filterResetForDailyAll();
         this.filterResetForTokenAll();
         this.emailData = this.pendingData;
 
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
       else if (this.activeTab == 'processingTokens') {
         this.filterResetForDailyAll();
         this.filterResetForTokenAll();
         this.emailData = this.processingData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
       else if (this.activeTab == 'completedTokens') {
         this.filterResetForDailyAll();
         this.filterResetForTokenAll();
         this.emailData = this.completedData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
       else if (this.activeTab == 'cancelTokens') {
         this.filterResetForDailyAll();
         this.filterResetForTokenAll();
         this.emailData = this.cancelData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
       else if (this.activeTab == 'CES') {
         this.filterResetForDailyAll();
         this.filterResetForTokenAll();
         this.emailData = this.cesLabelData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
       else if (this.activeTab == 'Urgent') {
         this.filterResetForDailyAll();
         this.filterResetForTokenAll();
         this.emailData = this.urgentLabelData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
     }
     else {
@@ -382,68 +364,55 @@ export class RequestTokensComponent {
         this.getAllDailyWork();
         this.filterResetForTokenAll();
         this.emailData = this.dailyWorkData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
 
       else if (this.activeTab == 'pendingTokens') {
         this.filterResetForDailyAll();
         this.filterResetForTokenAll();
         this.emailData = this.pendingData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
       else if (this.activeTab == 'processingTokens') {
         this.filterResetForDailyAll();
         this.filterResetForTokenAll();
         this.emailData = this.processingData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
       else if (this.activeTab == 'completedTokens') {
         this.filterResetForDailyAll();
         this.filterResetForTokenAll();
         this.emailData = this.completedData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
       else if (this.activeTab == 'cancelTokens') {
         this.filterResetForDailyAll();
         this.filterResetForTokenAll();
         this.emailData = this.cancelData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
       else if (this.activeTab == 'CES') {
         this.filterResetForDailyAll();
         this.filterResetForTokenAll();
         this.emailData = this.cesLabelData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
       else if (this.activeTab == 'Urgent') {
         this.filterResetForDailyAll();
         this.filterResetForTokenAll();
         this.emailData = this.urgentLabelData;
-        this.totalRecords = this.emailData.length;
-        for (let i = 0; i < this.emailData.length; i++) {
-          this.emailData[i].index = i + 1;
-        }
+        this.getArrayLengthOfEmail();
       }
     }
 
+  }
+  getArrayLengthOfEmail() {
+    this.paginateData = [];
+    this.totalRecords = this.emailData.length;
+    for (let i = 0; i < this.emailData.length; i++) {
+      this.emailData[i].index = i + 1;
+    }
+    this.getPagintaion();
   }
   filterResetForDailyAll() {
     this.searchClient = null;
@@ -523,6 +492,7 @@ export class RequestTokensComponent {
     this.emailData = this.tokenData;
     this.totalRecords = this.tokenData.length;
     this.tokenData.forEach((token: { index: any; }, index: number) => token.index = index + 1);
+    this.getPagintaion();
   }
 
   applySearchClient() {
@@ -568,7 +538,7 @@ export class RequestTokensComponent {
     }
 
     if (this.selectedDesignerDateRange) {
-      
+
       const { from, to } = this.selectedDesignerDateRange;
       filteredData = filteredData.filter((token: any) => {
         const tokenDate = new Date(token.createddate); // Adjust 'token.date' to match your date property
@@ -750,14 +720,11 @@ export class RequestTokensComponent {
     this.emailIds = [];
   }
 
-
-  onPageChange(page: any): void {
-    this.startIndex = (page - 1) * this.pageSize + 1;
-    this.endIndex = (page - 1) * this.pageSize + this.pageSize;
-    if (this.endIndex > this.totalRecords) {
-      this.endIndex = this.totalRecords;
-    }
-    this.emailData = emailData.slice(this.startIndex - 1, this.endIndex - 1);
+  getPagintaion() {
+    this.paginateData = this.emailData.slice(
+      (this.page - 1) * this.pageSize,
+      (this.page - 1) * this.pageSize + this.pageSize
+    );
   }
   changeStatusById(id: any, status: any) {
     let data = {
@@ -855,6 +822,8 @@ export class RequestTokensComponent {
       if (this.searchClient != null || this.selectedWorkDateRange != null) {
         this.setActiveTab('dailyWork');
       }
+      this.getPagintaion();
+
     });
   }
 

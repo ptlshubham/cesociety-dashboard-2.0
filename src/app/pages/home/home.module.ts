@@ -52,6 +52,7 @@ import { SyllaDetailsComponent } from './sylla-details/sylla-details.component';
 import { AdmissionComponent } from './admission/admission.component';
 import { DepartmentDetailsComponent } from './department-details/department-details.component';
 import { MarketingPromotionsComponent } from './marketing-promotions/marketing-promotions.component';
+import { DesignTokenComponent } from './design-token/design-token.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -107,7 +108,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     SyllaDetailsComponent,
     AdmissionComponent,
     DepartmentDetailsComponent,
-    MarketingPromotionsComponent
+    MarketingPromotionsComponent,
+    DesignTokenComponent
   ],
   imports: [
     CommonModule,

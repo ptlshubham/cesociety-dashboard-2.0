@@ -43,6 +43,7 @@ import { SyllabusComponent } from './syllabus/syllabus.component';
 import { SyllaDetailsComponent } from './sylla-details/sylla-details.component';
 import { AdmissionComponent } from './admission/admission.component';
 import { DepartmentDetailsComponent } from './department-details/department-details.component';
+import { DesignTokenComponent } from './design-token/design-token.component';
 
 const routes: Routes = [
   {
@@ -216,6 +217,10 @@ const routes: Routes = [
   {
     path: 'dep-details/:id',
     component: DepartmentDetailsComponent
+  },
+  {
+    path: 'design-token',
+    component: DesignTokenComponent
   },
 ];
 
