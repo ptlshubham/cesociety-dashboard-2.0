@@ -195,7 +195,7 @@
         </a>
     </div>
 </div>
-<div class="row" *ngIf="staffModel.role !== 'Disgner'">
+<div class="row" *ngIf="staffModel.role != 'Designer'">
     <div class="col-xl-6 col-md-6">
         <div class="card">
             <div class="card-body">
@@ -225,7 +225,7 @@
                             </div>
                             <div>
                                 <p class="mb-2"><span
-                                        class="badge bg-info text-white font-size-13">{{processingDatatotal.length}}</span>
+                                        class="badge bg-primary text-white font-size-13">{{processingDatatotal.length}}</span>
                                     Processing Tokens</p>
                             </div>
                             <div>
@@ -240,12 +240,12 @@
                                 </p>
                             </div>
                             <div>
-                                <p class="mb-2"><span class="badge bg-info text-white font-size-13">0</span> CES
+                                <p class="mb-2"><span class="badge bg-primary text-white font-size-13">0</span> CES
                                     Processing
                                 </p>
                             </div>
                             <div>
-                                <p class="mb-2"><span class="badge bg-info text-white font-size-13">0</span>
+                                <p class="mb-2"><span class="badge bg-success text-white font-size-13">0</span>
                                     CES Completed
                                 </p>
                             </div>
@@ -273,7 +273,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center">
-                    <div class="col-sm">
+                    <div class="col-sm-6">
                         <apx-chart dir="ltr" class="apex-charts" [series]="investedOverview.series"
                             [chart]="investedOverview.chart" [legend]="investedOverview.legend"
                             [colors]="investedOverview.colors" [labels]="investedOverview.labels"
@@ -281,85 +281,95 @@
                             [fill]="investedOverview.fill">
                         </apx-chart>
                     </div>
-                    <div class="col-sm align-self-center">
+                    <div class="col-sm-6 align-self-center">
                         <div class="mt-4 mt-sm-0">
-                            <p class="mb-1"><span class="badge bg-info text-white font-size-16">{{ totalPending +
+                            <p class="mb-3" ngbTooltip="Total Daily Work" placement="top"><span
+                                    class="badge bg-info text-white font-size-16">{{ totalPending +
                                     totalCompleted}}</span> Total Daily Work
                             </p>
 
                             <div class="row g-0">
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-13"><span
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"
+                                            ngbTooltip="Total Pending Work" placement="top"><span
                                                 class="badge bg-warning text-white font-size-13">{{totalPending}}</span>
-                                            Pending
-                                            List</p>
+                                            Total</p>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-13"><span
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"
+                                            ngbTooltip="Total Completed Work" placement="top"><span
                                                 class="badge bg-success text-white font-size-13">{{totalCompleted}}</span>
-                                            Completed List</p>
+                                            Total</p>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-13"><span
+                                        <p class="mb-2 text-muted text-uppercase font-size-13" ngbTooltip="Pending Post"
+                                            placement="top"><span
                                                 class="badge bg-warning text-white font-size-13">{{pendingPosts}}</span>
-                                            Pending Post</p>
+                                            Post</p>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-13"><span
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"
+                                            ngbTooltip="Completed Post" placement="top"><span
                                                 class="badge bg-success text-white font-size-13">{{completedPosts}}</span>
-                                            Completed Post</p>
+                                            Post</p>
                                     </div>
                                 </div>
 
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-13"><span
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"
+                                            ngbTooltip="Pending Stories" placement="top"><span
                                                 class="badge bg-warning text-white font-size-13">{{pendingStories}}</span>
-                                            Pending Stories</p>
+                                            Stories</p>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-13"><span
-                                                class="badge bg-warning text-white font-size-13">{{completedStories}}</span>
-                                            Completed Stories</p>
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"
+                                            ngbTooltip="Completed Stories" placement="top"><span
+                                                class="badge bg-success text-white font-size-13">{{completedStories}}</span>
+                                            Stories</p>
                                     </div>
                                 </div>
 
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11"><span
+                                        <p class="mb-2 text-muted text-uppercase font-size-13" ngbTooltip="Pending Reel"
+                                            placement="top"><span
                                                 class="badge bg-warning text-white font-size-13">{{pendingReels}}</span>
-                                            Pending Reel</p>
+                                            Reel</p>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11"><span
-                                                class="badge bg-warning text-white font-size-13">{{completedReels}}</span>
-                                            Completed Reel</p>
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"
+                                            ngbTooltip="Completed Reel" placement="top"><span
+                                                class="badge bg-success text-white font-size-13">{{completedReels}}</span>
+                                            Reel</p>
                                     </div>
                                 </div>
 
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11"><span
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"
+                                            ngbTooltip="Pending Extra" placement="top"><span
                                                 class="badge bg-warning text-white font-size-13">{{pendingExtraToken}}</span>
-                                            Extra Pending</p>
+                                            Extra</p>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11"><span
-                                                class="badge bg-warning text-white font-size-13">{{CompletedExtraToken}}</span>
-                                            Extra Completed</p>
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"
+                                            ngbTooltip="Completed Extra" placement="top"><span
+                                                class="badge bg-success text-white font-size-13">{{CompletedExtraToken}}</span>
+                                            Extra</p>
                                     </div>
                                 </div>
 

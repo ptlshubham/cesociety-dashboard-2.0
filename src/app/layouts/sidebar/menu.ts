@@ -436,6 +436,12 @@ export const comapnyAdmin: MenuItem[] = [
     //     icon: 'mdi mdi-clipboard-list-outline',
     //     link: '/company/posting',
     // }
+     {
+        id: 9,
+        label: 'Monthly Work Report',
+        icon: 'mdi mdi-note-multiple-outline',
+        link: '/company/monthly-report',
+    }
 ];
 export const Employee: MenuItem[] = [
     {

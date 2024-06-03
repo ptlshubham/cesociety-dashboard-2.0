@@ -7,6 +7,7 @@ import { TodoListComponent } from './todo-list/todo-list.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { PostingComponent } from './posting/posting.component';
+import { MonthlyWorkComponent } from './monthly-work/monthly-work.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'posting',
     component: PostingComponent
+  },
+  {
+    path: 'monthly-report',
+    component: MonthlyWorkComponent
   }
 
 ];

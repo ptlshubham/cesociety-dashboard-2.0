@@ -23,6 +23,7 @@ export class RequestTokensComponent {
   removeUpload: boolean = false;
   cardImageBase64: any;
   addMultiImg: any = [];
+  selectedMonth: string;
 
   val: number = 0;
   tokenImage: any;
@@ -85,6 +86,7 @@ export class RequestTokensComponent {
   empEmail: any;
   filteredDailyWorkData: any = [];
   isMarkAsCompleted: any = null;
+  currentMonth: string;
   constructor(private modalService: NgbModal,
     public formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
@@ -92,6 +94,9 @@ export class RequestTokensComponent {
     private companyService: CompanyService,
 
   ) {
+    const currentDate = new Date();
+    this.selectedMonth = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
+    this.currentMonth = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
     this.getClientsDetails();
   }
 
@@ -416,9 +421,10 @@ export class RequestTokensComponent {
     this.getPagintaion();
   }
   filterResetForDailyAll() {
+    this.selectedMonth = this.currentMonth;
     this.searchClient = null;
     this.selectedWorkDateRange = null;
-    this.isMarkAsCompleted=null;
+    this.isMarkAsCompleted = null;
   }
   filterResetForTokenAll() {
 
@@ -782,8 +788,11 @@ export class RequestTokensComponent {
     const date = new Date(dateStr);
     return isNaN(date.getTime()) ? null : dateStr;
   }
-
+  onMonthChange() {
+    this.getAllDailyWork();
+  }
   getAllDailyWork() {
+    debugger
     this.getAllEmployeeDetails();
     this.companyService.getAllDailyList().subscribe((data: any) => {
       let filteredData = data;
@@ -826,9 +835,23 @@ export class RequestTokensComponent {
         filteredData = filteredData.filter((element: any) => element.iscompleted == this.isMarkAsCompleted);
         debugger
       }
+      if (this.selectedMonth) {
+        debugger
+        const selectedDate = new Date(this.selectedMonth);
+        const selectedMonth = selectedDate.getMonth(); // 0-11
+        const selectedYear = selectedDate.getFullYear();
+
+        // Filter the data to include only entries from the selected month and year
+        filteredData = filteredData.filter((element: any) => {
+          const itemDate = new Date(element.date); // Assuming the date column is named 'date'
+          return itemDate.getMonth() === selectedMonth && itemDate.getFullYear() === selectedYear;
+        });
+
+        // filteredData = filteredData.filter((element: any) => element.iscompleted == this.selectedMonth);
+      }
       this.filteredDailyWorkData = filteredData;
       this.dailyWorkData = filteredData;
-      if (this.searchClient != null || this.selectedWorkDateRange != null || this.isMarkAsCompleted != null) {
+      if (this.searchClient != null || this.selectedWorkDateRange != null || this.isMarkAsCompleted != null || this.selectedMonth != this.currentMonth) {
         this.setActiveTab('dailyWork');
       }
       this.getPagintaion();

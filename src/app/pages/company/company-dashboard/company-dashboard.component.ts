@@ -78,15 +78,16 @@ export class CompanyDashboardComponent {
       },
     }
   }
-  SelectedClient = this.tokendata.clientname;
+  SelectedClient = this.tokendata.clientname || null;
   comapanyRole: any = localStorage.getItem('Role');
+  
   Tokens: ChartType = {
     chart: {
       width: 227,
       height: 227,
       type: 'pie'
     },
-    colors: ["#777aca", "#5156be", "#a8aada"],
+    colors: ["#ffbf53", "#203154", "#2ab57d"],
     legend: { show: false },
     stroke: {
       width: 0
@@ -94,6 +95,7 @@ export class CompanyDashboardComponent {
     series: [],
     labels: [],
   };
+
   investedOverview: ChartType = {
     chart: {
       height: 270,
@@ -119,13 +121,13 @@ export class CompanyDashboardComponent {
         }
       }
     },
-    colors: ['#5156be'],
+    colors: ['#2ab57d'],
     fill: {
       type: "gradient",
       gradient: {
         shade: "dark",
         type: "horizontal",
-        gradientToColors: ['#34c38f'],
+        gradientToColors: ['#ffbf53'],
         shadeIntensity: 0.15,
         inverseColors: false,
         opacityFrom: 1,
@@ -139,7 +141,7 @@ export class CompanyDashboardComponent {
     legend: {
       show: false
     },
-    series: [100],
+    series: [0],
     labels: ['Pending', 'Completed'],
   };
 
@@ -292,7 +294,8 @@ export class CompanyDashboardComponent {
   }
 
   getAllTokenCompanyStatus() {
-    if (this.SelectedClient) {
+    if (this.SelectedClient != null) {
+      debugger
       this.tokensService.getAllTokenData().subscribe((res: any) => {
         // Filter token data based on selected client
         this.tokendata = res.filter((token: any) => token.clientid === this.SelectedClient.id);
@@ -300,6 +303,9 @@ export class CompanyDashboardComponent {
         // Fetch daily work data and aggregate the required counts based on selected client
         this.getAllDailyWorks(this.SelectedClient.id);
       });
+    }
+    else {
+      this.investedOverview.series = [0];
     }
   }
 

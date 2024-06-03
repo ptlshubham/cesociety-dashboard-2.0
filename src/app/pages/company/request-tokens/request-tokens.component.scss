@@ -13,7 +13,7 @@
     vertical-align: middle;
     // margin-left: 20px;
 }
-.disabled-c{
+.disabled-c {
     background-color: #cccccc;
 }
 .table-inside-accordion {
@@ -35,4 +35,11 @@
 }
 .client-list-container {
     max-height: 200px; /* Adjust the height according to your design */
+}
+.star-toggle {
+    font-size: 22px;
+}
+.checkbox {
+    height: 18px !important;
+    width: 18px !important;
 }

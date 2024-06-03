@@ -1,0 +1,38 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Client Details List</h5>
+        <div class="d-flex justify-content-end gap-2">
+            <div>
+                <input class="form-control" type="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()"
+                    id="example-month-input">
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-xl-3 col-md-6" *ngFor="let c of clientWorkSummaryArray">
+                <a routerLink="/company/request-tokens">
+                    <div class="card card-h-100" ngbTooltip="{{c.clientname}}" placement="top">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <span class="text-muted mb-3 lh-1 d-block text-truncate">{{c.clientname}}</span>
+                                    <h4 class="mb-2">
+                                        <span [countUp]="c.totalWork" class="counter-value" [options]="option"></span>
+                                    </h4>
+                                    <span class="badge bg-danger-subtle text-danger mx-1 font-size-14 "
+                                        ngbTooltip="Total Pending Work" placement="top">{{c.totalPending}}</span>
+                                    <span class="badge bg-success-subtle text-success font-size-14"
+                                        ngbTooltip="Total Completed Work" placement="top">{{c.totalCompleted}}</span>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <img src="assets/images/icon-gif/daily.gif" alt="" class="rounded avatar-lg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
