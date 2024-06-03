@@ -48,7 +48,7 @@ export class CompanyDashboardComponent {
   CompletedPosts: number = 0;
   completedReels: number = 0;
   extraPending: number = 0;
-  extraComplated: number = 0;
+  extraCompleted: number = 0;
   totalPending: number = 0;
   totalCompleted: number = 0;
   pendingExtraToken: any = 0;
@@ -59,7 +59,7 @@ export class CompanyDashboardComponent {
   totalPendingDailyWork: number = 0;
   TodoList: any;
   CancelToken: any = 0;
-  totalComplatedDailyWork: number = 0;
+  totalCompletedDailyWork: number = 0;
   todoList: any = []
   calendarEvents: any = []
   eid: any;
@@ -263,7 +263,7 @@ export class CompanyDashboardComponent {
       const CompletedPosts = this.dailyWorkData.filter((item: any) => item.title === 'Post' && item.iscompleted).length;
       const CompletedReel = this.dailyWorkData.filter((item: any) => item.title === 'Reel' && item.iscompleted).length;
       // Calculate the total number of pending tasks
-      this.totalComplatedDailyWork = CompletedStories + CompletedPosts + CompletedReel;
+      this.totalCompletedDailyWork = CompletedStories + CompletedPosts + CompletedReel;
       this.totalPendingDailyWork = pendingStories + pendingPosts + pendingReels;
 
       // Optionally, log or process the totalPendingDailyWork as needed

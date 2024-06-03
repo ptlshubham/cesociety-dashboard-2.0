@@ -183,7 +183,7 @@
                                 <span [countUp]="dailyWorkLength" class="counter-value" [options]="option"></span>
                             </h4>
                             <span class="badge bg-danger-subtle text-danger mx-1">{{totalPendingDailyWork}}</span>
-                            <span class="badge bg-success-subtle text-success">{{totalComplatedDailyWork}}</span>
+                            <span class="badge bg-success-subtle text-success">{{totalCompletedDailyWork}}</span>
                             <span class="ms-1 text-muted font-size-13">Total Work</span>
                         </div>
                         <div class="col-6 text-center">
@@ -198,7 +198,6 @@
 <div class="row" *ngIf="staffModel.role !== 'Disgner'">
     <div class="col-xl-6 col-md-6">
         <div class="card">
-            <!-- card body -->
             <div class="card-body">
                 <div class="d-flex flex-wrap align-items-center mb-4">
                     <h5 class="card-title me-2">Tokens</h5>
@@ -207,11 +206,9 @@
                             <button type="button" class="btn btn-soft-secondary btn-sm">
                                 Today
                             </button>
-
                         </div>
                     </div>
                 </div>
-
                 <div class="row align-items-center">
                     <div class="col-sm">
                         <apx-chart dir="ltr" class="apex-charts" [series]="Tokens.series" [chart]="Tokens.chart"
@@ -219,56 +216,39 @@
                             [stroke]="Tokens.stroke" [plotOptions]="Tokens.plotOptions">
                         </apx-chart>
                     </div>
-                    <div class="col-sm align-self-center">
+                    <div class="col-sm justify-content-end">
                         <div class="mt-4 mt-sm-0">
                             <div>
-                                <p class="mb-2"><i
-                                        class="mdi mdi-circle align-middle font-size-15 me-2 text-warning"></i>
+                                <p class="mb-2"><span
+                                        class="badge bg-warning text-white font-size-13">{{pendingDatatotal.length}}</span>
                                     Pending Tokens</p>
-                                <h6> <span class="text-muted font-size-15 fw-normal">{{pendingDatatotal.length}}</span>
-                                </h6>
                             </div>
                             <div>
-                                <p class="mb-2"><i class="mdi mdi-circle align-middle font-size-15 me-2 text-info"></i>
+                                <p class="mb-2"><span
+                                        class="badge bg-info text-white font-size-13">{{processingDatatotal.length}}</span>
                                     Processing Tokens</p>
-                                <h6> <span
-                                        class="text-muted font-size-15 fw-normal">{{processingDatatotal.length}}</span>
-                                </h6>
                             </div>
                             <div>
-                                <p class="mb-2"><i
-                                        class="mdi mdi-circle align-middle font-size-15 me-2 text-success"></i>
-                                    Complated Token
+                                <p class="mb-2"><span
+                                        class="badge bg-success text-white font-size-13">{{completedDatatotal.length}}</span>
+                                    Completed Token
                                 </p>
-                                <h6><span class="text-muted font-size-15 fw-normal">{{completedDatatotal.length}}</span>
-                                </h6>
                             </div>
                             <div>
-                                <p class="mb-2"><i
-                                        class="mdi mdi-circle align-middle font-size-15 me-2 text-warning"></i>
+                                <p class="mb-2"><span class="badge bg-warning text-white font-size-13">0</span>
                                     CES Pending
                                 </p>
-                                <h6><span class="text-muted font-size-15 fw-normal">0</span>
-                                </h6>
-                            </div>
-
-                            <div>
-                                <p class="mb-2"><i class="mdi mdi-circle align-middle font-size-15 me-2 text-info"></i>
-                                    CES Processing
-                                </p>
-                                <h6><span class="text-muted font-size-15 fw-normal">0</span>
-                                </h6>
                             </div>
                             <div>
-                                <p class="mb-2"><i
-                                        class="mdi mdi-circle align-middle font-size-15 me-2 text-success"></i>
-                                    CES Complated
+                                <p class="mb-2"><span class="badge bg-info text-white font-size-13">0</span> CES
+                                    Processing
                                 </p>
-                                <h6><span class="text-muted font-size-15 fw-normal">0</span>
-                                </h6>
                             </div>
-
-
+                            <div>
+                                <p class="mb-2"><span class="badge bg-info text-white font-size-13">0</span>
+                                    CES Completed
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -276,9 +256,7 @@
         </div>
     </div>
     <div class="col-xl-6">
-        <!-- card -->
         <div class="card card-h-100">
-            <!-- card body -->
             <div class="card-body">
                 <div class="d-flex flex-wrap align-items-center mb-4">
                     <h5 class="card-title me-2">Daily Client Status</h5>
@@ -294,7 +272,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row align-items-center">
                     <div class="col-sm">
                         <apx-chart dir="ltr" class="apex-charts" [series]="investedOverview.series"
@@ -306,71 +283,83 @@
                     </div>
                     <div class="col-sm align-self-center">
                         <div class="mt-4 mt-sm-0">
-                            <p class="mb-1">Total Daily Work</p>
-                            <h4>{{ totalPending + totalCompleted}}</h4>
+                            <p class="mb-1"><span class="badge bg-info text-white font-size-16">{{ totalPending +
+                                    totalCompleted}}</span> Total Daily Work
+                            </p>
 
                             <div class="row g-0">
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11">Pending List</p>
-                                        <h5 class="fw-medium">{{totalPending}}</h5>
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"><span
+                                                class="badge bg-warning text-white font-size-13">{{totalPending}}</span>
+                                            Pending
+                                            List</p>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11">Complated List</p>
-                                        <h5 class="fw-medium">{{totalCompleted}}</h5>
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"><span
+                                                class="badge bg-success text-white font-size-13">{{totalCompleted}}</span>
+                                            Completed List</p>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11">Pending Post</p>
-                                        <h5 class="fw-medium">{{pendingPosts}}</h5>
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"><span
+                                                class="badge bg-warning text-white font-size-13">{{pendingPosts}}</span>
+                                            Pending Post</p>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11">Complated Post</p>
-                                        <h5 class="fw-medium">{{completedPosts}}</h5>
-                                    </div>
-                                </div>
-
-                                <div class="col-6">
-                                    <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11">Pending Stories</p>
-                                        <h5 class="fw-medium">{{pendingStories}}</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11">Complated Stories</p>
-                                        <h5 class="fw-medium">{{completedStories}}</h5>
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"><span
+                                                class="badge bg-success text-white font-size-13">{{completedPosts}}</span>
+                                            Completed Post</p>
                                     </div>
                                 </div>
 
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11">Pending Reel</p>
-                                        <h5 class="fw-medium">{{pendingReels}}</h5>
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"><span
+                                                class="badge bg-warning text-white font-size-13">{{pendingStories}}</span>
+                                            Pending Stories</p>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11">Complated Reel</p>
-                                        <h5 class="fw-medium">{{completedReels}}</h5>
+                                        <p class="mb-2 text-muted text-uppercase font-size-13"><span
+                                                class="badge bg-warning text-white font-size-13">{{completedStories}}</span>
+                                            Completed Stories</p>
                                     </div>
                                 </div>
 
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11"> Extra Pending</p>
-                                        <h5 class="fw-medium">{{pendingExtraToken}}</h5>
+                                        <p class="mb-2 text-muted text-uppercase font-size-11"><span
+                                                class="badge bg-warning text-white font-size-13">{{pendingReels}}</span>
+                                            Pending Reel</p>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div>
-                                        <p class="mb-2 text-muted text-uppercase font-size-11"> Extra Complated</p>
-                                        <h5 class="fw-medium">{{CompletedExtraToken}}</h5>
+                                        <p class="mb-2 text-muted text-uppercase font-size-11"><span
+                                                class="badge bg-warning text-white font-size-13">{{completedReels}}</span>
+                                            Completed Reel</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div>
+                                        <p class="mb-2 text-muted text-uppercase font-size-11"><span
+                                                class="badge bg-warning text-white font-size-13">{{pendingExtraToken}}</span>
+                                            Extra Pending</p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div>
+                                        <p class="mb-2 text-muted text-uppercase font-size-11"><span
+                                                class="badge bg-warning text-white font-size-13">{{CompletedExtraToken}}</span>
+                                            Extra Completed</p>
                                     </div>
                                 </div>
 
@@ -413,7 +402,7 @@
                             <tr *ngFor="let s of todoList; let i = index">
                                 <td class="text-center">{{ i + 1 }}</td>
                                 <td class="text-center">
-                                    <div class="d-flex flex-column" [ngClass]="s.category">
+                                    <div class="d-flex flex-column">
                                         <div class="text-center overflow-hidden"><b>{{ s.title }}</b></div>
                                         <div class="text-center overflow-hidden">{{ s.description }}</div>
                                     </div>
