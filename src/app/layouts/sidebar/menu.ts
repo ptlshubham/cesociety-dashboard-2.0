@@ -445,7 +445,7 @@ export const comapnyAdmin: MenuItem[] = [
     {
         id: 10,
         label: 'Daily Work Report',
-        icon: 'mdi mdi-note-multiple-outline',
+        icon: 'mdi mdi-file-chart-outline',
         link: '/company/daily-report',
     }
 ];
