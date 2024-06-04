@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-lg-3">
+        <div class="p-3 card">
+            <h6 class="mt-2">Designers List</h6>
+            <div class="mt-2">
+                <a href="javascript: void(0);" class="d-flex align-items-start"
+                    *ngFor="let s of employeeList; let i = index">
+                    <img class="flex-shrink-0 me-3 rounded-circle" src="http://localhost:9000{{s.profile_image}}"
+                        alt="logo" height="36">
+                    <div class="flex-grow-1 chat-user-box">
+                        <p class="user-title m-0">{{ s.name }}</p>
+                        <p class="text-muted">{{ s.role }}</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9 card">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <tbody>
+                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
