@@ -27,6 +27,7 @@ import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { MonthlyWorkComponent } from './monthly-work/monthly-work.component';
 import { DailyWorkReportComponent } from './daily-work-report/daily-work-report.component';
+import { MonthlySchedulerComponent } from './monthly-scheduler/monthly-scheduler.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { DailyWorkReportComponent } from './daily-work-report/daily-work-report.
     ClientPostSchedulerComponent,
     MonthlyWorkComponent,
     DailyWorkReportComponent,
+    MonthlySchedulerComponent,
   ],
   imports: [
     CommonModule,

@@ -281,7 +281,7 @@ export class CompanyDashboardComponent {
   getAllTokenCompanyStatus() {
     this.tokensService.getAllTokenData().subscribe((res: any) => {
       if (this.SelectedClient != null) {
-        debugger;
+
         // Filter token data based on selected client
         this.tokendata = res.filter((token: any) => token.clientid === this.SelectedClient.id);
 
@@ -360,10 +360,10 @@ export class CompanyDashboardComponent {
   }
 
   getAllTodoListDetails() {
-    debugger
+
     this.companyService.getTodoListDataById(localStorage.getItem('Eid')).subscribe((res: any) => {
       this.todoList = res;
-      debugger
+
     });
   }
 
