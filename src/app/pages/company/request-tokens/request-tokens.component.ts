@@ -87,6 +87,9 @@ export class RequestTokensComponent {
   filteredDailyWorkData: any = [];
   isMarkAsCompleted: any = null;
   currentMonth: string;
+  sound: any = new Howl({
+    src: ['assets/audio/notification.mp3']
+  });
   constructor(private modalService: NgbModal,
     public formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
@@ -278,6 +281,7 @@ export class RequestTokensComponent {
         this.tokenModel.description = null;
       }
       this.tokensService.SaveTokendetails(this.tokenModel).subscribe((res: any) => {
+        this.playSound();
         // this.tokenData = res;
         this.setActiveTab('allTokens');
         this.toastr.success('Token Details Successfully Saved.', 'Success', { timeOut: 3000, });
@@ -285,6 +289,14 @@ export class RequestTokensComponent {
         this.validationForm.markAsUntouched();
         this.modalService.dismissAll();
       })
+    }
+  }
+  playSound() {
+    const designerIds = this.tokenModel.designers.map((d: any) => d.assigned_employee_id);
+    const managerIds = this.tokenModel.managers.map((m: any) => m.assigned_employee_id);
+    const selectedIds = [...designerIds, ...managerIds]; // combine the two arrays
+    if (selectedIds.some(id => selectedIds.includes(id))) {
+      this.sound.play();
     }
   }
 

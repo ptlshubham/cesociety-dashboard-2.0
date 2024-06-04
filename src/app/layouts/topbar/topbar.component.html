@@ -86,12 +86,26 @@
                         </div>
                     </div>
                     <ngx-simplebar style="max-height: 230px;">
-                        <!-- Your notification items here -->
+                        <a href="javascript:void(0);" class="text-reset notification-item">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <img src="assets/images/users/avatar-3.jpg" class="rounded-circle avatar-sm" alt="Client-Logo">
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">Title</h6>
+                                    <div class="font-size-13 text-muted">
+                                        <p class="mb-1 text-truncate">Description</p>
+                                        <p class="mb-0"><i class="mdi mdi-calendar-month"></i> <span>Date</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
                     </ngx-simplebar>
                     <div class="p-2 border-top d-grid">
                         <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
-                            <i class="mdi mdi-arrow-right-circle me-1"></i> <span>{{
-                                'HEADER.NOTIFICATIONS.LOAD_MORE' | translate}}</span>
+                            <i class="mdi mdi-arrow-right-circle me-1"></i> <span>{{'HEADER.NOTIFICATIONS.LOAD_MORE' |
+                                translate}}</span>
                         </a>
                     </div>
                 </div>
