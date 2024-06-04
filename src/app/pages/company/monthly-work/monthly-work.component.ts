@@ -14,7 +14,8 @@ export class MonthlyWorkComponent {
   currentMonthData: any = [];
   clientWorkSummaryArray: any = [];
   num = 0;
-  selectedMonth: string ;
+  selectedMonth: string;
+  selectedClientData: any = {};
 
   option = {
     startVal: this.num,
@@ -26,6 +27,8 @@ export class MonthlyWorkComponent {
     public formBuilder: UntypedFormBuilder,
     private companyService: CompanyService,
     public toastr: ToastrService,
+    private modalService: NgbModal,
+
 
   ) {
     const currentDate = new Date();
@@ -85,5 +88,9 @@ export class MonthlyWorkComponent {
     });
   }
 
-
+  extraLarge(exlargeModal: any, data: any) {
+    data.selectedMonth = this.selectedMonth
+    this.selectedClientData = data;
+    this.modalService.open(exlargeModal, { size: 'xl', windowClass: 'modal-holder', centered: true });
+  }
 }

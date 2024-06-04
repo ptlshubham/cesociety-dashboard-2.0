@@ -205,7 +205,7 @@ export class ClientPostSchedulerComponent implements OnInit {
   closeEventModal() {
     this.formData = this.formBuilder.group({
       title: '',
-      designer:'',
+      designer: '',
       description: '',
     });
 

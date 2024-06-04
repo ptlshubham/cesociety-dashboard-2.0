@@ -792,7 +792,7 @@ export class RequestTokensComponent {
     this.getAllDailyWork();
   }
   getAllDailyWork() {
-    debugger
+
     this.getAllEmployeeDetails();
     this.companyService.getAllDailyList().subscribe((data: any) => {
       let filteredData = data;
@@ -829,14 +829,14 @@ export class RequestTokensComponent {
       }
       if (this.isMarkAsCompleted == true) {
         filteredData = filteredData.filter((element: any) => element.iscompleted == this.isMarkAsCompleted);
-        debugger
+
       }
       if (this.isMarkAsCompleted == false) {
         filteredData = filteredData.filter((element: any) => element.iscompleted == this.isMarkAsCompleted);
-        debugger
+
       }
       if (this.selectedMonth) {
-        debugger
+
         const selectedDate = new Date(this.selectedMonth);
         const selectedMonth = selectedDate.getMonth(); // 0-11
         const selectedYear = selectedDate.getFullYear();

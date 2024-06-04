@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header">
         <div class="d-flex justify-content-between gap-2">
-        <h5 class="card-title">Monthly Client Wise Details</h5>
+            <h5 class="card-title">Monthly Client Wise Details</h5>
             <div>
                 <input class="form-control" type="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()"
                     id="example-month-input">
@@ -11,7 +11,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-xl-3 col-md-6" *ngFor="let c of clientWorkSummaryArray">
-                <a routerLink="/company/request-tokens">
+                <a (click)="extraLarge(exlargeModal,c)">
                     <div class="card card-h-100" ngbTooltip="{{c.clientname}}" placement="top">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -36,3 +36,13 @@
         </div>
     </div>
 </div>
+<ng-template #exlargeModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">Schedule</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Close click')">
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-monthly-scheduler [clientdata]="selectedClientData"></app-monthly-scheduler>
+    </div>
+</ng-template>
