@@ -109,7 +109,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     AdmissionComponent,
     DepartmentDetailsComponent,
     MarketingPromotionsComponent,
-    DesignTokenComponent
+    DesignTokenComponent,
   ],
   imports: [
     CommonModule,

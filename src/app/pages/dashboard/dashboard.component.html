@@ -1,6 +1,4 @@
 <!-- start page title -->
-<app-pagetitle title="Dashboard" *ngIf="!company" [breadcrumbItems]="breadCrumbItems"></app-pagetitle>
-<!-- end page title -->
 
 <div class="row" *ngIf="role=='Institute'">
     <div class="col-xl-3 col-md-6">
@@ -204,4 +202,3 @@
         </div>
     </div>
 </div>
-<app-company-dashboard *ngIf="company"></app-company-dashboard>

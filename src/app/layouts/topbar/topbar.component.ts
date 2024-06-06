@@ -5,10 +5,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { EventService } from '../../core/services/event.service';
 import { LanguageService } from '../../core/services/language.service';
 import { TranslateService } from '@ngx-translate/core';
-import { TokensService } from 'src/app/core/services/tokens.service';
 
 import { LAYOUT_MODE } from "../layouts.model";
-import { CompanyService } from 'src/app/core/services/company.service';
 
 @Component({
   selector: 'app-topbar',
@@ -30,7 +28,6 @@ export class TopbarComponent implements OnInit {
   collegeName: any;
   adminName: any;
   InstituteURL: any;
-  company: any;
   role: any = localStorage.getItem('Role');
   tokenData: any = []
   emailData!: Array<any>;
@@ -44,8 +41,6 @@ export class TopbarComponent implements OnInit {
     public _cookiesService: CookieService,
     public translate: TranslateService,
     private eventService: EventService,
-    public tokensService: TokensService,
-    private companyService: CompanyService
 
 
   ) { }
@@ -70,7 +65,6 @@ export class TopbarComponent implements OnInit {
     this.collegeName = localStorage.getItem('InstituteName');
     this.adminName = localStorage.getItem('Name');
     this.InstituteURL = localStorage.getItem('InstituteURL');
-    this.company = localStorage.getItem('Company');
     this.layoutMode = LAYOUT_MODE;
 
     this.element = document.documentElement;
@@ -123,34 +117,8 @@ export class TopbarComponent implements OnInit {
    * Logout the user
    */
   logout() {
-    if (this.company == true) {
-      localStorage.clear();
-      this.router.navigate(['/account/keryar-login']);
-    }
-    else {
-      localStorage.clear();
-      this.router.navigate(['/account/login']);
-    }
-  }
-  getAllToken() {
-    this.tokensService.getAllTokenData().subscribe((res: any) => {
-      res.forEach((element: any, index: number) => {
-        if (res.length > 0) {
-          this.companyService.getAssignedEmpDetailsById(element.clientid).subscribe((data: any) => {
-            res[index].assignedDesigners = data.filter((employee: any) => employee.role === 'Designer');
-            res[index].assignedManagers = data.filter((employee: any) => employee.role === 'Manager');
-            
-          })
-        }
-      });
-      this.tokenData = res;
-      this.emailData = this.tokenData;
-      this.totalRecords = this.tokenData.length;
-      for (let i = 0; i < this.tokenData.length; i++) {
-        this.tokenData[i].index = i + 1;
-      }
-    })
-  }
-  openTokenEmailDetails() { }
 
+    localStorage.clear();
+    this.router.navigate(['/account/login']);
+  }
 }

@@ -17,7 +17,6 @@ import { WidgetModule } from '../shared/widget/widget.module';
 import { PagesRoutingModule } from './pages-routing.module';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { CompanyModule } from './company/company.module';
 
 @NgModule({
   declarations: [
@@ -34,7 +33,6 @@ import { CompanyModule } from './company/company.module';
     RouterModule,
     NgbDropdownModule,
     NgbNavModule,
-    CompanyModule
   ],
 
   providers: [DecimalPipe],

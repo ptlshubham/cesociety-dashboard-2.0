@@ -30,7 +30,6 @@ export class DashboardComponent implements OnInit {
   instituteList: any = [];
   num: number = 0;
   role: any = localStorage.getItem('Role');
-  company: any;
   option = {
     startVal: this.num,
     useEasing: true,
@@ -54,8 +53,6 @@ export class DashboardComponent implements OnInit {
       { label: 'Dashboard' },
       { label: 'Dashboard', active: true }
     ];
-    this.company = localStorage.getItem('Company');
-    
     /**
      * Fetches the data
      */

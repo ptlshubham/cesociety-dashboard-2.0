@@ -221,7 +221,7 @@ const routes: Routes = [
   {
     path: 'design-token',
     component: DesignTokenComponent
-  },
+  }
 ];
 
 @NgModule({

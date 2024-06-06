@@ -22,19 +22,6 @@
                 </a>
             </div>
 
-            <div class="navbar-brand-box d-flex align-items-center" *ngIf="company">
-
-                <a routerLink="/" class="logo logo-dark">
-                    <span class="logo-sm">
-                        <img src="assets/images/fostericon.png" alt="Foster" height="40">
-                    </span>
-                    <span class="logo-lg">
-                        <img src="assets/images/fosterlogo.png" alt="Foster" width="140">
-                    </span>
-                </a>
-
-
-            </div>
             <button type="button" class="btn btn-sm px-3 font-size-16 header-item" id="vertical-menu-btn"
                 (click)="toggleMobileMenu($event)">
                 <i class="fa fa-fw fa-bars"></i>
@@ -64,53 +51,6 @@
 
 
             </div>
-            <div class="dropdown d-inline-block" ngbDropdown *ngIf="company">
-                <button type="button" class="btn header-item noti-icon position-relative"
-                    id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false" ngbDropdownToggle>
-                    <i-feather name="bell" class="icon-lg"></i-feather>
-                    <span class="badge bg-danger rounded-pill">{{tokenData.length}}</span>
-                </button>
-
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                    aria-labelledby="page-header-notifications-dropdown" ngbDropdownMenu>
-                    <div class="p-3">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h6 class="m-0"> {{ 'HEADER.NOTIFICATIONS.TITLE' | translate}} </h6>
-                            </div>
-                            <div class="col-auto">
-                                <a href="javascript:void(0);" class="small text-reset text-decoration-underline"> {{
-                                    'HEADER.NOTIFICATIONS.VIEW_ALL' | translate}}</a>
-                            </div>
-                        </div>
-                    </div>
-                    <ngx-simplebar style="max-height: 230px;">
-                        <a href="javascript:void(0);" class="text-reset notification-item">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0 me-3">
-                                    <img src="assets/images/users/avatar-3.jpg" class="rounded-circle avatar-sm" alt="Client-Logo">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Title</h6>
-                                    <div class="font-size-13 text-muted">
-                                        <p class="mb-1 text-truncate">Description</p>
-                                        <p class="mb-0"><i class="mdi mdi-calendar-month"></i> <span>Date</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </ngx-simplebar>
-                    <div class="p-2 border-top d-grid">
-                        <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
-                            <i class="mdi mdi-arrow-right-circle me-1"></i> <span>{{'HEADER.NOTIFICATIONS.LOAD_MORE' |
-                                translate}}</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
 
             <div class="dropdown" ngbDropdown>
                 <button type="button" class="btn header-item bg-soft-light border-start border-end "
@@ -118,18 +58,12 @@
                     ngbDropdownToggle>
                     <img class="rounded-circle header-profile-user" src="assets/images/users/inst.jpg"
                         alt="Header Avatar" *ngIf="role=='Institute' || role=='superAdmin'">
-                    <img class="rounded-circle header-profile-user" src="assets/images/users/keryar.jpg"
-                        *ngIf="profile=='null' ||profile==null && company" alt="Header Avatar">
-                    <img class="rounded-circle header-profile-user" src="http://localhost:9000{{ profile }}"
-                        *ngIf="profile!='null' && profile!=null && company" alt="Header Avatar">
                     <span class="d-none d-xl-inline-block ms-1 fw-medium">{{adminName}}</span>
                     <span class="d-none d-xl-inline-block ms-1 fw-medium">{{collegeName}}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
 
                 <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
-                    <a class="dropdown-item" routerLink="/company/profile"><i
-                            class="bx bx-user font-size-16 align-middle me-1"></i> Profile</a>
                     <a class="dropdown-item" href="javascript: void(0);" (click)="logout()"><i
                             class="mdi mdi-logout text-muted font-size-16 align-middle me-1"></i> <span
                             class="align-middle" key="t-logout">{{ 'MENUITEMS.AUTHENTICATION.LIST.LOGOUT' |
