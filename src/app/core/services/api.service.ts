@@ -173,7 +173,18 @@ export class ApiService {
   public static saveAdmissionDetailsURL: string = ApiService.HOST_URL + '/admin/SaveAdmissionDetails';
   public static getAdmissionListDataURL: string = ApiService.HOST_URL + '/admin/GetAdmissionListData/';
 
+  // Tokens Api
+  public static uploadTokenImageURL: string = ApiService.HOST_URL + '/admin/UploadTokenImage';
+  public static uploadTokenMultiImageURL: string = ApiService.HOST_URL + '/admin/UploadTokenMultiImage';
+  public static removeRefrenceMultiImageURL: string = ApiService.HOST_URL + '/admin/RemoveRefrenceImage';
+  public static saveCESTokenDetailsURL: string = ApiService.HOST_URL + '/admin/SaveCESTokenDetails';
+  public static getCESTokenImageURL: string = ApiService.HOST_URL + '/admin/GetCESTokenImage/';
+  public static getALLCESTokenDataURL: string = ApiService.HOST_URL + '/admin/GetALLCESTokenData';
+  public static removeCESTokenURL: string = ApiService.HOST_URL + '/admin/RemoveCESToken/';
+  public static uploadTokensFilesURL: string = ApiService.HOST_URL + '/admin/UploadTokensFiles';
+  public static deleteTokenUploadedImageURL: string = ApiService.HOST_URL + '/admin/DeleteTokenUploadedImage';
 
+  
   //Cashfree APIS
   public static createCashfreeOrderURL: string = ApiService.HOST_URL + '/cashfree/createCashfreeOrder';
 

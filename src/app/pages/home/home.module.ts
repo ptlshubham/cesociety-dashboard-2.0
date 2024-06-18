@@ -72,7 +72,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     StudentResultComponent,
     InfrastructureComponent,
     BlogComponent,
-    CollegeListComponent,
+    CollegeListComponent,            
     DepartmentComponent,
     DonationComponent,
     RahotkarshComponent,

@@ -1,1 +1,344 @@
-<p>design-token works!</p>
+<div class="row">
+    <div class="row">
+        <!-- Left sidebar -->
+        <div class="col-lg-3">
+            <div class="p-3 card">
+
+                <button type="button" class="btn btn-primary 100 waves-effect waves-light" data-bs-toggle="modal"
+                    data-bs-target="#composemodal" (click)="open(content)">
+                    Generate Token
+                </button>
+                <div class="mail-list mt-4">
+                    <a href="javascript:void(0);" [class.active]="activeTab === 'allTokens'"
+                        (click)="setActiveTab('allTokens')"><i class="mdi mdi-email-outline me-2"></i>All Tokens<span
+                            class="ms-1 float-end">{{tokenData.length}}</span></a>
+                    <a href="javascript:void(0);" [class.active]="activeTab === 'pendingTokens'"
+                        (click)="setActiveTab('pendingTokens')"><i class="mdi mdi-account-clock me-2"></i>Pending
+                        Tokens<span class="ms-1 float-end">{{pendingData.length}}</span></a>
+                    <a href="javascript:void(0);" [class.active]="activeTab === 'processingTokens'"
+                        (click)="setActiveTab('processingTokens')"><i
+                            class="mdi mdi-spin mdi-loading me-2"></i>Processing
+                        Tokens<span class="ms-1 float-end">{{processingData.length}}</span></a>
+                    <a href="javascript:void(0);" [class.active]="activeTab === 'completedTokens'"
+                        (click)="setActiveTab('completedTokens')"><i class="mdi mdi-check-all me-2"></i>Completed
+                        Tokens<span class="ms-1 float-end">{{completedData.length}}</span></a>
+                </div>
+            </div>
+            <!-- <h6 class="mt-4">Institute List</h6> -->
+
+            <!-- <div class="mt-2 client-list-container overflow-auto">
+                <a href="javascript: void(0);" class="d-flex align-items-start" *ngFor="let c of clientList"
+                    (click)="openClientWiseList(c.id)">
+                    <img class="flex-shrink-0 me-3 rounded-circle" src="http://localhost:9000{{c.logo}}" alt="logo"
+                        height="36">
+                    <div class="flex-grow-1 chat-user-box">
+                        <p class="user-title m-0">{{c.name}}</p>
+                        <p class="text-muted">{{c.businesstype}}</p>
+                    </div>
+                </a>
+            </div> -->
+
+        </div>
+        <!-- End Left sidebar -->
+
+        <!-- Right Sidebar -->
+        <div class="col-lg-9" *ngIf="!isMailOpen">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="text-left">#</th>
+                                    <th class="text-center" *ngIf="instituteURL=='www.cesociety.in'">Institute Name</th>
+                                    <th class="text-center">Title</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Created By</th>
+                                    <th class="text-center">Expected Date</th>
+                                    <th class="text-center">Created Date</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (e of paginateData | slice:0:20; track $index) {
+                                <tr class="unread" [ngClass]=" { 'unread' : e.unread==true }" (click)="openMailData(e)">
+                                    <td class="text-left">{{e.index}}</td>
+                                    <td class="text-center" *ngIf="instituteURL=='www.cesociety.in'">{{e.institutename}}
+                                    </td>
+                                    <td class="text-center">{{e.title}}</td>
+                                    <td class="text-center">
+                                        <span class="badge bg-warning text-white" *ngIf="e.status=='Pending'"
+                                            ngbTooltip="Token Pending" placement="top">Pending</span>
+                                        <span class="badge bg-primary text-white" *ngIf="e.status=='Processing'"
+                                            ngbTooltip="Token Processing" placement="top">Processing</span>
+                                        <span class="badge bg-success text-white" *ngIf="e.status=='Completed'"
+                                            ngbTooltip="Token Completed" placement="top">Completed</span>
+                                    </td>
+                                    <td class="text-center"><span class="badge bg-primary text-white"
+                                            ngbTooltip="Token Pending" placement="top">{{e.createdby}}</span></td>
+                                    <td class="text-center">{{e.expecteddate |date: 'MMM d, y'}}</td>
+                                    <td class="text-center">
+                                        {{e.createddate | date: 'MMM d, y, h:mm:ss a'}}</td>
+                                    <td class="text-end">
+                                        <div class="d-flex justify-content-end gap-1">
+                                            <button type="button" class="btn btn-soft-primary waves-effect waves-light"
+                                                [disabled]="e.status!='Completed'"><i
+                                                    class="bx bx-edit font-size-16 align-middle"></i></button>
+                                            <button type="button" class="btn btn-soft-danger waves-effect waves-light"
+                                                [disabled]="e.status!='Pending'" (click)="removeCesToken(e.id)"><i
+                                                    class="bx bx-trash-alt font-size-16 align-middle"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row mt-4">
+                        <ngb-pagination [collectionSize]="totalRecords" [pageSize]="pageSize" [(page)]="page"
+                            [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
+                            (pageChange)="getPagintaion();" aria-label="Default pagination"
+                            class="d-flex justify-content-end pagination-rounded-flat pagination-primbg-primary "></ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 mb-3" *ngIf="isMailOpen">
+            <div class="card">
+                <div class="btn-toolbar p-3" role="toolbar">
+                    <div class="btn-group me-2 mb-2 mb-sm-0">
+                        <button type="button" class="btn btn-danger waves-light waves-effect" (click)="backToToken()"><i
+                                class="fa fa-arrow-left"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="flex-shrink-0 me-3">
+                            <td class="text-center">
+                                <img src="http://localhost:9000{{openTokenData.clientlogo}}" alt=""
+                                    class="rounded-circle avatar-sm">
+                            </td>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h5 class="font-size-14 mb-1">{{openTokenData.institutename}}</h5>
+                            <td class="text-center">
+                                <span class="me-1">Manager: </span>
+                                <span class="badge bg-primary me-1" *ngFor="let m of openTokenData.assignedManagers">{{
+                                    m.name
+                                    }}</span>
+                            </td>
+                            <span class="me-1">Designers:</span>
+                            <span class="badge bg-primary me-1" *ngFor="let m of openTokenData.assignedDesigners">{{
+                                m.name
+                                }}</span>
+                        </div>
+                    </div>
+
+                    <h4 class="font-size-16 mb-4">{{openTokenData.title}}</h4>
+                    <div class="mt-4" [innerHtml]='openTokenData.description' [class.table-inside-accordion]="true">
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-2 col-6"
+                            *ngIf="openTokenData.image!=undefined && openTokenData.image!='undefined'">
+                            <div class="card">
+                                <img class="card-img-top img-fluid" [src]="'http://localhost:9000' +openTokenData.image"
+                                    alt="Token Image">
+                                <div class="py-2 text-center">
+                                    <a href="javascript:void(0);"
+                                        (click)="downloadImage('http://localhost:9000' +openTokenData.image)"
+                                        class="fw-medium">Download</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-6" *ngFor="let s of multiTokenImgData;let i=index">
+                            <div class="card">
+                                <img class="card-img-top img-fluid" [src]="'http://localhost:9000' + s.image"
+                                    alt="Token Image">
+                                <div class="py-2 text-center">
+                                    <a href="javascript:void(0);"
+                                        (click)="downloadImage('http://localhost:9000' + s.image)"
+                                        class="fw-medium">Download</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-6"
+                            *ngIf="openTokenData.file!=undefined && openTokenData.file!='undefined'">
+                            <button type="submit" class="btn btn-primary waves-effect btn-label waves-light"
+                                        (click)="downloadFile(openTokenData.file)"><i
+                                            class="fas fa-file-download label-icon"></i>Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title" id="composemodalTitle">Generate Token</h5>
+            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <form [formGroup]="validationForm">
+                            <div class="row">
+                                <div class="form-group mb-3">
+                                    <label>Title</label>
+                                    <input type="text" class="form-control" placeholder="Enter Title"
+                                        formControlName="title" [(ngModel)]="tokenModel.title"
+                                        [ngClass]="{'is-invalid': f.title.touched && f.title.errors}">
+                                    <div *ngIf="f.title.touched && f.title.errors" class="invalid-feedback">
+                                        <span *ngIf="f.title.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label>Enter Description</label>
+                                    <ckeditor [editor]="Editor" data="" [(ngModel)]="tokenModel.description"
+                                        formControlName="description"
+                                        [ngClass]="{'is-invalid': f.description.touched && f.description.errors}">
+                                    </ckeditor>
+                                    <div *ngIf="f.description.touched && f.description.errors" class="invalid-feedback">
+                                        <span *ngIf="f.description.errors.required">This Field is
+                                            required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="example-date-input" class="form-label">Created By</label>
+                                        <input type="text" class="form-control" placeholder="Created By"
+                                            formControlName="createdby" [(ngModel)]="tokenModel.createdby"
+                                            [ngClass]="{'is-invalid': f.title.touched && f.title.errors}">
+                                        <div *ngIf="f.createdby.touched && f.createdby.errors" class="invalid-feedback">
+                                            <span *ngIf="f.createdby.errors.required">This Field is
+                                                required.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="example-date-input" class="form-label">Contact Number</label>
+                                        <input type="number" class="form-control" placeholder="Contact Number"
+                                            formControlName="contact" [(ngModel)]="tokenModel.contact"
+                                            [ngClass]="{'is-invalid': f.title.touched && f.title.errors}">
+                                        <div *ngIf="f.contact.touched && f.contact.errors" class="invalid-feedback">
+                                            <span *ngIf="f.contact.errors.required">This Field is
+                                                required.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="example-date-input" class="form-label">Expected Delivery
+                                            Date</label>
+                                        <input class="form-control" type="date" placeholder="Select Delivery Date"
+                                            formControlName="expecteddate"
+                                            [ngClass]="{'is-invalid': f.expecteddate.touched && f.expecteddate.errors}"
+                                            [(ngModel)]="tokenModel.expecteddate">
+                                        <div *ngIf="f.expecteddate.touched && f.expecteddate.errors"
+                                            class="invalid-feedback">
+                                            <span *ngIf="f.expecteddate.errors.required">This Field is
+                                                required.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-3 col-lg-3 col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label>Upload Reference Image</label>
+                                        <div class="avatar-upload">
+                                            <div class="avatar-edit">
+                                                <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
+                                                    #fileInput (change)="uploadImageFile($event)"
+                                                    [(ngModel)]="tokenModel.image"
+                                                    [ngModelOptions]="{standalone: true}" />
+                                            </div>
+                                            <div class="avatar-preview">
+                                                <div id="imagePreview" [style.backgroundImage]="'url('+ imageUrl +')'">
+                                                </div>
+                                            </div>
+                                            <div style="margin-top: 10px;">
+                                                <button type="submit" class="btn btn-primary btn-sm btn-block"
+                                                    (click)="fileInput.click()">Upload
+                                                    Image</button>
+                                                <button type="submit" class="btn btn-danger btn-sm btn-block"
+                                                    (click)="removeUploadedImage()">Remove
+                                                    Image</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-4" *ngFor="let i of addMultiImg; let ind=index">
+                                    <div class="form-group mb-3">
+                                        <label>Upload Image</label>
+                                        <div class="avatar-upload">
+                                            <div class="avatar-edit">
+                                                <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
+                                                    #multiFileInput (change)="uploadMultiFile($event,ind)"
+                                                    [(ngModel)]="tokenModel.image"
+                                                    [ngModelOptions]="{standalone: true}" />
+                                            </div>
+                                            <div class="avatar-preview">
+                                                <div id="imagePreview"
+                                                    [style.backgroundImage]="'url('+ i.multiImageUrl +')'">
+                                                </div>
+                                            </div>
+                                            <div style="margin-top: 10px;">
+                                                <button type="submit" class="btn btn-primary btn-sm btn-block"
+                                                    (click)="multiFileInput.click()">Upload
+                                                    Image</button>
+                                                <button type="submit" class="btn btn-danger btn-sm btn-block"
+                                                    (click)="removeUploadedMultiImage(ind)">Remove
+                                                    Image</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-1 col-lg-1 col-md-1 col-md-1 d-flex align-items-center justify-content-center">
+                                    <div class="form-group mb-3">
+                                        <i class="bx bx-plus c-icon" (click)="addMultipleImage()"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label>File Uploader (Optional)</label>
+                                        <input class="form-control mb-2" type="file" id="formFile"
+                                            (change)="uploadFile($event)">
+                                        <ngb-progressbar [value]="progressValue" [type]="progressType"
+                                            *ngIf="isProgress"></ngb-progressbar>
+                                        <div class="d-flex justify-content-end gap-2 mt-2" *ngIf="fileResponse != null">
+                                            <button type="submit"
+                                                class="btn btn-primary waves-effect btn-label waves-light"
+                                                (click)="downloadFile(fileResponse.filePath)"><i
+                                                    class="fas fa-file-download label-icon"></i>Download</button>
+                                            <button type="button"
+                                                class="btn btn-danger waves-effect btn-label waves-light"
+                                                (click)="deleteUploadedFile(fileResponse.filePath)"><i
+                                                    class="fas fa-times label-icon"></i>Remove</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+            <button type="button" class="btn btn-primary" [disabled]="validationForm.invalid"
+                (click)="SaveTokendetails()">Submit <i class="fab fa-telegram-plane ms-1"></i></button>
+        </div>
+    </ng-template>
+
+</div><!-- End row -->
