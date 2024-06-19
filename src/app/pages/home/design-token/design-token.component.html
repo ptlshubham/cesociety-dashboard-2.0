@@ -120,16 +120,18 @@
                         </div>
                         <div class="flex-grow-1">
                             <h5 class="font-size-14 mb-1">{{openTokenData.institutename}}</h5>
-                            <td class="text-center">
-                                <span class="me-1">Manager: </span>
-                                <span class="badge bg-primary me-1" *ngFor="let m of openTokenData.assignedManagers">{{
-                                    m.name
-                                    }}</span>
-                            </td>
+                            <span class="me-1">Manager: </span>
+                            <span class="badge bg-primary me-1" *ngFor="let m of openTokenData.assignedManagers">{{
+                                m.name
+                                }}</span>
+                            <br>
                             <span class="me-1">Designers:</span>
                             <span class="badge bg-primary me-1" *ngFor="let m of openTokenData.assignedDesigners">{{
                                 m.name
                                 }}</span>
+                            <br>
+                            <span class="me-1">Delivery Date:</span>
+                            <span class="badge bg-primary me-1">{{tokenModel.expecteddate |date: 'MMM d, y'}}</span>
                         </div>
                     </div>
 
@@ -163,8 +165,8 @@
                         <div class="col-xl-2 col-6"
                             *ngIf="openTokenData.file!=undefined && openTokenData.file!='undefined'">
                             <button type="submit" class="btn btn-primary waves-effect btn-label waves-light"
-                                        (click)="downloadFile(openTokenData.file)"><i
-                                            class="fas fa-file-download label-icon"></i>Download</button>
+                                (click)="downloadFile(openTokenData.file)"><i
+                                    class="fas fa-file-download label-icon"></i>Download</button>
                         </div>
                     </div>
                 </div>
